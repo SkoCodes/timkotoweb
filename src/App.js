@@ -10,7 +10,7 @@ function App() {
   return (    
       <Router>
            <Route path="/" exact component={Home}/>
-           <Route path="/register" exact component={Registration}/>           
+           <Route path="/register/:code" exact component={Registration}/>           
            <Route path="/registersuccess" exact component={RegistrationSuccess}/>                      
            <Route path="/player" exact component={Player}/>     
       </Router>    

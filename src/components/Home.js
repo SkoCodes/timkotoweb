@@ -1,7 +1,6 @@
 import React from 'react'
 import logo from '../logo.png';
 import Footer from './common/Footer';
-import { Link } from 'react-router-dom';
 import './css/Home.css'
 
 const initialState = {
@@ -79,10 +78,8 @@ class Home extends React.Component {
                         </div>
                         <div className="center-content pt-4">
                             <input type="submit" value="Sign In" className="btn btn-primary mr-4" />
-                            <Link to="/register" className="btn btn-secondary">Register</Link>
                         </div>
                     </form>
-
                 </main>
                 <Footer />
             </div>

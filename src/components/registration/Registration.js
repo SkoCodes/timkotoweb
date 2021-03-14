@@ -40,7 +40,7 @@ class Registration extends React.Component {
                 userName: this.state.name,
                 phoneNumber: this.state.phoneNumber,
                 password: this.state.password,
-                registrationCode: 'c5132259ddb6491e9f27318340dab795'
+                registrationCode: this.props.match.params.code
             };
 
             this.setState({submitting :true});
@@ -112,8 +112,7 @@ class Registration extends React.Component {
     }
 
     render() {
-        const {submitting} = this.state;
-
+        const {submitting} = this.state;        
         return (
             <div className="container">
                 <header>

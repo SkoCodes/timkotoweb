@@ -16,7 +16,7 @@ function RegistrationSuccess() {
                 </div>
                 <div className="center-content">
                     <p>
-                        <Link to="/signin" className="btn btn-primary">Sign-In</Link>
+                        <Link to="/" className="btn btn-primary">Sign-In</Link>
                     </p>
                 </div>
             </main>

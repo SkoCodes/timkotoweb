@@ -6,6 +6,7 @@ import { Message, messageType } from '../common/Message';
 import '../css/Registration.css';
 import settings from '../../settings';
 import adapter from '../../utils/adapter'
+import {FaSpinner} from 'react-icons/fa'
 
 const initialState = {
     emailAddress: "",
@@ -18,7 +19,8 @@ const initialState = {
     confirmPasswordError: "",
     nameError: "",
     message: "",
-    messageType: ""
+    messageType: "",
+    submitting:false    
 };
 
 class Registration extends React.Component {
@@ -31,8 +33,8 @@ class Registration extends React.Component {
         e.preventDefault();
         const isValid = this.validate();
 
-        if (isValid) {
-            const url = `https://api.timkoto.com/${settings.env}api/registration/v1/User`;
+        if (isValid) {            
+            const url = `${settings.apiRoot}/api/registration/v1/User`;
             const content = {
                 email: this.state.emailAddress,
                 userName: this.state.name,
@@ -41,7 +43,9 @@ class Registration extends React.Component {
                 registrationCode: 'c5132259ddb6491e9f27318340dab795'
             };
 
+            this.setState({submitting :true});
             const response = await adapter.Post(url, content);
+            this.setState({submitting :false});
 
             if (!response.ok) {
                 this.setState({
@@ -108,6 +112,8 @@ class Registration extends React.Component {
     }
 
     render() {
+        const {submitting} = this.state;
+
         return (
             <div className="container">
                 <header>
@@ -184,7 +190,9 @@ class Registration extends React.Component {
                             </span>
                         </div>
                         <div className="center-content">
-                            <input type="submit" value="Submit" className="btn btn-primary" />
+                            <button type="submit" className="btn btn-primary" value="submit" disabled={submitting}>
+                               { submitting && <FaSpinner className="spinner"/>} Submit
+                            </button>                            
                         </div>
                     </form>
                 </main>

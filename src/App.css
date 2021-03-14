@@ -1,13 +1,2 @@
 /* app component specific css should go here*/
 
-.app-header {
-    background-color: white;
-    min-height: 75vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  

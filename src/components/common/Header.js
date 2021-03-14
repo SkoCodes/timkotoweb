@@ -6,8 +6,7 @@ function Header(props){
         <div>
             <div className="header-menu">
                 Timokoto web header
-                <Link to="/">Home</Link>    
-                <Link to="/signin">Sigin</Link>
+                <Link to="/">Sign In</Link>                    
                 <Link to="/register">Register</Link>
             </div>
             <div>

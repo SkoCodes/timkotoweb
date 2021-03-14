@@ -1,6 +1,6 @@
-import logo from '../logo.png';
+import logo from '../../logo.png';
 import { Link } from 'react-router-dom';
-import Footer from './common/Footer';
+import Footer from '../common/Footer';
 
 function RegistrationSuccess() {
     return (

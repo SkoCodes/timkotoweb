@@ -2,7 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../logo.png';
 import Footer from '../common/Footer';
+import { Message, messageType } from '../common/Message';
 import '../css/Registration.css';
+import settings from '../../settings';
+import adapter from '../../utils/adapter'
 
 const initialState = {
     emailAddress: "",
@@ -14,14 +17,14 @@ const initialState = {
     passwordError: "",
     confirmPasswordError: "",
     nameError: "",
-    redirectToSuccess: false
+    message: "",
+    messageType: ""
 };
 
 class Registration extends React.Component {
     constructor(props) {
         super(props);
         this.state = initialState;
-
     }
 
     onSubmit = async (e) => {
@@ -29,23 +32,26 @@ class Registration extends React.Component {
         const isValid = this.validate();
 
         if (isValid) {
-            const res = await fetch("https://api.timkoto.com/dev/api/registration/v1/User", {
-                method : "POST",
-                headers : {
-                    "Content-type" : "application/json",
-                    "x-api-key" : "jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ",   
-                    "Access-Control-Allow-Origin" : "*"
-                },
-                body: JSON.stringify({"emailAddress" : "test"})
-            });
+            const url = `https://api.timkoto.com/${settings.env}api/registration/v1/User`;
+            const content = {
+                email: this.state.emailAddress,
+                userName: this.state.name,
+                phoneNumber: this.state.phoneNumber,
+                password: this.state.password,
+                registrationCode: 'c5132259ddb6491e9f27318340dab795'
+            };
 
-            const data = res.json();
+            const response = await adapter.Post(url, content);
 
-            console.log(data);
-
-            //this.props.history.push("/registersuccess");
+            if (!response.ok) {
+                this.setState({
+                    message: "An error occured while trying to register.", //response.status
+                    messageType: messageType.danger
+                });
+            } else {
+                this.props.history.push("/registersuccess");
+            }
         }
-
     }
 
     onChange = (e) => {
@@ -55,8 +61,7 @@ class Registration extends React.Component {
         });
     }
 
-    validate = () => {
-        console.log(this.state);
+    validate = () => {        
         let emailAddressError = "";
         let passwordError = "";
         let confirmPasswordError = "";
@@ -105,12 +110,18 @@ class Registration extends React.Component {
     render() {
         return (
             <div className="container">
-                <header className="center-content">
-                    <Link to="/">
-                        <img src={logo} className="app-logo" alt="logo" />
-                    </Link>
+                <header>
+                    <div className="center-content">
+                        <Link to="/">
+                            <img src={logo} className="app-logo" alt="logo" />
+                        </Link>
+                    </div>
+                    <div className="center-content">
+                        <h3>Register</h3>
+                    </div>
                 </header>
                 <main>
+                    <Message text={this.state.message} messageType={this.state.messageType} />
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <label htmlFor="emailAddress">Email Address:</label>

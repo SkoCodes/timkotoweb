@@ -84,7 +84,7 @@ class Registration extends React.Component {
         }
 
         if (this.state.password && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i.test(this.state.password)) {
-            passwordError = "Password must be at least 8 characters with 1 number and 1 letter.";
+            passwordError = "Password must be at least 8 characters with atleast 1 number.";
         }
 
         if (!this.state.confirmPassword) {
@@ -99,8 +99,8 @@ class Registration extends React.Component {
             nameError = "Name is required."
         }
 
-        if (this.state.name && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,30}$/i.test(this.state.name)) {
-            nameError = "Name must be at least 2 characters with 1 number and 1 letter.";
+        if (this.state.name && !/^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*.{1,}$/i.test(this.state.name)) {
+            nameError = "Name must be at least 2 characters.";
         }
 
         if (emailAddressError || passwordError || confirmPasswordError || nameError) {
@@ -170,6 +170,7 @@ class Registration extends React.Component {
                                 className="form-control"
                                 id="name"
                                 placeholder="Name"
+                                maxLength="30"
                                 value={this.state.name}
                                 onChange={this.onChange} />
                             <span className="text-danger">

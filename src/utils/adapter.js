@@ -9,6 +9,16 @@ const adapter = {
             body: JSON.stringify(content)
         });
         return response;
+    },
+    Get: async function (url) {
+        var response = await fetch(url, {
+            method: "GET",
+            headers: new Headers({
+                'X-Api-Key': 'jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ',
+                'Content-Type': 'application/json'
+            }),
+        });
+        return response;
     }
 }
 

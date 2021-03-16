@@ -2,12 +2,19 @@ import React from 'react'
 import logo from '../logo.png';
 import Footer from './common/Footer';
 import './css/Home.css'
+import settings from '../settings';
+import adapter from '../utils/adapter'
+import { Message, messageType } from './common/Message';
+import {FaSpinner} from 'react-icons/fa'
 
 const initialState = {
-    userName: "",
+    email: "",
     password: "",
-    userNameError:"",
-    passwordError: ""
+    emailError:"",
+    passwordError: "",
+    submitting:false,
+    message: "",
+    messageType: "",
 }
 
 class Home extends React.Component {
@@ -16,14 +23,30 @@ class Home extends React.Component {
         this.state = initialState;
     }
 
-    onSubmit = (e) => {        
+    onSubmit = async (e) => {        
         e.preventDefault();
         const isValid = this.validate();
 
         if (isValid) {
             //call signin api
-
-            this.props.history.push("/player");
+            const url = `${settings.apiRoot}/api/registration/v1/user/authenticate`;
+            const content = {
+                email: this.state.email,
+                password: this.state.password,
+            };
+            
+            this.setState({submitting :true});
+            const response = await adapter.Post(url, content);
+            this.setState({submitting :false});
+            
+            if (!response.ok) {
+                this.setState({
+                    message: "Invalid password", //response.status
+                    messageType: messageType.danger
+                });
+            } else {
+                this.props.history.push("/operator");
+            }
         }
     }
 
@@ -35,19 +58,19 @@ class Home extends React.Component {
     }
 
     validate = () => {
-        let userNameError = "";
+        let emailError = "";
         let passwordError = "";
 
-        if (!this.state.userName) {
-            userNameError = "User name is required.";
+        if (!this.state.email) {
+            emailError = "Email is required.";
         }
 
         if (!this.state.password) {
             passwordError = "Password is required.";
         }
 
-        if (userNameError || passwordError) {
-            this.setState({ userNameError, passwordError });
+        if (emailError || passwordError) {
+            this.setState({ emailError, passwordError });
             return false;
         }
 
@@ -55,18 +78,20 @@ class Home extends React.Component {
     }
 
     render() {
+        const {submitting} = this.state;
         return (
             <div>
                 <header className="home-header">
                     <img src={logo} className="app-logo" alt="logo" />
                 </header>
                 <main className="container home-content">
+                <Message text={this.state.message} messageType={this.state.messageType} />
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
-                            <label htmlFor="userName">User Name</label>
-                            <input type="text" value={this.state.userName} className="form-control" id="userName" onChange={this.onChange} />
+                            <label htmlFor="email">Email</label>
+                            <input type="text" value={this.state.email} className="form-control" id="email" onChange={this.onChange} />
                             <span className="text-danger">
-                                {this.state.userNameError}
+                                {this.state.emailError}
                             </span>
                         </div>
                         <div className="form-group">
@@ -77,7 +102,9 @@ class Home extends React.Component {
                             </span>
                         </div>
                         <div className="center-content pt-4">
-                            <input type="submit" value="Sign In" className="btn btn-primary mr-4" />
+                                <button type="submit" className="btn btn-primary  mr-4" value="Sign In" disabled={submitting}>
+                               { submitting && <FaSpinner className="spinner"/>} Submit
+                            </button>          
                         </div>
                     </form>
                 </main>

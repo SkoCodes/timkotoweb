@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../logo.png';
 import Footer from '../common/Footer';
-import { Message, messageType } from '../common/Message';
+import Message from '../common/Message';
 import '../css/Registration.css';
 import settings from '../../settings';
 import adapter from '../../utils/adapter'
@@ -50,7 +50,7 @@ class Registration extends React.Component {
             if (!response.ok) {
                 this.setState({
                     message: "An error occured while trying to register.", //response.status
-                    messageType: messageType.danger
+                    messageType: "error"
                 });
             } else {
                 this.props.history.push("/registersuccess");

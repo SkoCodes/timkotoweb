@@ -1,12 +1,9 @@
-export const messageType = {
-    warning : "alert-warning",
-    danger : "alert-danger"
-};
+import Alert from '@material-ui/lab/Alert';
 
-export function Message({text, messageType}){
+export default function Message(props){
     return(
-        <div className ={`alert ${messageType}`} >
-            {text}
+        <div>
+            <Alert severity={props.messageType}>{props.text}</Alert>
         </div>
     );
 }

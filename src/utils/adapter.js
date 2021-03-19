@@ -4,7 +4,7 @@ const adapter = {
             method: "POST",
             headers: new Headers({
                 'X-Api-Key': 'jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json'                
             }),
             body: JSON.stringify(content)
         });
@@ -15,7 +15,7 @@ const adapter = {
             method: "GET",
             headers: new Headers({
                 'X-Api-Key': 'jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json'                
             }),
         });
         return response;

@@ -1,4 +1,4 @@
-.home-header {
+.login-header {
   background-color: white;
   min-height: 40vh;
   display: flex;
@@ -9,6 +9,6 @@
   color: white;
 }
 
-.home-content {
+.login-content {
   min-height: 40vh;
 }

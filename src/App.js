@@ -10,10 +10,13 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import AgentPlayers from './components/agent/AgentPlayers';
 import AgentPlayerPoints from './components/agent/AgetPlayerPoints';
 import Footer from './components/common/Footer'
+import OperatorAgenPoints from './components/operator/AgentPoints'
+import RegistrationLink from './components/operator/RegistrationLink'
 
 class App extends React.Component {
   render() {
     return (
+      <div>
       <Router>
         <Switch>
           <Route path="/" exact component={Login} />
@@ -28,10 +31,12 @@ class App extends React.Component {
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]} />
           
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
-
-          <Footer />
+          <ProtectedRoute path="/operator/registration-link" exact component={RegistrationLink} roles={["Operator"]} />
+          <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgenPoints} roles={["Operator"]} />
         </Switch>
       </Router>
+      <Footer />
+      </div>
     )
 
   }

@@ -5,10 +5,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import React from 'react';
 import RegistrationSuccess from './components/registration/RegistrationSuccess';
 import Player from './components/player/Player';
-import OperatorAgents from './components/operator/Agents';
+import OperatorAgents from './components/operator/index';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import AgentPlayers from './components/agent/AgentPlayers';
 import AgentPlayerPoints from './components/agent/AgetPlayerPoints';
+import Footer from './components/common/Footer'
 
 class App extends React.Component {
   render() {
@@ -28,6 +29,7 @@ class App extends React.Component {
           
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
 
+          <Footer />
         </Switch>
       </Router>
     )

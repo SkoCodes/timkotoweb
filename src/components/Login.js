@@ -136,7 +136,6 @@ class Login extends React.Component {
                             Submit{submitting && 'ing'}
                         </Button>
                     </form>
-                    <Footer />
                 </Container>
             </div>
         );

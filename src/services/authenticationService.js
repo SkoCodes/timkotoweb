@@ -25,7 +25,8 @@ async function loginUser(email, password) {
         const user = {
             userName: result.data.user.userName,
             role : result.data.user.userType,
-            token: result.data.idToken,            
+            token: result.data.idToken, 
+            id: result.data.user.id           
         };
 
         sessionStorage.setItem("user", JSON.stringify(user));

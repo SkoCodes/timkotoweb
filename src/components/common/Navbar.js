@@ -7,7 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from 'react-router-dom';
+import { authenticationService } from '../../services/authenticationService';
 
 function ElevationScroll(props) {
     const { children, window } = props;
@@ -52,6 +54,13 @@ export default function Navbar(props){
         }
     }
 
+    const handleLogout = () =>{
+        authenticationService.logoutUser()
+        history.push('/')
+    }
+
+    const type = props.type
+
     return(
         <div>
             <ElevationScroll {...props}>
@@ -67,7 +76,7 @@ export default function Navbar(props){
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            {()=>checkUserType(props.type)}
+                            <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
                         </Menu>
                         <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>
                 </Toolbar>

@@ -21,10 +21,12 @@ async function loginUser(email, password) {
         return null;
     } else {
         const result = await response.json();
-
+        
         const user = {
             userName: result.data.user.userName,
             role : result.data.user.userType,
+            id: result.data.user.id,
+            operatorId: result.data.user.operatorId,
             token: result.data.idToken,            
         };
 

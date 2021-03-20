@@ -7,6 +7,8 @@ import RegistrationSuccess from './components/registration/RegistrationSuccess';
 import Player from './components/player/Player';
 import OperatorAgents from './components/operator/Agents';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import AgentPlayers from './components/agent/AgentPlayers';
+import AgentPlayerPoints from './components/agent/AgetPlayerPoints';
 
 class App extends React.Component {
   render() {
@@ -17,8 +19,15 @@ class App extends React.Component {
           <Route path="/login" exact component={Login} />
           <Route path="/register/:code" exact component={Registration} />
           <Route path="/registersuccess" exact component={RegistrationSuccess} />
+
+          <ProtectedRoute path="/agent" exact component={AgentPlayers} roles={["Agent"]} />
+          <ProtectedRoute path="/agent/players" exact component={AgentPlayers} roles={["Agent"]} />
+          <ProtectedRoute path="/agent/player/points" exact component={AgentPlayerPoints} roles={["Agent"]} />
+
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]} />
+          
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
+
         </Switch>
       </Router>
     )

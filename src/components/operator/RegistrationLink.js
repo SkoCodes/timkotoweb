@@ -56,7 +56,7 @@ export default function RegistrationLink(){
                         </Grid>
                         <Grid item xs={6} sm={6}>
                             <CopyToClipboard text={link} onCopy={() => setCopied(true)}>
-                                <Button endIcon={<FileCopyIcon />} fullWidth variant="outlined">Copy Link</Button>
+                                <Button disabled={link == "" ? true:false} endIcon={<FileCopyIcon />} fullWidth variant="outlined">Copy Link</Button>
                             </CopyToClipboard>
                         </Grid>
                     </Grid>

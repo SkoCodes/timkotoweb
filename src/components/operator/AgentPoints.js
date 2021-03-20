@@ -15,7 +15,7 @@ export default function AgentPoints(){
 
     useEffect( async ()=>{
         const agent = JSON.parse(sessionStorage.getItem('operator-agent-points'))
-        const url = `${settings.apiRoot}/api/v1/Agent/AgentPoints/${agent.agentId}`;
+        const url = `${settings.apiRoot}/api/v1/Agent/AgentPoints/${agent.id}`;
         const response = await adapter.Get(url);
         if (response.ok)
         {   

@@ -26,7 +26,7 @@ class App extends React.Component {
 
           <ProtectedRoute path="/agent" exact component={AgentPlayers} roles={["Agent"]} />
           <ProtectedRoute path="/agent/players" exact component={AgentPlayers} roles={["Agent"]} />
-          <ProtectedRoute path="/agent/player/points" exact component={AgentPlayerPoints} roles={["Agent"]} />
+          <ProtectedRoute path="/agent/player-points/:id" exact component={AgentPlayerPoints} roles={["Agent"]} />
 
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]} />
           

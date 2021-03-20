@@ -1,0 +1,13 @@
+.container-style {
+  margin-top: 30px;
+}
+
+.table-style {
+  margin-top: 30px;
+}
+
+.generate-button-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}

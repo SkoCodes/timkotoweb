@@ -21,12 +21,13 @@ async function loginUser(email, password) {
         return null;
     } else {
         const result = await response.json();
-
+        
         const user = {
             userName: result.data.user.userName,
             role : result.data.user.userType,
-            token: result.data.idToken, 
-            id: result.data.user.id           
+            id: result.data.user.id,
+            operatorId: result.data.user.operatorId,
+            token: result.data.idToken,            
         };
 
         sessionStorage.setItem("user", JSON.stringify(user));

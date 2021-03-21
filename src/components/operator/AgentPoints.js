@@ -13,17 +13,20 @@ export default function AgentPoints(){
     const [points, setPoints] = useState([]);
     const [search, setSearch] = useState('')
 
-    useEffect( async ()=>{
-        const agent = JSON.parse(sessionStorage.getItem('operator-agent-points'))
-        const url = `${settings.apiRoot}/api/v1/Agent/AgentPoints/${agent.id}`;
-        const response = await adapter.Get(url);
-        if (response.ok)
-        {   
-            const jsonResponse = await response.json();
-            setPoints(jsonResponse.data)
+    useEffect(()=>{
+        async function fetchData(){
+            const agent = JSON.parse(sessionStorage.getItem('operator-agent-points'))
+            const url = `${settings.apiRoot}/api/v1/Agent/AgentPoints/${agent.id}`;
+            const response = await adapter.Get(url);
+            if (response.ok)
+            {   
+                const jsonResponse = await response.json();
+                setPoints(jsonResponse.data.agentsPoints)
+            }
+            const userType = await authenticationService.getCurrentUser()
+            setUserType(userType.role)
         }
-        const userType = await authenticationService.getCurrentUser()
-        setUserType(userType.role)
+        fetchData();
         setAgentDetails(JSON.parse(sessionStorage.getItem('operator-agent-points')))
 
     },[])
@@ -43,7 +46,7 @@ export default function AgentPoints(){
                 </Grid>
                 <Grid item xs={12} md={12}>
                     <Table stickyHeader className="table-style">
-                        <TableHead>
+                        <TableHead stickyHeader>
                         <TableRow>
                             <TableCell>Contest</TableCell>
                             <TableCell align="left">Collection</TableCell>
@@ -52,12 +55,24 @@ export default function AgentPoints(){
                         </TableRow>
                         </TableHead>
                         <TableBody>
+                            {   
+                                points.length > 0 ?
+                                points.map((point,index)=>(
+                                <TableRow hover key={index}>
+                                        <TableCell>{point.gameDate}</TableCell>
+                                        <TableCell>{point.collectible}</TableCell>
+                                        <TableCell>{point.commission}</TableCell>
+                                        <TableCell>{point.prize}</TableCell>
+                                </TableRow>
+                                ))
+                                :
                                 <TableRow hover>
                                         <TableCell>No Data</TableCell>
                                         <TableCell>No Data</TableCell>
                                         <TableCell>No Data</TableCell>
                                         <TableCell>No Data</TableCell>
                                 </TableRow>
+                            }
                         </TableBody>
                     </Table>
                 </Grid>

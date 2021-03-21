@@ -15,6 +15,12 @@ const useStyles = makeStyles({
     container: {
       maxHeight: 440,
     },
+    tableRow: {
+        height: 30
+      },
+      tableCell: {
+        padding: "1px 16px"
+    }
   });
 
 export default function AgentContestPlayers() {
@@ -118,11 +124,11 @@ export default function AgentContestPlayers() {
                             <Table stickyHeader className="table-style">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell align="left">Team</TableCell>
-                                        <TableCell align="left">Rank</TableCell>
-                                        <TableCell align="left">Score</TableCell>
-                                        <TableCell align="left">Prize</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Name</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Team</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Rank</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Score</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Prize</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -130,11 +136,11 @@ export default function AgentContestPlayers() {
                                         currentContestPlayers.length > 0 ?
                                             currentContestPlayers.map((player, index) => (
                                                 <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)}>
-                                                    <TableCell align="left">{player.userName}</TableCell>
-                                                    <TableCell align="left">{player.teamName}</TableCell>
-                                                    <TableCell align="left">{player.teamRank}</TableCell>
-                                                    <TableCell align="left">{player.score}</TableCell>
-                                                    <TableCell align="left">{player.prize}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.teamName}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.teamRank}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.score}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.prize}</TableCell>
                                                 </TableRow>
                                             ))
                                             :

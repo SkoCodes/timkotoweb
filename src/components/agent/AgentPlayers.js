@@ -16,8 +16,15 @@ const useStyles = makeStyles({
     container: {
       maxHeight: 440,
     },
+    tableRow: {
+        height: 30
+      },
+      tableCell: {
+        padding: "1px 16px"
+    }
   });
 
+ 
 export default function AgentPlayers() {
     const classes = useStyles();
     const history = useHistory();
@@ -73,22 +80,23 @@ export default function AgentPlayers() {
                             <LoadingTable />
                             :
                             <TableContainer className={classes.container}>
+                            
                             <Table stickyHeader className="table-style">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell align="left">Email</TableCell>
-                                        <TableCell align="left">Phone Number</TableCell>
+                                        <TableCell className={classes.tableCell}>Name</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Email</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}> Ph. No</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {
                                         players.length > 0 ?
                                             players.map((player, index) => (
-                                                <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)}>
-                                                    <TableCell align="left">{player.userName}</TableCell>
-                                                    <TableCell align="left">{player.email}</TableCell>
-                                                    <TableCell align="left">{player.phoneNumber}</TableCell>
+                                                <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)} >
+                                                    <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.email}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.phoneNumber}</TableCell>
                                                 </TableRow>
                                             ))
                                             :

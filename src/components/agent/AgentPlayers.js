@@ -25,7 +25,7 @@ export default function AgentPlayers() {
             const url = `${settings.apiRoot}/api/v1/player/${currentUser.operatorId}/${currentUser.id}`;
             const response = await adapter.Get(url);
             if (response.ok) {
-                const jsonResponse = await response.json();
+                const jsonResponse = await response.json();            
                 setPlayers(jsonResponse.data.players)
                 setPlayers2(jsonResponse.data.players)
                 setFetching(false)

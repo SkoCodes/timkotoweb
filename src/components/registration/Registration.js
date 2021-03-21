@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../logo.png';
-import Footer from '../common/Footer';
 import Message from '../common/Message';
 import '../css/Registration.css';
 import settings from '../../settings';
 import adapter from '../../utils/adapter'
 import {FaSpinner} from 'react-icons/fa'
+import { Container, TextField, Button } from '@material-ui/core';
+import InputMask from 'react-input-mask'
 
 const initialState = {
     emailAddress: "",
@@ -49,11 +50,11 @@ class Registration extends React.Component {
 
             if (!response.ok) {
                 this.setState({
-                    message: "An error occured while trying to register.", //response.status
+                    message: "An error occured while trying to register. Please contact you agent.", //response.status
                     messageType: "error"
                 });
             } else {
-                this.props.history.push("/registersuccess");
+                this.props.history.push("../login");
             }
         }
     }
@@ -121,82 +122,98 @@ class Registration extends React.Component {
                             <img src={logo} className="app-logo" alt="logo" />
                         </Link>
                     </div>
-                    <div className="center-content">
-                        <h3>Register</h3>
-                    </div>
                 </header>
-                <main>
+                <Container component="main" maxWidth="xs">
                     <Message text={this.state.message} messageType={this.state.messageType} />
                     <form onSubmit={this.onSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="emailAddress">Email Address:</label>
-                            <input type="text"
-                                className="form-control"
+                        
+                            <TextField
+                                onChange={this.onChange}
+                                error={this.state.emailAddressError !== "" ? true : false}
+                                fullWidth
+                                required
                                 id="emailAddress"
-                                placeholder="Email Address"
-                                value={this.state.emailAddress}
-                                onChange={this.onChange} />
-                            <span className="text-danger">
-                                {this.state.emailAddressError}
-                            </span>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password:</label>
-                            <input type="password"
-                                className="form-control"
+                                type="email"
+                                label="Email Address"
+                                helperText={this.state.emailAddressError}
+                                variant="outlined"
+                                className="form-input-style"
+                                style={{ margin: '10px 0px' }}
+                            />
+                        
+                        
+                            <TextField
+                                onChange={this.onChange}
+                                error={this.state.passwordError !== "" ? true : false}
+                                fullWidth
+                                required
                                 id="password"
-                                placeholder="Password"
-                                value={this.state.password}
-                                onChange={this.onChange} />
-                            <span className="text-danger">
-                                {this.state.passwordError}
-                            </span>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="confirmPassword">Confirm Password:</label>
-                            <input type="password"
-                                className="form-control"
+                                type="password"
+                                label="Password"
+                                helperText={this.state.passwordError}
+                                variant="outlined"
+                                className="form-input-style"
+                                style={{ margin: '10px 0px' }}
+                            />
+                        
+                            <TextField
+                                onChange={this.onChange}
+                                error={this.state.confirmPasswordError !== "" ? true : false}
+                                fullWidth
+                                required
                                 id="confirmPassword"
-                                placeholder="Confirm Password"
-                                value={this.state.confirmPassword}
-                                onChange={this.onChange} />
-                            <span className="text-danger">
-                                {this.state.confirmPasswordError}
-                            </span>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="name">Name:</label>
-                            <input type="text"
-                                className="form-control"
+                                type="password"
+                                label="Confirm Password"
+                                helperText={this.state.confirmPasswordError}
+                                variant="outlined"
+                                className="form-input-style"
+                                style={{ margin: '10px 0px' }}
+                            />
+                        
+                            <TextField
+                                onChange={this.onChange}
+                                error={this.state.nameError !== "" ? true : false}
+                                fullWidth
+                                required
                                 id="name"
-                                placeholder="Name"
-                                maxLength="30"
-                                value={this.state.name}
-                                onChange={this.onChange} />
-                            <span className="text-danger">
-                                {this.state.nameError}
-                            </span>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="phoneNumber">Phone Number:</label>
-                            <input type="tel"
-                                className="form-control"
-                                id="phoneNumber"
-                                placeholder="Phone Number"
+                                type="text"
+                                label="Name"
+                                helperText={this.state.nameError}
+                                variant="outlined"
+                                className="form-input-style"
+                                style={{ margin: '10px 0px' }}
+                            />
+                        
+                            <InputMask
+                                mask="0999-999-9999"
                                 value={this.state.phoneNumber}
-                                onChange={this.onChange} />
-                            <span className="text-danger">
-                                {this.state.phoneNumberError}
-                            </span>
-                        </div>
-                        <div className="center-content">
-                            <button type="submit" className="btn btn-primary" value="submit" disabled={submitting}>
-                               { submitting && <FaSpinner className="spinner"/>} Submit
-                            </button>                            
-                        </div>
+                                disabled={false}
+                                maskChar=" "
+                                onChange={this.onChange}>
+                                {() => <TextField 
+                                    type="text"
+                                    variant="outlined" 
+                                    className="form-input-style"
+                                    style={{ margin: '10px 0px' }}
+                                    fullWidth
+                                    id="phoneNumber"
+                                    label="Phone Number"
+                                />}
+                            </InputMask>
+                            <Button
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    style={{ margin: '10px 0px' }}
+                                    type="submit"
+                                    disabled={submitting}
+                                    startIcon={submitting && <FaSpinner className="spinner" />}>
+                                    Submit{submitting && 'ing'}
+                            </Button>                       
+                                
                     </form>
-                </main>
-                <Footer />
+                </Container>
+                
             </div>
         );
     }

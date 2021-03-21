@@ -7,6 +7,10 @@ import { FaSpinner } from 'react-icons/fa'
 import { Container, TextField, Button } from '@material-ui/core';
 import { authenticationService } from '../services/authenticationService';
 import {withRouter} from 'react-router-dom'
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+
+//websocket
+// const client = new W3CWebSocket('wss://4a4vv008xj.execute-api.ap-southeast-1.amazonaws.com/Dev');
 
 const initialState = {
     email: "",
@@ -23,7 +27,16 @@ class Login extends React.Component {
         super(props);
         this.state = initialState;        
     }
-
+    //connect to websocket
+    // componentWillMount() {
+    //     client.onopen = () => {
+    //       console.log('WebSocket Client Connected');
+    //     };
+    //     client.onmessage = (message) => {
+    //       console.log(message);
+    //     };
+    //   }
+      
     onSubmit = async (e) => {
         e.preventDefault();
         const isValid = this.validate();

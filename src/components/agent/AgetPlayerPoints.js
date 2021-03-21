@@ -57,7 +57,7 @@ export default function AgentPlayerPoints() {
         e.preventDefault();
 
         const isValid = await validateAddPoints();
-        
+
         if (isValid) {
             const url = `${settings.apiRoot}/api/v1/transaction`;
             const data = {
@@ -78,46 +78,49 @@ export default function AgentPlayerPoints() {
                 setFetchingPlayerPoints(false);
                 setCurrentPlayerPoints(newBalance);
             }
+
+            setPointsToAdd(0);
+            setConfirmPointsToAdd(0);
         }
     }
 
-    const onChangeAddPoints = (e) => {
-        setPointsToAdd(e.target.value);
-        setPointsToAddError("");
-        setConfirmPointsToAddError("");
-    }
-
-    const onChangeConfirmAddPoints = (e) => {
-        setConfirmPointsToAdd(e.target.value);
-        setConfirmPointsToAddError("");
-        setPointsToAddError("");
-    }
-
-    const validateAddPoints =  async () => {        
+    const validateAddPoints = async () => {
         const maxPointsToAdd = 300;
+        let pointsToAddError = "";
+        let confirmPointsToAddError = ""
 
-        if (!pointsToAdd || pointsToAdd === 0 || isNaN(pointsToAdd)) {
-            setPointsToAddError("Points to add is required.")        
+        if (!pointsToAdd || pointsToAdd === 0) {
+            pointsToAddError = "Points to add is required.";
+        }
+
+        if (isNaN(pointsToAdd)) {
+            pointsToAddError = "Points to add must be a number.";
         }
 
         if (pointsToAdd > maxPointsToAdd) {
-            setPointsToAddError(`Points to add cannot be greater than ${maxPointsToAdd}.`)
+            pointsToAddError = `Points to add cannot be greater than ${maxPointsToAdd}.`;
         }
 
-        if (!confirmPointsToAdd || confirmPointsToAdd === 0 || isNaN(confirmPointsToAdd)) {
-            setConfirmPointsToAddError("Confirm points to add is required.")
+        if (!confirmPointsToAdd || confirmPointsToAdd === 0) {
+            confirmPointsToAddError = "Confirm points to add is required.";
+        }
+
+        if (isNaN(confirmPointsToAdd)) {
+            confirmPointsToAddError = "Confirm points to add must be a number."
         }
 
         if (confirmPointsToAdd !== pointsToAdd) {
-            setConfirmPointsToAddError("Invalid points to add confirmation.")
+            confirmPointsToAddError = "Confirm points to add does not match provided points to add.";
         }
 
-        
-        if (pointsToAddError !== '' || confirmPointsToAddError !== '') {
-             return false;
-         }
 
-         return true;
+        if (pointsToAddError !== '' || confirmPointsToAddError !== '') {
+            setPointsToAddError(pointsToAddError);
+            setConfirmPointsToAddError(confirmPointsToAddError);
+            return false;
+        }
+
+        return true;
     }
 
     const handleClaimPoints = async (e) => {
@@ -145,41 +148,45 @@ export default function AgentPlayerPoints() {
                 setFetchingPlayerPoints(false);
                 setCurrentPlayerPoints(newBalance);
             }
+
+            setPointsToClaim(0);
+            setConfirmPointsToClaim(0);
         }
-    }
-
-    const onChangePointsToClaim = (e) => {
-        setPointsToClaim(e.target.value);
-        setPointsToClaimError("");
-        setConfirmPointsToClaimError("");
-    }
-
-    const onChangeConfirmPointsToClaim = (e) => {
-        setConfirmPointsToClaim(e.target.value);
-        setConfirmPointsToClaimError("");
-        setPointsToClaimError("");
     }
 
     const validatePointsToClaim = () => {
         const maxPointsToClaim = currentPlayerPoints;
+        let pointsToClaimError = "";
+        let confirmPointsToClaimError = "";
 
-        if (!pointsToClaim || pointsToClaim === 0 || isNaN(pointsToClaim)) {
-            setPointsToClaimError("Points to claim is required.")
+
+        if (!pointsToClaim || pointsToClaim === 0) {
+            pointsToClaimError = "Points to claim is required.";
+        }
+
+        if (isNaN(pointsToClaim)) {
+            pointsToClaimError = "Points to claim must be a number.";
         }
 
         if (pointsToClaim > maxPointsToClaim) {
-            setPointsToClaimError(`Points to claim cannot be greater than ${maxPointsToClaim}.`)
+            pointsToClaimError = `Points to claim cannot be greater than ${maxPointsToClaim}.`;
         }
 
-        if (!confirmPointsToClaim || confirmPointsToClaim === 0 || isNaN(confirmPointsToClaim)) {
-            setConfirmPointsToClaimError("Confirm points to claim is required.")
+        if (!confirmPointsToClaim || confirmPointsToClaim === 0) {
+            confirmPointsToClaimError = "Confirm points to claim is required.";
+        }
+
+        if (isNaN(confirmPointsToClaim)) {
+            confirmPointsToClaimError = "Confirm points to claim must be a number";
         }
 
         if (confirmPointsToClaim !== pointsToClaim) {
-            setConfirmPointsToClaimError("Invalid points to claim confirmation.")
+            confirmPointsToClaimError = "Confirm points to claim does not match provided points to claim.";
         }
 
         if (pointsToClaimError !== "" || confirmPointsToClaimError !== "") {
+            setPointsToClaimError(pointsToClaimError);
+            setConfirmPointsToClaimError(confirmPointsToClaimError);
             return false;
         }
 
@@ -210,7 +217,7 @@ export default function AgentPlayerPoints() {
                             fullWidth id="outlined-basic"
                             label="Points to Add"
                             variant="outlined"
-                            onChange={onChangeAddPoints}
+                            onChange={(e) => { setPointsToAdd(e.target.value); setPointsToAddError("") }}
                             value={pointsToAdd}
                             error={pointsToAddError !== ""}
                             helperText={pointsToAddError} />
@@ -221,7 +228,7 @@ export default function AgentPlayerPoints() {
                             fullWidth id="outlined-basic"
                             label="Confirm Points to Add"
                             variant="outlined"
-                            onChange={onChangeConfirmAddPoints}
+                            onChange={(e) => { setConfirmPointsToAdd(e.target.value); setConfirmPointsToAddError("") }}
                             value={confirmPointsToAdd}
                             error={confirmPointsToAddError !== ""}
                             helperText={confirmPointsToAddError} />
@@ -245,30 +252,30 @@ export default function AgentPlayerPoints() {
                             fullWidth id="outlined-basic"
                             label="Points to Claim"
                             variant="outlined"
-                            onChange={onChangePointsToClaim}
+                            onChange={(e) => { setPointsToClaim(e.target.value); setPointsToClaimError("") }}
                             value={pointsToClaim}
                             error={pointsToClaimError !== ""}
                             helperText={pointsToClaimError}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField 
-                        style={{ marginTop: '20px' }} 
-                        fullWidth id="outlined-basic" 
-                        label="Confirm Points to Claim" 
-                        variant="outlined" 
-                        onChange={onChangeConfirmPointsToClaim} 
-                        value={confirmPointsToClaim} 
-                        error={confirmPointsToClaimError !==""}
-                        helperText ={confirmPointsToClaimError}/>
+                        <TextField
+                            style={{ marginTop: '20px' }}
+                            fullWidth id="outlined-basic"
+                            label="Confirm Points to Claim"
+                            variant="outlined"
+                            onChange={(e) => { setConfirmPointsToClaim(e.target.value); setConfirmPointsToClaimError("") }}
+                            value={confirmPointsToClaim}
+                            error={confirmPointsToClaimError !== ""}
+                            helperText={confirmPointsToClaimError} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Button style={{ marginTop: '50px' }} 
-                        fullWidth variant="contained" 
-                        color="primary" 
-                        type="submit"
-                        disabled={submittingPointsToClaim}
-                        startIcon={submittingPointsToClaim && <FaSpinner className="spinner"/>}>Claim Points</Button>
+                        <Button style={{ marginTop: '50px' }}
+                            fullWidth variant="contained"
+                            color="primary"
+                            type="submit"
+                            disabled={submittingPointsToClaim}
+                            startIcon={submittingPointsToClaim && <FaSpinner className="spinner" />}>Claim Points</Button>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Button style={{ marginTop: '50px' }} fullWidth variant="outlined" onClick={() => history.push('/agent')}>Back</Button>

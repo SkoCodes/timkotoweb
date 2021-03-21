@@ -5,10 +5,21 @@ import adapter from '../../utils/adapter'
 import Navbar from '../common/Navbar';
 import LoadingTable from '../common/LoadingTable';
 import { useHistory } from 'react-router-dom';
-import { Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
+import { TableContainer, Paper, Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
 import { authenticationService } from '../../services/authenticationService';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+    container: {
+      maxHeight: 440,
+    },
+  });
 
 export default function AgentPlayers() {
+    const classes = useStyles();
     const history = useHistory();
     const [players, setPlayers] = useState([]);
     const [players2, setPlayers2] = useState([]);
@@ -50,7 +61,7 @@ export default function AgentPlayers() {
 
 
     return (
-        <div>
+        <Paper className={classes.root}>
             <Navbar userType={userDetail.role} title={"Players List"} />
             <Container maxWidth="md">
                 <Grid container className="container-style">
@@ -61,6 +72,7 @@ export default function AgentPlayers() {
                         {fetching ?
                             <LoadingTable />
                             :
+                            <TableContainer className={classes.container}>
                             <Table stickyHeader className="table-style">
                                 <TableHead>
                                     <TableRow>
@@ -85,7 +97,8 @@ export default function AgentPlayers() {
                                             </TableRow>
                                     }
                                 </TableBody>
-                            </Table>                            
+                            </Table>       
+                            </TableContainer>                     
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
@@ -93,6 +106,6 @@ export default function AgentPlayers() {
                     </Grid>
                 </Grid>
             </Container>
-        </div>
+        </Paper>
     )
 }

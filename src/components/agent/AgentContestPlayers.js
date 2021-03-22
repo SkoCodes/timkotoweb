@@ -1,5 +1,4 @@
 import { Container, Grid, Table, TextField, TableHead, TableRow, TableCell, TableBody, Button, Checkbox, FormControlLabel } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { authenticationService } from "../../services/authenticationService";
@@ -23,6 +22,7 @@ export default function AgentContestPlayers() {
         async function fetchData() {
             setSummary({});
             setCurrentContestPlayers({});
+            setCurrentContestPlayers2({});
             setShowWinners(false);
 
             if (currentDate !== "") {
@@ -35,8 +35,7 @@ export default function AgentContestPlayers() {
                     const jsonResponse = await response.json();                    
                     setSummary(jsonResponse.data.summary)
                     setCurrentContestPlayers(jsonResponse.data.players);
-                    setCurrentContestPlayers2(jsonResponse.data.players);
-                    console.log(jsonResponse.data.players)
+                    setCurrentContestPlayers2(jsonResponse.data.players);                    
                 }
             }
         }

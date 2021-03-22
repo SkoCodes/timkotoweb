@@ -52,11 +52,22 @@ export default function Navbar(props){
                 </>
             )
         }
+        if(type = "Agent"){
+            return(
+                <>
+                    <MenuItem onClick={handleAgentPlayerPoints()}>Contest Players</MenuItem>
+                </>
+            )
+        }
     }
 
     const handleLogout = () =>{
         authenticationService.logoutUser()
         history.push('/')
+    }
+
+    const handleAgentPlayerPoints = () =>{
+        history.push('/agent/contest/players')
     }
 
     const type = props.type
@@ -76,7 +87,9 @@ export default function Navbar(props){
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
+                            <MenuItem onClick={handleAgentPlayerPoints}>Contest Players</MenuItem>
                             <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
+                                                        
                         </Menu>
                         <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>
                 </Toolbar>

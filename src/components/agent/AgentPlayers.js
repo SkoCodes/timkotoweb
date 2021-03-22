@@ -5,10 +5,28 @@ import adapter from '../../utils/adapter'
 import Navbar from '../common/Navbar';
 import LoadingTable from '../common/LoadingTable';
 import { useHistory } from 'react-router-dom';
-import { Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
+import { TableContainer, Paper, Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
 import { authenticationService } from '../../services/authenticationService';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+    container: {
+      maxHeight: 440,
+    },
+    tableRow: {
+        height: 30
+      },
+      tableCell: {
+        padding: "1px 16px"
+    }
+  });
+
+ 
 export default function AgentPlayers() {
+    const classes = useStyles();
     const history = useHistory();
     const [players, setPlayers] = useState([]);
     const [players2, setPlayers2] = useState([]);
@@ -50,7 +68,7 @@ export default function AgentPlayers() {
 
 
     return (
-        <div>
+        <Paper className={classes.root}>
             <Navbar userType={userDetail.role} title={"Players List"} />
             <Container maxWidth="md">
                 <Grid container className="container-style">
@@ -61,22 +79,24 @@ export default function AgentPlayers() {
                         {fetching ?
                             <LoadingTable />
                             :
+                            <TableContainer className={classes.container}>
+                            
                             <Table stickyHeader className="table-style">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell align="left">Email</TableCell>
-                                        <TableCell align="left">Phone Number</TableCell>
+                                        <TableCell className={classes.tableCell}>Name</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Email</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}> Ph. No</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {
                                         players.length > 0 ?
                                             players.map((player, index) => (
-                                                <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)}>
-                                                    <TableCell align="left">{player.userName}</TableCell>
-                                                    <TableCell align="left">{player.email}</TableCell>
-                                                    <TableCell align="left">{player.phoneNumber}</TableCell>
+                                                <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)} >
+                                                    <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.email}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.phoneNumber}</TableCell>
                                                 </TableRow>
                                             ))
                                             :
@@ -85,7 +105,8 @@ export default function AgentPlayers() {
                                             </TableRow>
                                     }
                                 </TableBody>
-                            </Table>                            
+                            </Table>       
+                            </TableContainer>                     
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
@@ -93,6 +114,6 @@ export default function AgentPlayers() {
                     </Grid>
                 </Grid>
             </Container>
-        </div>
+        </Paper>
     )
 }

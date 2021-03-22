@@ -22,12 +22,12 @@ export default function AgentPlayerPoints() {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [currentPlayerPoints, setCurrentPlayerPoints] = useState(0);
     const history = useHistory();
-    const [pointsToAdd, setPointsToAdd] = useState(0);
-    const [confirmPointsToAdd, setConfirmPointsToAdd] = useState(0);
+    const [pointsToAdd, setPointsToAdd] = useState();
+    const [confirmPointsToAdd, setConfirmPointsToAdd] = useState();
     const [pointsToAddError, setPointsToAddError] = useState('');
     const [confirmPointsToAddError, setConfirmPointsToAddError] = useState('');
-    const [pointsToClaim, setPointsToClaim] = useState(0);
-    const [confirmPointsToClaim, setConfirmPointsToClaim] = useState(0);
+    const [pointsToClaim, setPointsToClaim] = useState();
+    const [confirmPointsToClaim, setConfirmPointsToClaim] = useState();
     const [pointsToClaimError, setPointsToClaimError] = useState('');
     const [confirmPointsToClaimError, setConfirmPointsToClaimError] = useState('');
     const [fetchingPlayerPoints, setFetchingPlayerPoints] = useState(false);
@@ -79,8 +79,8 @@ export default function AgentPlayerPoints() {
                 setCurrentPlayerPoints(newBalance);
             }
 
-            setPointsToAdd(0);
-            setConfirmPointsToAdd(0);
+            setPointsToAdd("");
+            setConfirmPointsToAdd("");
         }
     }
 
@@ -149,8 +149,8 @@ export default function AgentPlayerPoints() {
                 setCurrentPlayerPoints(newBalance);
             }
 
-            setPointsToClaim(0);
-            setConfirmPointsToClaim(0);
+            setPointsToClaim("");
+            setConfirmPointsToClaim("");
         }
     }
 

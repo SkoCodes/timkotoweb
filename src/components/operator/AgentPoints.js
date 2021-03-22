@@ -5,7 +5,7 @@ import adapter from '../../utils/adapter'
 import { useHistory } from 'react-router-dom'
 import { authenticationService } from '../../services/authenticationService';
 import { Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
-import DateFnsUtils from '@date-io/date-fns';
+//import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -61,7 +61,7 @@ export default function AgentPoints(){
                                 id="date"
                                 type="date"
                                 label="Search contest"
-                                defaultValue={date}
+                                defaultValue={""}
                                 onChange={handleDateChange}
                                 InputLabelProps={{
                                     shrink: true,

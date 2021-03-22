@@ -13,6 +13,7 @@ import Footer from './components/common/Footer'
 import OperatorAgenPoints from './components/operator/AgentPoints'
 import RegistrationLink from './components/operator/RegistrationLink'
 import AgentContestPlayers from './components/agent/AgentContestPlayers';
+import ContestsPage from './components/operator/Contests';
 
 class App extends React.Component {
   render() {
@@ -33,6 +34,7 @@ class App extends React.Component {
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]} />
           
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
+          <ProtectedRoute path="/operator/contests" exact component={ContestsPage} roles={["Operator"]} />
           <ProtectedRoute path="/operator/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />
           <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgenPoints} roles={["Operator"]} />
         </Switch>

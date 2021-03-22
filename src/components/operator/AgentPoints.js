@@ -5,13 +5,19 @@ import adapter from '../../utils/adapter'
 import { useHistory } from 'react-router-dom'
 import { authenticationService } from '../../services/authenticationService';
 import { Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 export default function AgentPoints(){
     const history = useHistory()
     const [userType, setUserType] = useState('');
     const [agentDetails, setAgentDetails] = useState({})
     const [points, setPoints] = useState([]);
-    const [search, setSearch] = useState('')
+    const [points2, setPoints2] = useState([]);
+    const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
 
     useEffect(()=>{
         async function fetchData(){
@@ -22,6 +28,7 @@ export default function AgentPoints(){
             {   
                 const jsonResponse = await response.json();
                 setPoints(jsonResponse.data.agentsPoints)
+                setPoints2(jsonResponse.data.agentsPoints)
             }
             const userType = await authenticationService.getCurrentUser()
             setUserType(userType.role)
@@ -30,6 +37,15 @@ export default function AgentPoints(){
         setAgentDetails(JSON.parse(sessionStorage.getItem('operator-agent-points')))
 
     },[])
+
+    const handleDateChange = (e) =>{
+        setDate(e.target.value)
+        const date = e.target.value
+        console.log(date)
+        const filter = points2.filter(point => date.toString() !=="" ? 
+            point.gameDate.toString().includes(date.toString()) : point)
+        setPoints(filter)
+    }
 
     return(
         <div>
@@ -41,12 +57,21 @@ export default function AgentPoints(){
                 </div>
                 <Grid container className="container-style">
                     <Grid item xs={12} md={6}>
-                        <TextField value={search} fullWidth id="outlined-basic" label="Search Agent" variant="outlined" />
+                        <TextField
+                                id="date"
+                                type="date"
+                                label="Search contest"
+                                defaultValue={date}
+                                onChange={handleDateChange}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
                     </Grid>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <Table stickyHeader className="table-style">
-                        <TableHead stickyHeader>
+                    <Table stickyHeader  className="table-style">
+                        <TableHead>
                         <TableRow>
                             <TableCell>Contest</TableCell>
                             <TableCell align="left">Collection</TableCell>

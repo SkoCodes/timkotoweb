@@ -35,7 +35,7 @@ export default function OperatorAgents(){
     const handleChangeSearch = (e) =>{
         setSearch(e.target.value)
         const filter = agents2.filter(agent => e.target.value !=="" ?
-            agent.userName.toLowerCase().includes(e.target.value) || agent.email.toLowerCase().includes(e.target.value.toLowerCase())
+            agent.userName.toLowerCase().includes(e.target.value.toLowerCase()) || agent.email.toLowerCase().includes(e.target.value.toLowerCase())
             : agent )
         setAgents(filter)
     }

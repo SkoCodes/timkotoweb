@@ -26,3 +26,7 @@
   margin-top: 20px;
   padding: 10px;
 }
+
+.summary-container p {
+  margin: 0;
+}

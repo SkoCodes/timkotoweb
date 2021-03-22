@@ -70,8 +70,6 @@ export default function Navbar(props){
         history.push('/agent/contest/players')
     }
 
-    const type = props.type
-
     return(
         <div>
             <ElevationScroll {...props}>
@@ -87,9 +85,9 @@ export default function Navbar(props){
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
+                            <MenuItem onClick={()=> history.push('/operator/contests')}>Contests</MenuItem>
                             <MenuItem onClick={handleAgentPlayerPoints}>Contest Players</MenuItem>
                             <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
-                                                        
                         </Menu>
                         <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>
                 </Toolbar>

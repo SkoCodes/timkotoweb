@@ -1,0 +1,9 @@
+.join-contest-btn {
+  margin-top: 30px;
+}
+
+.player-contest-list {
+  border: 1px solid grey;
+  border-radius: 5px;
+  overflow: auto;
+}

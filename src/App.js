@@ -30,9 +30,7 @@ class App extends React.Component {
           <ProtectedRoute path="/agent/players" exact component={AgentPlayers} roles={["Agent"]} />
           <ProtectedRoute path="/agent/player-points/:id" exact component={AgentPlayerPoints} roles={["Agent"]} />
           <ProtectedRoute path="/agent/contest/players" exact component={AgentContestPlayers} roles={["Agent"]}/>
-
-          <ProtectedRoute path="/player" exact component={Player} roles={["Player"]} />
-          
+          <ProtectedRoute path="/player" exact component={Player} roles={["Player"]}/>
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
           <ProtectedRoute path="/operator/contests" exact component={ContestsPage} roles={["Operator"]} />
           <ProtectedRoute path="/operator/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />

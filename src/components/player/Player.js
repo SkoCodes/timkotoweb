@@ -17,6 +17,7 @@ export default function PlayerHomePage(){
     const [games, setGames] = useState([]);
     const [contest, setContest] = useState({});
     const [userType, setUserType] = useState('');
+    const [balance, setBalance] = useState('');
 
     useEffect(()=>{
         fetchHomePageData()
@@ -32,6 +33,7 @@ export default function PlayerHomePage(){
             setPrizepool(jsonResponse.data.prizePool)
             setGames(jsonResponse.data.teams)
             setContest(jsonResponse.data.contest)
+            setBalance(jsonResponse.data.balance)
             const contest = {
                 contestState: jsonResponse.data.contest.contestState,
                 createDateTime: jsonResponse.data.contest.createDateTime,
@@ -43,7 +45,7 @@ export default function PlayerHomePage(){
 
     return(
         <div>
-            <Navbar type={"Player"} title={""} />
+            <Navbar type={"Player"} title={"Points: " + balance} />
             <Container maxWidth="md">
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={5}>
@@ -52,8 +54,8 @@ export default function PlayerHomePage(){
                                     prizepool.length > 0 ?
                                     prizepool.map((prize, index) => (
                                         <ListItem button key={index}>
-                                            <ListItemText primary={"Top: "+ prize.fromRank} />
-                                            <ListItemText primary={prize.prize} />
+                                            <ListItemText primary={"Top: "+ prize.displayRank} />
+                                            <ListItemText primary={prize.prize} align="right"/>
                                         </ListItem>
                                     ))
                                     :
@@ -71,7 +73,7 @@ export default function PlayerHomePage(){
                         </Grid>
                     </Grid>
                     <Grid item xs={12} md={12} style={{textAlign: 'center', padding: '20px', fontWeight: 'bold'}}>
-                                Upcoming NBA Games 5/2/2021
+                                Upcoming NBA Games on {contest.gameDate}
                     </Grid>
                     <Grid item xs={12} md={8}>
                         <List> 

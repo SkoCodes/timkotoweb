@@ -125,9 +125,7 @@ export default function AgentContestPlayers() {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="left" className={classes.tableCell}>Name</TableCell>
-                                        <TableCell align="left" className={classes.tableCell}>Team</TableCell>
-                                        <TableCell align="left" className={classes.tableCell}>Rank</TableCell>
-                                        <TableCell align="left" className={classes.tableCell}>Score</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>Rank -  Score</TableCell>
                                         <TableCell align="left" className={classes.tableCell}>Prize</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -137,9 +135,7 @@ export default function AgentContestPlayers() {
                                             currentContestPlayers.map((player, index) => (
                                                 <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)}>
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
-                                                    <TableCell align="left" className={classes.tableCell}>{player.teamName}</TableCell>
-                                                    <TableCell align="left" className={classes.tableCell}>{player.teamRank}</TableCell>
-                                                    <TableCell align="left" className={classes.tableCell}>{player.score}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.teamRank} - {player.score}</TableCell>
                                                     <TableCell align="left" className={classes.tableCell}>{player.prize}</TableCell>
                                                 </TableRow>
                                             ))

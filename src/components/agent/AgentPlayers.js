@@ -85,8 +85,8 @@ export default function AgentPlayers() {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell className={classes.tableCell}>Name</TableCell>
-                                        <TableCell align="left" className={classes.tableCell}>Email</TableCell>
-                                        <TableCell align="left" className={classes.tableCell}> Ph. No</TableCell>
+                                        <TableCell align="right" className={classes.tableCell}>Points</TableCell>
+                                        
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -95,8 +95,7 @@ export default function AgentPlayers() {
                                             players.map((player, index) => (
                                                 <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)} >
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
-                                                    <TableCell align="left" className={classes.tableCell}>{player.email}</TableCell>
-                                                    <TableCell align="left" className={classes.tableCell}>{player.phoneNumber}</TableCell>
+                                                    <TableCell align="right" className={classes.tableCell}>{player.points}</TableCell>
                                                 </TableRow>
                                             ))
                                             :

@@ -9,34 +9,35 @@ import settings from '../../settings';
 import adapter from '../../utils/adapter'
 import Divider from '@material-ui/core/Divider';
 import { authenticationService } from '../../services/authenticationService';
+import { useHistory } from 'react-router-dom';
 
 export default function PlayerHomePage(){
+    const history = useHistory()
     const [prizepool, setPrizepool] = useState([]);
     const [games, setGames] = useState([]);
+    const [contest, setContest] = useState({});
     const [userType, setUserType] = useState('');
 
     useEffect(()=>{
-        fetchPrizepool()
-        fetchTeams();
+        fetchHomePageData()
     },[])
 
-    async function fetchPrizepool(){
-        const url = `${settings.apiRoot}/api/v1/Contest/PrizePool`;
-        const response = await adapter.Get(url);
+    async function fetchHomePageData(){
+        const user = await authenticationService.getCurrentUser()
+        const url = `${settings.apiRoot}/api/v1/Player/GetHomePageData/${user.operatorId}/${user.id}`;
+        const response = await adapter.Get(url)
         if (response.ok)
-        {   
-            const jsonResponse = await response.json();
+        {
+            const jsonResponse = await response.json()
             setPrizepool(jsonResponse.data.prizePool)
-        }
-    }
-
-    async function fetchTeams(){
-        const url = `${settings.apiRoot}/api/v1/Contest/Teams/2021-03-14`;
-        const response = await adapter.Get(url);
-        if (response.ok)
-        {   
-            const jsonResponse = await response.json();
             setGames(jsonResponse.data.teams)
+            setContest(jsonResponse.data.contest)
+            const contest = {
+                contestState: jsonResponse.data.contest.contestState,
+                createDateTime: jsonResponse.data.contest.createDateTime,
+            }
+            sessionStorage.setItem("contest", JSON.stringify(contest))
+            console.log(jsonResponse)
         }
     }
 
@@ -65,7 +66,7 @@ export default function PlayerHomePage(){
                     <Grid item xs={12} md={12} style={{display: 'flex', justifyContent: 'center'}}>
                         <Grid container justify="center">
                             <Grid item xs={12} md={5}>
-                                <Button fullWidth variant="outlined" style={{marginTop: '30px'}}>Join Contest</Button>
+                                <Button onClick={()=> history.push('/player/create-team')} fullWidth variant="outlined" style={{marginTop: '30px'}}>Join Contest</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -78,7 +79,7 @@ export default function PlayerHomePage(){
                             {
                                 games.map((game, index)=>(
                                     <>
-                                    <ListItem>
+                                    <ListItem key={index}>
                                         <Grid container style={{padding: '0 10px'}}>
                                             <Grid item xs={5} md={5} style={{textAlign: 'left', display: 'flex', justifyContent: 'space-between'}}>
                                                 <div>

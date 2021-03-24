@@ -6,7 +6,6 @@ import { authenticationService } from '../../services/authenticationService';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Paper, TextField, Table, TableBody, TableHead, TableCell, TableRow } from '@material-ui/core';
 
-
 export default function Contest(){
     const [userType, setUserType] = useState('');
     const [contests, setContests] = useState([]);

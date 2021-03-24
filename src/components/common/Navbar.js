@@ -69,10 +69,6 @@ export default function Navbar(props){
         history.push('/')
     }
 
-    const handleAgentPlayerPoints = () =>{
-        history.push('/agent/contest/players')
-    }
-
     const userType = props.userType
 
     return(
@@ -90,7 +86,8 @@ export default function Navbar(props){
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleAgentPlayerPoints} style ={notAgentMenu(userType)} >Contest Players</MenuItem>
+                            <MenuItem onClick={() => history.push('/operator/contests')} style ={notOperatorMenu(userType)}>Contests</MenuItem>
+                            <MenuItem onClick={() => history.push('/agent/contest/players')} style ={notAgentMenu(userType)} >Contest Players</MenuItem>
                             <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
                         </Menu>
                         <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>

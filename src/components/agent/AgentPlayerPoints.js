@@ -65,7 +65,8 @@ export default function AgentPlayerPoints() {
                 userId: currentPlayer.id,
                 userType: "Player",
                 transactionType: "WalletDebit",
-                amount: confirmPointsToAdd
+                amount: confirmPointsToAdd,
+                agentId: currentPlayer.agentId
             }
 
             setSubmittingPointsToAdd(true);
@@ -135,7 +136,8 @@ export default function AgentPlayerPoints() {
                 userId: currentPlayer.id,
                 userType: "Player",
                 transactionType: "WalletCredit",
-                amount: confirmPointsToClaim
+                amount: confirmPointsToClaim,
+                agentId: currentPlayer.agentId
             }
 
             setSubmittingPointsToClaim(true);

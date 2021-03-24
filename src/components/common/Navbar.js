@@ -39,26 +39,29 @@ export default function Navbar(props){
         setAnchorEl(null);
     };
 
-    const handleRedirect = () =>{
+    const handleRedirect = () => {
         handleClose()
     }
 
-    const checkUserType = (type) =>{
-        if(type = "Operator"){
-            return(
-                <>
-                    <MenuItem onClick={handleRedirect()}>Contest Points</MenuItem>
-                    <MenuItem onClick={handleRedirect()}>Agent List</MenuItem>
-                </>
-            )
-        }
-        if(type = "Agent"){
-            return(
-                <>
-                    <MenuItem onClick={handleAgentPlayerPoints()}>Contest Players</MenuItem>
-                </>
-            )
-        }
+    const notAgentMenu = (uType) => {
+        if(uType != 'Agent')
+            return {display:'none'};
+        else
+            return {display:'inline'};
+    }
+
+    const notPlayerMenu = (uType) => {
+        if(uType != 'Player')
+            return {display:'none'};
+        else
+            return {display:'inline'};
+    }
+
+    const notOperatorMenu = (uType) => {
+        if(uType != 'Operator')
+            return {display:'none'};
+        else
+            return {display:'inline'};
     }
 
     const handleLogout = () =>{
@@ -69,6 +72,8 @@ export default function Navbar(props){
     const handleAgentPlayerPoints = () =>{
         history.push('/agent/contest/players')
     }
+
+    const userType = props.userType
 
     return(
         <div>
@@ -85,8 +90,7 @@ export default function Navbar(props){
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={()=> history.push('/operator/contests')}>Contests</MenuItem>
-                            <MenuItem onClick={handleAgentPlayerPoints}>Contest Players</MenuItem>
+                            <MenuItem onClick={handleAgentPlayerPoints} style ={notAgentMenu(userType)} >Contest Players</MenuItem>
                             <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
                         </Menu>
                         <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>

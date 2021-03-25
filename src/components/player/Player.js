@@ -34,11 +34,9 @@ export default function PlayerHomePage(){
             setGames(jsonResponse.data.teams)
             setContest(jsonResponse.data.contest)
             setBalance(jsonResponse.data.balance)
-            const contest = {
-                contestState: jsonResponse.data.contest.contestState,
-                createDateTime: jsonResponse.data.contest.createDateTime,
-            }
-            sessionStorage.setItem("contest", JSON.stringify(contest))
+            console.log(jsonResponse.data.contest)
+            const contest = JSON.stringify(jsonResponse.data.contest)
+            sessionStorage.setItem("contest", contest)
             console.log(jsonResponse)
         }
     }

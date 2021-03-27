@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { authenticationService } from "../../services/authenticationService";
 import settings from "../../settings";
 import adapter from "../../utils/adapter";
+import useInterval from "../../utils/useInterval";
 import LoadingTable from "../common/LoadingTable";
 import Navbar from "../common/Navbar";
 
@@ -22,39 +23,50 @@ const useStyles = makeStyles({
 })
 
 export default function PlayerContest() {
+    const oneMinuteInterval = 60000;
     const classes = useStyles();
     const currentUser = authenticationService.getCurrentUser();
     const [playerTeamsInContest, setPlayerTeamsInContest] = useState({});
     const [fetchingPlayerTeamsInContest, setFetchingPlayerTeamsInContest] = useState(false);
     const [teamRanks, setTeamRanks] = useState({});
-    const [fetchingTeamRanks, setFetchingTeamRanks] = useState({});
+    const [fetchingTeamRanks, setFetchingTeamRanks] = useState(false);
+    const contest = JSON.parse(sessionStorage.getItem("contest"));
+
+    useInterval(() => {
+        if (contest !== null && contest.contestState == "Ongoing") {
+            fetchPlayerTeamsInContest();
+            fetchTeamRanks();
+        }
+    }, oneMinuteInterval);
+
 
     useEffect(() => {
-        fetchPlayerTeamsInContest();
-        fetchTeamRanks();
+        if (contest !== null && contest.contestState == "Ongoing") {
+            fetchPlayerTeamsInContest();
+            fetchTeamRanks();
+        }
     }, []);
 
     async function fetchPlayerTeamsInContest() {
         setFetchingPlayerTeamsInContest(true);
-        const contestId = 1; //todo : replace with true contest id
-        const url = `${settings.apiRoot}/api/v1/player/teamsincontest/${currentUser.id}/${contestId}`;
+        const url = `${settings.apiRoot}/api/v1/player/teamsincontest/${currentUser.id}/${contest.id}`;
         const response = await adapter.Get(url);
 
         if (response.ok) {
-            const jsonResponse = await response.json();            
+            const jsonResponse = await response.json();
             setPlayerTeamsInContest(jsonResponse.data.playerTeams);
         }
 
         setFetchingPlayerTeamsInContest(false);
     }
 
-    async function fetchTeamRanks(){
+    async function fetchTeamRanks() {
         setFetchingTeamRanks(true);
         const url = `${settings.apiRoot}/api/v1/contest/teamranks/${currentUser.operatorId}`;
         const response = await adapter.Get(url);
-        
-        if (response.ok){
-            const jsonResponse = await response.json();            
+
+        if (response.ok) {
+            const jsonResponse = await response.json();
             setTeamRanks(jsonResponse.data.teamRankPrizes);
         }
         setFetchingTeamRanks(false);
@@ -64,7 +76,7 @@ export default function PlayerContest() {
 
     }
 
-    const handleTeamRankTeamClick =() =>{
+    const handleTeamRankTeamClick = () => {
 
     }
 
@@ -84,9 +96,9 @@ export default function PlayerContest() {
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="left" className={classes.tableCell}>Rank</TableCell>
+                                            <TableCell align="center" className={classes.tableCell}>Rank</TableCell>
                                             <TableCell align="left" className={classes.tableCell}>Team</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>Score</TableCell>
+                                            <TableCell align="right" className={classes.tableCell}>Score</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -94,9 +106,9 @@ export default function PlayerContest() {
                                             playerTeamsInContest.length > 0 ?
                                                 playerTeamsInContest.map((team, index) => (
                                                     <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamClick(team)}>
-                                                        <TableCell align="left" className={classes.tableCell}>{team.teamRank}</TableCell>
+                                                        <TableCell align="center" className={classes.tableCell}>{team.teamRank}</TableCell>
                                                         <TableCell align="left" className={classes.tableCell}>{team.teamName}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{team.score}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{team.score}</TableCell>
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>
@@ -119,9 +131,9 @@ export default function PlayerContest() {
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="left" className={classes.tableCell}>Rank</TableCell>
+                                            <TableCell align="center" className={classes.tableCell}>Rank</TableCell>
                                             <TableCell align="left" className={classes.tableCell}>Team</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>Score</TableCell>
+                                            <TableCell align="right" className={classes.tableCell}>Score</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -129,9 +141,9 @@ export default function PlayerContest() {
                                             teamRanks.length > 0 ?
                                                 teamRanks.map((team, index) => (
                                                     <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamRankTeamClick(team)}>
-                                                        <TableCell align="left" className={classes.tableCell}>{team.teamRank}</TableCell>
+                                                        <TableCell align="center" className={classes.tableCell}>{team.teamRank}</TableCell>
                                                         <TableCell align="left" className={classes.tableCell}>{team.teamName}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{team.score}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{team.score}</TableCell>
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>

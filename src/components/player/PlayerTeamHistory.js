@@ -48,13 +48,14 @@ export default function PlayerTeamHistory() {
         setFetchingPlayerTeamHistory(false);
     }
 
-    const handleTeamNameClick = () => {
-
+    const handleTeamHistoryClick = (teamHistory) => {        
+        sessionStorage.setItem("teamHistory", JSON.stringify(teamHistory));
+        history.push('/player/team/stats')
     }
 
     return (
         <div className={classes.container}>
-            <Navbar userType={currentUser.role} title="MyTeams" />
+            <Navbar userType={currentUser.role} title="My Teams" />
             <Container maxWidth="xs">
                 <Grid container>
                     <Grid item xs={12} md={12}>
@@ -77,12 +78,12 @@ export default function PlayerTeamHistory() {
                                     <TableBody>
                                         {
                                             playerTeamHistory.length > 0 ?
-                                                playerTeamHistory.map((history, index) => (
-                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamNameClick(history)}>
-                                                        <TableCell align="left" className={classes.tableCell}>{history.gameDate}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{history.teamName}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{history.teamRank}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{history.score}</TableCell>
+                                                playerTeamHistory.map((teamHistory, index) => (
+                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamHistoryClick(teamHistory)}>
+                                                        <TableCell align="left" className={classes.tableCell}>{teamHistory.gameDate}</TableCell>
+                                                        <TableCell align="left" className={classes.tableCell}>{teamHistory.teamName}</TableCell>
+                                                        <TableCell align="left" className={classes.tableCell}>{teamHistory.teamRank}</TableCell>
+                                                        <TableCell align="left" className={classes.tableCell}>{teamHistory.score}</TableCell>
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>

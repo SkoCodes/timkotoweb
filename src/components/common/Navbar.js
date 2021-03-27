@@ -54,7 +54,7 @@ export default function Navbar(props){
         if(uType != 'Player')
             return {display:'none'};
         else
-            return {display:'inline'};
+            return {display:'block'};
     }
 
     const notOperatorMenu = (uType) => {
@@ -88,6 +88,10 @@ export default function Navbar(props){
                         >
                             <MenuItem onClick={() => history.push('/operator/contests')} style ={notOperatorMenu(userType)}>Contests</MenuItem>
                             <MenuItem onClick={() => history.push('/agent/contest/players')} style ={notAgentMenu(userType)} >Contest Players</MenuItem>
+                            <MenuItem onClick={() => history.push('/player')} style ={notPlayerMenu(userType)} >Home</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/contest')} style ={notPlayerMenu(userType)} >Live Scores</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/team/history')} style ={notPlayerMenu(userType)} >My Teams</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/contest/result')} style ={notPlayerMenu(userType)} >Contest Results</MenuItem>
                             <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
                         </Menu>
                         <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>

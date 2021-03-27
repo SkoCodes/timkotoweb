@@ -37,13 +37,13 @@ export default function PlayerHomePage(){
             console.log(jsonResponse.data.contest)
             const contest = JSON.stringify(jsonResponse.data.contest)
             sessionStorage.setItem("contest", contest)
-            console.log(jsonResponse)
+            console.log(jsonResponse)            
         }
     }
 
     return(
         <div>
-            <Navbar type={"Player"} title={"Points: " + balance} />
+            <Navbar userType="Player" title={"Points: " + balance} />
             <Container maxWidth="md">
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={5}>

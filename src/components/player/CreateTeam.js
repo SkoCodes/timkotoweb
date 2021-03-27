@@ -7,6 +7,7 @@ import adapter from '../../utils/adapter'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PlayerTable from './PlayerTable';
+import BackdropLoading from '../common/BackdropLoading';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -37,12 +38,15 @@ function TabPanel(props) {
 export default function CreateTeam(){
     const [value, setValue] = useState(0);
     const [players, setPlayers] = useState([])
+    const [salaryCap, setSalaryCap] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
 
     useEffect(()=>{
+        setLoading(true)
         fetchPlayer()
 
     },[])
@@ -50,6 +54,8 @@ export default function CreateTeam(){
     async function fetchPlayer(){
         const contest = JSON.parse(sessionStorage.getItem("contest"))
         const id = contest.id
+        const salarycap = contest.salaryCap
+        setSalaryCap(salarycap);
         const user = await authenticationService.getCurrentUser()
         const url = `${settings.apiRoot}/api/v1/Contest/Players/${id}`;
         const response = await adapter.Get(url)
@@ -57,11 +63,18 @@ export default function CreateTeam(){
             const jsonResponse = await response.json()
             setPlayers(jsonResponse.data)
             console.log(jsonResponse.data)
+            setLoading(false)
         }
     }
 
+    const handleReduceSalaryCap = (data) =>{
+
+    }
+
+
     return(
         <div>
+            <BackdropLoading open={loading}/>
             <Navbar type={"Player"} title={"Create Team"}/>
             <Container maxWidth="md">
                 <Grid container style={{marginTop: '30px'}}>
@@ -72,6 +85,13 @@ export default function CreateTeam(){
                             </Grid>
                             <Grid item xs={9} md={6}>
                                 <TextField fullWidth type="text" label="" variant="outlined" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <Grid container justify="center">
+                            <Grid item xs={12} md={8} style={{padding: '10px'}}>
+                                Salary Cap: {" "+salaryCap}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -88,10 +108,32 @@ export default function CreateTeam(){
                            {
                                players.map((player,index)=>(
                                 <TabPanel value={value} index={index} key={index}>
-                                    <PlayerTable data={player.players}/>
+                                    <PlayerTable data={player.players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
                                 </TabPanel>
                                ))
                            }
+                           {/* {
+                               players.length > 0 ?
+                               ""
+                               :
+                               <>
+                                    <TabPanel value={value} index={0}>
+                                        <PlayerTable data={players[0].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
+                                    </TabPanel>
+                                    <TabPanel value={value} index={1}>
+                                        <PlayerTable data={players[1].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
+                                    </TabPanel>
+                                    <TabPanel value={value} index={2}>
+                                        <PlayerTable data={players[2].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
+                                    </TabPanel>
+                                    <TabPanel value={value} index={3}>
+                                        <PlayerTable data={players[3].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
+                                    </TabPanel>
+                                    <TabPanel value={value} index={4}>
+                                        <PlayerTable data={players[4].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
+                                    </TabPanel>
+                                </>
+                           } */}
                     </Grid>
                     <Grid item xs={12} md={12} style={{marginTop: '20px'}}>
                         <Grid container spacing={3}>

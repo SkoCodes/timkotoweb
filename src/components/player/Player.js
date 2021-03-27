@@ -10,6 +10,7 @@ import adapter from '../../utils/adapter'
 import Divider from '@material-ui/core/Divider';
 import { authenticationService } from '../../services/authenticationService';
 import { useHistory } from 'react-router-dom';
+import BackdropLoading from '../common/BackdropLoading';
 
 export default function PlayerHomePage(){
     const history = useHistory()
@@ -18,8 +19,10 @@ export default function PlayerHomePage(){
     const [contest, setContest] = useState({});
     const [userType, setUserType] = useState('');
     const [balance, setBalance] = useState('');
+    const [loading, setLoading] = useState(false)
 
     useEffect(()=>{
+        setLoading(true)
         fetchHomePageData()
     },[])
 
@@ -34,6 +37,7 @@ export default function PlayerHomePage(){
             setGames(jsonResponse.data.teams)
             setContest(jsonResponse.data.contest)
             setBalance(jsonResponse.data.balance)
+            setLoading(false)
             console.log(jsonResponse.data.contest)
             const contest = JSON.stringify(jsonResponse.data.contest)
             sessionStorage.setItem("contest", contest)
@@ -43,7 +47,8 @@ export default function PlayerHomePage(){
 
     return(
         <div>
-            <Navbar userType="Player" title={"Points: " + balance} />
+            <BackdropLoading open={loading} />
+            <Navbar type={"Player"} title={"Points: " + balance} />
             <Container maxWidth="md">
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={5}>

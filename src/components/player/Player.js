@@ -102,7 +102,7 @@ export default function PlayerHomePage(){
                                                     <img src={game.visitorTeamLogo} alt="" style={{height: 50, width: 'auto'}}/>
                                                 </div>
                                                 <div>
-                                                    {game.visitorTeamName}
+                                                    {game.visitorTeamNickName}
                                                 </div>
                                             </Grid>
                                         </Grid>

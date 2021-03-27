@@ -75,7 +75,7 @@ export default function CreateTeam(){
     return(
         <div>
             <BackdropLoading open={loading}/>
-            <Navbar type={"Player"} title={"Create Team"}/>
+            <Navbar userType={"Player"} title={"Create Team"}/>
             <Container maxWidth="md">
                 <Grid container style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={12}>

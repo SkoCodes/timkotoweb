@@ -48,7 +48,7 @@ export default function PlayerHomePage(){
     return(
         <div>
             <BackdropLoading open={loading} />
-            <Navbar type={"Player"} title={"Points: " + balance} />
+            <Navbar userType={"Player"} title={"Points: " + balance} />
             <Container maxWidth="md">
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={5}>

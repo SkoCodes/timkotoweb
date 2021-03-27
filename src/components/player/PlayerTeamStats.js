@@ -39,7 +39,7 @@ export default function PlayerTeamStats() {
         console.log(teamHistory);
         const url = `${settings.apiRoot}/api/v1/player/teamplayerstats/${teamHistory.id}`;
         const response = await adapter.Get(url);
-
+        
         if (response.ok) {
             const jsonResponse = await response.json();
             setTeamStats(jsonResponse.data.playerStats);

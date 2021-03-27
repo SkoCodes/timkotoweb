@@ -146,7 +146,7 @@ class Login extends React.Component {
                             type="submit"
                             disabled={submitting}
                             startIcon={submitting && <FaSpinner className="spinner" />}>
-                            Submit{submitting && 'ing'}
+                            Submit{submitting && 'ting'}
                         </Button>
                     </form>
                 </Container>

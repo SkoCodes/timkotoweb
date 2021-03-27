@@ -15,6 +15,8 @@ import RegistrationLink from './components/operator/RegistrationLink'
 import AgentContestPlayers from './components/agent/AgentContestPlayers';
 import ContestsPage from './components/operator/Contests';
 import CreateTeam from './components/player/CreateTeam';
+import PlayerContest from './components/player/PlayerContest';
+import PlayerTeamHistory from './components/player/PlayerTeamHistory';
 
 class App extends React.Component {
   render() {
@@ -33,6 +35,8 @@ class App extends React.Component {
           <ProtectedRoute path="/agent/contest/players" exact component={AgentContestPlayers} roles={["Agent"]}/>
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]}/>
           <ProtectedRoute path="/player/create-team" exact component={CreateTeam} roles={["Player"]} />
+          <ProtectedRoute path="/player/contest" exact component={PlayerContest} roles={["Player"]}/>
+          <ProtectedRoute path="/player/teamhistory" exact component={PlayerTeamHistory} roles={["Player"]}/>
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
           <ProtectedRoute path="/operator/contests" exact component={ContestsPage} roles={["Operator"]} />
           <ProtectedRoute path="/operator/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />

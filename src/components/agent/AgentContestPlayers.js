@@ -87,7 +87,7 @@ export default function AgentContestPlayers() {
             <Navbar userType={currentUser.role} title="Contest Players" />
             <Container maxWidth="xs">
                 <Grid container className="container-style">
-                    <Grid item xs={16} md={12}>
+                    <Grid item xs={12} md={12}>
                         <form>
                             Your Players in Contest :
                         <TextField

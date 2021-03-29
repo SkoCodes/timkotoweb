@@ -12,6 +12,8 @@ import { authenticationService } from '../../services/authenticationService';
 import { useHistory } from 'react-router-dom';
 import BackdropLoading from '../common/BackdropLoading';
 
+
+
 export default function PlayerHomePage(){
     const history = useHistory()
     const [prizepool, setPrizepool] = useState([]);
@@ -91,7 +93,7 @@ export default function PlayerHomePage(){
                                                     {game.homeTeamNickName}
                                                 </div>
                                                 <div>
-                                                    <img src={game.homeTeamLogo} alt="" style={{height: 50, width: 'auto'}}/>
+                                                    <img src={"../assets/" + game.homeTeamLogo} alt="" style={{height: 50, width: 'auto'}}/>
                                                 </div>
                                             </Grid>
                                             <Grid item xs={2} md={2} style={{textAlign: 'center', fontWeight: 'bold', display: 'flex', justifyContent: 'center'}}>
@@ -99,7 +101,7 @@ export default function PlayerHomePage(){
                                             </Grid>
                                             <Grid item xs={5} md={5} style={{textAlign: 'right',display: 'flex', justifyContent: 'space-between'}}>
                                                 <div>
-                                                    <img src={game.visitorTeamLogo} alt="" style={{height: 50, width: 'auto'}}/>
+                                                    <img src={"../assets/" + game.visitorTeamLogo} alt="" style={{height: 50, width: 'auto'}}/>
                                                 </div>
                                                 <div>
                                                     {game.visitorTeamNickName}

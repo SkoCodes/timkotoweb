@@ -71,7 +71,7 @@ export default function PlayerHomePage(){
                     <Grid item xs={12} md={12} style={{display: 'flex', justifyContent: 'center'}}>
                         <Grid container justify="center">
                             <Grid item xs={12} md={5}>
-                                <Button onClick={()=> history.push('/player/create-team')} fullWidth variant="outlined" style={{marginTop: '30px'}}>Join Contest</Button>
+                                <Button disabled={contest.contestState === "Ongoing" ? true : false} onClick={()=> history.push('/player/create-team')} fullWidth variant="outlined" style={{marginTop: '30px'}}>Join Contest</Button>
                             </Grid>
                         </Grid>
                     </Grid>

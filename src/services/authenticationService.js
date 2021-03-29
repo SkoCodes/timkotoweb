@@ -27,7 +27,8 @@ async function loginUser(email, password) {
             role : result.data.user.userType,
             id: result.data.user.id,
             operatorId: result.data.user.operatorId,
-            token: result.data.idToken,            
+            token: result.data.idToken, 
+            agentId: result.data.user.agentId           
         };
 
         sessionStorage.setItem("user", JSON.stringify(user));

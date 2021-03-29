@@ -54,13 +54,18 @@ export default function PlayerHomePage(){
             <Container maxWidth="md">
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={5}>
-                        <List className="player-contest-list" style={{maxHeight: 300}} component="nav" aria-label="main mailbox folders">
+                        <List className="player-contest-list" style={{maxHeight: 250}} component="nav" aria-label="main mailbox folders">
                                 {
                                     prizepool.length > 0 ?
                                     prizepool.map((prize, index) => (
-                                        <ListItem button key={index}>
-                                            <ListItemText primary={"Top: "+ prize.displayRank} />
-                                            <ListItemText primary={prize.prize} align="right"/>
+                                        <ListItem button key={index} style={{maxHeight: 30}}>
+                                            <ListItemText style={{width: '50%'}}>
+                                                <p align="right" style={{marginRight: "20px"}} >{"Top "+ prize.displayRank}</p>
+                                            </ListItemText>
+                                            
+                                            <ListItemText style={{width: '50%'}}>
+                                                <p align="right"  style={{marginLeft: "20px", marginRight: "70px"}}>{prize.displayPrize}</p>
+                                            </ListItemText>
                                         </ListItem>
                                     ))
                                     :
@@ -73,7 +78,13 @@ export default function PlayerHomePage(){
                     <Grid item xs={12} md={12} style={{display: 'flex', justifyContent: 'center'}}>
                         <Grid container justify="center">
                             <Grid item xs={12} md={5}>
-                                <Button onClick={()=> history.push('/player/create-team')} fullWidth variant="outlined" style={{marginTop: '30px'}}>Join Contest</Button>
+                                <Button 
+                                 fullWidth
+                                 variant="contained"
+                                 color="primary"
+                                 style={{ margin: '10px 0px' }}
+                                 onClick={()=> history.push('/player/create-team')}
+                                 style={{marginTop: '30px'}}>Join Contest</Button>
                             </Grid>
                         </Grid>
                     </Grid>

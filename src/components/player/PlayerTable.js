@@ -33,6 +33,10 @@ export default function PlayerTable(props){
             props.updateMaximum(2)
         }
     }
+    
+    const formatNumber = (num) => {
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
 
     return(
         <div>
@@ -50,7 +54,7 @@ export default function PlayerTable(props){
                         <TableRow key={index} onClick={()=>props.onSelectPlayer(player.position, player.playerId, player.selected, player.salary)} style={{backgroundColor: `${player.selected ? '#dfe6e9':'white'}`}}>
                             <TableCell align="left" className={classes.tableCell}>{player.team}</TableCell>
                             <TableCell align="left" className={classes.tableCell}>{"#"+player.jersey+" "+player.playerName}</TableCell>
-                            <TableCell align="left" className={classes.tableCell}>{player.salary}</TableCell>
+                            <TableCell align="left" className={classes.tableCell}>{formatNumber(player.salary)}</TableCell>
                         </TableRow>
                         // <PlayerTableRow onClick={()=> console.log('working')} key={index} data={player}/>
                     ))}

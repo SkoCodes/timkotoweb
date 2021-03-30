@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../common/Navbar';
-import { Container, Grid, Button, TextField, Paper, Box, Typography } from '@material-ui/core';
+import { Container, Grid, Button, Paper } from '@material-ui/core';
 import { authenticationService } from '../../services/authenticationService';
 import settings from '../../settings';
 import adapter from '../../utils/adapter'
@@ -61,6 +61,10 @@ export default function CreateTeam(){
       setValue(newValue);
     };
 
+    const formatNumber = (num) => {
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
     useEffect(()=>{
         setLoading(true)
         fetchPlayer()
@@ -117,7 +121,7 @@ export default function CreateTeam(){
         const contest = JSON.parse(sessionStorage.getItem("contest"))
         const id = contest.id
         const user = await authenticationService.getCurrentUser()
-        setTeamName(user.userName)
+        //var teamName = user.userName
 
         //get total selected players
         var selectedCount = 0; 
@@ -125,13 +129,7 @@ export default function CreateTeam(){
             selectedCount += item.players.filter(_ => _.selected).length;
         });
 
-        if(teamName === ""){
-            setSubmitting(false)
-            window.scroll(0,0)
-            setError(true)
-            setErrorMessage("Required")
-        }
-        else if (salaryCap < 0){
+        if (salaryCap < 0){
             setSubmitting(false)
             window.scroll(0,0)
             setError(true)
@@ -153,7 +151,7 @@ export default function CreateTeam(){
                     agentId: user.agentId,
                     userId: user.id,
                     contestId: id,
-                    teamName: teamName
+                    teamName: user.userName
                 },
                 lineUp: players
             }
@@ -183,7 +181,7 @@ export default function CreateTeam(){
                     <Grid item xs={12} md={12}>
                         <Grid container justify="left">
                             <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '10px'}}>
-                            <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'black'}} >{" " + salaryCap}</span></p>
+                            <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'green'}} >{" " + formatNumber(salaryCap)}</span></p>
                                  
                             </Grid>
                         </Grid>
@@ -209,7 +207,7 @@ export default function CreateTeam(){
                     <Grid item xs={12} md={12} style={{marginTop: '20px'}}>
                         <Grid container spacing={3}>
                             <Grid item xs={6} md={6}>
-                                <Button variant="outlined" fullWidth>Back</Button>
+                                <Button variant="outlined" fullWidth onClick={()=>history.push('/player')}>Back</Button>
                             </Grid>
                             <Grid item xs={6} md={6}>
                                 <Button onClick={handleCreate} disabled={submitting} fullWidth 

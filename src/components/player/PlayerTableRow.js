@@ -19,6 +19,10 @@ const useStyles = makeStyles({
     }
   });
 
+const formatNumber = (num) => {
+    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
 export default function PlayerTableRow(props){
     const classes = useStyles();
 
@@ -46,7 +50,7 @@ export default function PlayerTableRow(props){
             <TableRow style={{backgroundColor: `${props.selected ? '#dfe6e9':'white'}`}}>
                 <TableCell align="left" className={classes.tableCell}>{props.data.team}</TableCell>
                 <TableCell align="left" className={classes.tableCell}>{"#"+props.data.jersey+" "+props.data.playerName}</TableCell>
-                <TableCell align="left" className={classes.tableCell}>{props.data.salary}</TableCell>
+                <TableCell align="left" className={classes.tableCell}>{formatNumber(props.data.salary)}</TableCell>
             </TableRow>
         </>
     )

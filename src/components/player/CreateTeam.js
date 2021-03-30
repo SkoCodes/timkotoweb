@@ -8,6 +8,10 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PlayerTable from './PlayerTable';
 import BackdropLoading from '../common/BackdropLoading';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import { FaSpinner } from 'react-icons/fa'
+import { useHistory } from 'react-router';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -36,11 +40,23 @@ function TabPanel(props) {
   }
 
 export default function CreateTeam(){
+    const history = useHistory()
     const [value, setValue] = useState(0);
     const [players, setPlayers] = useState([])
     const [salaryCap, setSalaryCap] = useState(0)
     const [loading, setLoading] = useState(false)
-
+    const [maximum, setMaximum] = useState(0);
+    const [openDialog, setOpenDialog] = useState(false)
+    const [position, setPostion] = useState('')
+    const [teamName, setTeamName] = useState('')
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('');
+    const [openSuccesDialog, setOpenSuccesDialog] = useState(false);
+    const [openSalaryExceededDialog, setOpenSalaryExceededDialog] = useState(false);
+    const [openPlayerCountDialog, setOpenPlayerCountDialog] = useState(false);
+    const [openForbiddenDialog, setOpenForbiddenDialog] = useState(false);
+    const [submitting, setSubmitting] = useState(false)
+    const [forbiddenMessage, setForbiddenMessage] = useState('')
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
@@ -62,78 +78,133 @@ export default function CreateTeam(){
         if(response.ok){
             const jsonResponse = await response.json()
             setPlayers(jsonResponse.data)
-            console.log(jsonResponse.data)
             setLoading(false)
         }
     }
 
-    const handleReduceSalaryCap = (data) =>{
-
+     const onSelectPlayer = (positionName, playerId, selectedPlayer, playerSalary) =>{
+        setPostion(positionName)
+        if(selectedPlayer){
+            setSalaryCap(salaryCap + playerSalary)
+            players[players.findIndex(player => player.position === positionName)].players.filter(_ => _.playerId).selected =false;
+            const playerPosition = players.findIndex(player => player.position === positionName)
+            const newPlayer = players[playerPosition].players
+            const playerIdPosition = newPlayer.findIndex(player => player.playerId === playerId)
+            let newArray = [...players]
+            newArray[playerPosition].players[playerIdPosition] = {...newArray[playerPosition].players[playerIdPosition], selected: !newArray[playerPosition].players[playerIdPosition].selected}
+            setPlayers(newArray)
+        }
+        else{
+            //get selected players count in position
+            var selectedCount  = players[players.findIndex(player => player.position === positionName)].players.filter(_ => _.selected).length
+            if(selectedCount + 1 > maximum){
+                setOpenDialog(true)
+            }
+            else{
+            setSalaryCap(salaryCap - playerSalary)
+            const playerPosition = players.findIndex(player => player.position === positionName)
+            const newPlayer = players[playerPosition].players
+            const playerIdPosition = newPlayer.findIndex(player => player.playerId === playerId)
+            let newArray = [...players]
+            newArray[playerPosition].players[playerIdPosition] = {...newArray[playerPosition].players[playerIdPosition], selected: !newArray[playerPosition].players[playerIdPosition].selected}
+            setPlayers(newArray)
+            }
+        }
     }
 
+    const handleCreate = async () =>{
+        setSubmitting(true)
+        const contest = JSON.parse(sessionStorage.getItem("contest"))
+        const id = contest.id
+        const user = await authenticationService.getCurrentUser()
+        setTeamName(user.userName)
+
+        //get total selected players
+        var selectedCount = 0; 
+        players.map(function(item){
+            selectedCount += item.players.filter(_ => _.selected).length;
+        });
+
+        if(teamName === ""){
+            setSubmitting(false)
+            window.scroll(0,0)
+            setError(true)
+            setErrorMessage("Required")
+        }
+        else if (salaryCap < 0){
+            setSubmitting(false)
+            window.scroll(0,0)
+            setError(true)
+            setOpenSalaryExceededDialog(true)
+        }
+        else if (selectedCount != 9){
+            setSubmitting(false)
+            window.scroll(0,0)
+            setError(true)
+            setOpenPlayerCountDialog(true)
+        }
+        else{
+            setError(false)
+            setErrorMessage("")
+            const content = {
+                lineUpTeam:{
+                    playerTeamId: 0,
+                    operatorId: user.operatorId,
+                    agentId: user.agentId,
+                    userId: user.id,
+                    contestId: id,
+                    teamName: teamName
+                },
+                lineUp: players
+            }
+            const url = `${settings.apiRoot}/api/v1/Contest/Lineup`;
+            const response = await adapter.Post(url,content)
+            if(response.ok){
+                const jsonResponse = await response.json()
+                setOpenSuccesDialog(true)
+                console.log(jsonResponse)
+            }
+            else if (response.status == 403){
+                const jsonResponse = await response.json()
+                console.log(jsonResponse)
+                setForbiddenMessage(jsonResponse.result.description)
+                setOpenForbiddenDialog(true)
+            }
+            setSubmitting(false)
+        }
+    }
 
     return(
         <div>
             <BackdropLoading open={loading}/>
             <Navbar userType={"Player"} title={"Create Team"}/>
             <Container maxWidth="md">
-                <Grid container style={{marginTop: '30px'}}>
+                <Grid container style={{marginTop: '10px'}}>
                     <Grid item xs={12} md={12}>
-                        <Grid container justify="center">
-                            <Grid item xs={3} md={2} style={{padding: '10px'}}>
-                                Team Name:
-                            </Grid>
-                            <Grid item xs={9} md={6}>
-                                <TextField fullWidth type="text" label="" variant="outlined" />
+                        <Grid container justify="left">
+                            <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '10px'}}>
+                            <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'black'}} >{" " + salaryCap}</span></p>
+                                 
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} md={12}>
-                        <Grid container justify="center">
-                            <Grid item xs={12} md={8} style={{padding: '10px'}}>
-                                Salary Cap: {" "+salaryCap}
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12} md={12} style={{marginTop: '20px'}}>
+                    <Grid item xs={12} md={12} style={{marginTop: '1px'}}>
                            <Paper>
                                 <Tabs centered value={value} onChange={handleChange} aria-label="simple tabs example">
-                                    <Tab label="SF" {...a11yProps(0)} />
-                                    <Tab label="SG" {...a11yProps(1)} />
-                                    <Tab label="PF" {...a11yProps(2)} />
-                                    <Tab label="PG" {...a11yProps(3)} />
-                                    <Tab label="C" {...a11yProps(4)} />
+                                    {
+                                        players.map((player,index)=>(
+                                                <Tab key={index} label={player.position} {...a11yProps(index)} />
+                                        ))
+                                    }
                                 </Tabs>
                            </Paper>
                            {
                                players.map((player,index)=>(
                                 <TabPanel value={value} index={index} key={index}>
-                                    <PlayerTable data={player.players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
+                                    <PlayerTable position={player.position} data={player} maximum={maximum} updateMaximum={setMaximum} salarycap={salaryCap} updateSalarycap={setSalaryCap} onSelectPlayer={onSelectPlayer}/>
                                 </TabPanel>
                                ))
                            }
-                           {/* {
-                               players.length > 0 ?
-                               ""
-                               :
-                               <>
-                                    <TabPanel value={value} index={0}>
-                                        <PlayerTable data={players[0].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
-                                    </TabPanel>
-                                    <TabPanel value={value} index={1}>
-                                        <PlayerTable data={players[1].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
-                                    </TabPanel>
-                                    <TabPanel value={value} index={2}>
-                                        <PlayerTable data={players[2].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
-                                    </TabPanel>
-                                    <TabPanel value={value} index={3}>
-                                        <PlayerTable data={players[3].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
-                                    </TabPanel>
-                                    <TabPanel value={value} index={4}>
-                                        <PlayerTable data={players[4].players} salarycap={salaryCap} updateSalarycap={setSalaryCap}/>
-                                    </TabPanel>
-                                </>
-                           } */}
                     </Grid>
                     <Grid item xs={12} md={12} style={{marginTop: '20px'}}>
                         <Grid container spacing={3}>
@@ -141,12 +212,46 @@ export default function CreateTeam(){
                                 <Button variant="outlined" fullWidth>Back</Button>
                             </Grid>
                             <Grid item xs={6} md={6}>
-                                <Button variant="outlined" fullWidth>Create and Join Contest</Button>
+                                <Button onClick={handleCreate} disabled={submitting} fullWidth 
+                                variant="contained"
+                                color="primary"
+                                startIcon={submitting && <FaSpinner className="spinner" />}>Create and Join Contest</Button>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             </Container>
+            <Dialog open={openDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    You can only select up to {maximum} players in {position} position.
+                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenDialog(false)}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={openSuccesDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    Team {teamName} created and joined contest.
+                    <Button disabled={submitting} startIcon={submitting && <FaSpinner className="spinner" />} variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>history.push('/player')}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={openSalaryExceededDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    Total players' salary exeeceded salary cap.
+                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenSalaryExceededDialog(false)}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={openPlayerCountDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    Please select exactly 9 players.
+                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenPlayerCountDialog(false)}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={openForbiddenDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    {forbiddenMessage}
+                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenForbiddenDialog(false)}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            
         </div>
     )
 }

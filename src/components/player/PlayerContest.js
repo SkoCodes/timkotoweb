@@ -82,7 +82,7 @@ export default function PlayerContest() {
 
     return (
         <div className={classes.root} >
-            <Navbar userType={currentUser.role} title="Contests" />
+            <Navbar userType={currentUser.role} title="Live Scores" />
             <Container maxWidth="xs">
                 <Grid container className="container-style">
                     <Grid item xs={12} md={12}>
@@ -112,7 +112,7 @@ export default function PlayerContest() {
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>
-                                                    <TableCell colSpan="5" align="center">No Data</TableCell>
+                                                    <TableCell colSpan="5" align="center">No live scores available.</TableCell>
                                                 </TableRow>
                                         }
                                     </TableBody>

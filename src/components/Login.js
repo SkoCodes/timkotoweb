@@ -149,6 +149,9 @@ class Login extends React.Component {
                             Submit{submitting && 'ting'}
                         </Button>
                     </form>
+                    <div style={{textAlign: 'center', marginTop: '10px'}}>
+                        <Button fullWidth onClick={()=> this.props.history.push('/reset-password')}>Reset password</Button>
+                    </div>
                 </Container>
             </div>
         );

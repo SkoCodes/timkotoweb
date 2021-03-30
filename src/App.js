@@ -1,5 +1,6 @@
 import './App.css';
 import Login from './components/Login';
+import ResetPassword from './components/ResetPassword'
 import Registration from './components/registration/Registration';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import React from 'react';
@@ -28,6 +29,7 @@ class App extends React.Component {
         <Switch>
           <Route path="/" exact component={Login} />
           <Route path="/login" exact component={Login} />
+          <Route path="/reset-password" exact component={ResetPassword} />
           <Route path="/register/:code" exact component={Registration} />
           <Route path="/registersuccess" exact component={RegistrationSuccess} />
 

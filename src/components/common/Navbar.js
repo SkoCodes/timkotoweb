@@ -92,6 +92,7 @@ export default function Navbar(props){
                             <MenuItem onClick={() => history.push('/player/contest')} style ={notPlayerMenu(userType)} >Live Scores</MenuItem>
                             <MenuItem onClick={() => history.push('/player/team/history')} style ={notPlayerMenu(userType)} >My Teams</MenuItem>
                             <MenuItem onClick={() => history.push('/player/contest/result')} style ={notPlayerMenu(userType)} >Contest Results</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/transaction/history')} style ={notPlayerMenu(userType)} >Transaction History</MenuItem>
                             <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
                         </Menu>
                         <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>

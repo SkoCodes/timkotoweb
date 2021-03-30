@@ -45,7 +45,6 @@ export default function CreateTeam(){
     const [players, setPlayers] = useState([])
     const [salaryCap, setSalaryCap] = useState(0)
     const [loading, setLoading] = useState(false)
-    const [selected, setSelected] = useState(0);
     const [maximum, setMaximum] = useState(0);
     const [openDialog, setOpenDialog] = useState(false)
     const [position, setPostion] = useState('')
@@ -53,11 +52,13 @@ export default function CreateTeam(){
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState('');
     const [openSuccesDialog, setOpenSuccesDialog] = useState(false);
+    const [openSalaryExceededDialog, setOpenSalaryExceededDialog] = useState(false);
+    const [openPlayerCountDialog, setOpenPlayerCountDialog] = useState(false);
+    const [openForbiddenDialog, setOpenForbiddenDialog] = useState(false);
     const [submitting, setSubmitting] = useState(false)
-
+    const [forbiddenMessage, setForbiddenMessage] = useState('')
     const handleChange = (event, newValue) => {
       setValue(newValue);
-      setSelected(0)
     };
 
     useEffect(()=>{
@@ -81,38 +82,32 @@ export default function CreateTeam(){
         }
     }
 
-    const handleChangeTeamname = (e) =>{
-        setError(false)
-        setErrorMessage("")
-        setTeamName(e.target.value)
-    }
-
-
-    const onSelectPlayer = (positionName, playerId, selectedPlayer, playerSalary) =>{
+     const onSelectPlayer = (positionName, playerId, selectedPlayer, playerSalary) =>{
         setPostion(positionName)
-        if(selected === maximum){
-            setOpenDialog(true)
+        if(selectedPlayer){
+            setSalaryCap(salaryCap + playerSalary)
+            players[players.findIndex(player => player.position === positionName)].players.filter(_ => _.playerId).selected =false;
+            const playerPosition = players.findIndex(player => player.position === positionName)
+            const newPlayer = players[playerPosition].players
+            const playerIdPosition = newPlayer.findIndex(player => player.playerId === playerId)
+            let newArray = [...players]
+            newArray[playerPosition].players[playerIdPosition] = {...newArray[playerPosition].players[playerIdPosition], selected: !newArray[playerPosition].players[playerIdPosition].selected}
+            setPlayers(newArray)
         }
         else{
-            if(selectedPlayer){
-                setSalaryCap(salaryCap + playerSalary)
-                setSelected(selected - 1)
-                const playerPosition = players.findIndex(player => player.position === positionName)
-                const newPlayer = players[playerPosition].players
-                const playerIdPosition = newPlayer.findIndex(player => player.playerId === playerId)
-                let newArray = [...players]
-                newArray[playerPosition].players[playerIdPosition] = {...newArray[playerPosition].players[playerIdPosition], selected: !newArray[playerPosition].players[playerIdPosition].selected}
-                setPlayers(newArray)
+            //get selected players count in position
+            var selectedCount  = players[players.findIndex(player => player.position === positionName)].players.filter(_ => _.selected).length
+            if(selectedCount + 1 > maximum){
+                setOpenDialog(true)
             }
             else{
-                setSalaryCap(salaryCap - playerSalary)
-                setSelected(selected + 1)
-                const playerPosition = players.findIndex(player => player.position === positionName)
-                const newPlayer = players[playerPosition].players
-                const playerIdPosition = newPlayer.findIndex(player => player.playerId === playerId)
-                let newArray = [...players]
-                newArray[playerPosition].players[playerIdPosition] = {...newArray[playerPosition].players[playerIdPosition], selected: !newArray[playerPosition].players[playerIdPosition].selected}
-                setPlayers(newArray)
+            setSalaryCap(salaryCap - playerSalary)
+            const playerPosition = players.findIndex(player => player.position === positionName)
+            const newPlayer = players[playerPosition].players
+            const playerIdPosition = newPlayer.findIndex(player => player.playerId === playerId)
+            let newArray = [...players]
+            newArray[playerPosition].players[playerIdPosition] = {...newArray[playerPosition].players[playerIdPosition], selected: !newArray[playerPosition].players[playerIdPosition].selected}
+            setPlayers(newArray)
             }
         }
     }
@@ -122,10 +117,31 @@ export default function CreateTeam(){
         const contest = JSON.parse(sessionStorage.getItem("contest"))
         const id = contest.id
         const user = await authenticationService.getCurrentUser()
+        setTeamName(user.userName)
+
+        //get total selected players
+        var selectedCount = 0; 
+        players.map(function(item){
+            selectedCount += item.players.filter(_ => _.selected).length;
+        });
+
         if(teamName === ""){
+            setSubmitting(false)
             window.scroll(0,0)
             setError(true)
             setErrorMessage("Required")
+        }
+        else if (salaryCap < 0){
+            setSubmitting(false)
+            window.scroll(0,0)
+            setError(true)
+            setOpenSalaryExceededDialog(true)
+        }
+        else if (selectedCount != 9){
+            setSubmitting(false)
+            window.scroll(0,0)
+            setError(true)
+            setOpenPlayerCountDialog(true)
         }
         else{
             setError(false)
@@ -145,10 +161,16 @@ export default function CreateTeam(){
             const response = await adapter.Post(url,content)
             if(response.ok){
                 const jsonResponse = await response.json()
-                setSubmitting(false)
                 setOpenSuccesDialog(true)
                 console.log(jsonResponse)
             }
+            else if (response.status == 403){
+                const jsonResponse = await response.json()
+                console.log(jsonResponse)
+                setForbiddenMessage(jsonResponse.result.description)
+                setOpenForbiddenDialog(true)
+            }
+            setSubmitting(false)
         }
     }
 
@@ -157,25 +179,16 @@ export default function CreateTeam(){
             <BackdropLoading open={loading}/>
             <Navbar userType={"Player"} title={"Create Team"}/>
             <Container maxWidth="md">
-                <Grid container style={{marginTop: '30px'}}>
+                <Grid container style={{marginTop: '10px'}}>
                     <Grid item xs={12} md={12}>
-                        <Grid container justify="center">
-                            <Grid item xs={3} md={2} style={{padding: '10px'}}>
-                                Team Name:
-                            </Grid>
-                            <Grid item xs={9} md={6}>
-                                <TextField error={error} helperText={errorMessage} onChange={handleChangeTeamname} value={teamName} fullWidth type="text" label="" variant="outlined" />
+                        <Grid container justify="left">
+                            <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '10px'}}>
+                            <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'black'}} >{" " + salaryCap}</span></p>
+                                 
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} md={12}>
-                        <Grid container justify="center">
-                            <Grid item xs={12} md={8} style={{padding: '10px'}}>
-                                Salary Cap: {" "+salaryCap}
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12} md={12} style={{marginTop: '20px'}}>
+                    <Grid item xs={12} md={12} style={{marginTop: '1px'}}>
                            <Paper>
                                 <Tabs centered value={value} onChange={handleChange} aria-label="simple tabs example">
                                     {
@@ -188,7 +201,7 @@ export default function CreateTeam(){
                            {
                                players.map((player,index)=>(
                                 <TabPanel value={value} index={index} key={index}>
-                                    <PlayerTable position={player.position} data={player} maximum={maximum} updateSelected={setSelected} updateMaximum={setMaximum} salarycap={salaryCap} updateSalarycap={setSalaryCap} onSelectPlayer={onSelectPlayer}/>
+                                    <PlayerTable position={player.position} data={player} maximum={maximum} updateMaximum={setMaximum} salarycap={salaryCap} updateSalarycap={setSalaryCap} onSelectPlayer={onSelectPlayer}/>
                                 </TabPanel>
                                ))
                            }
@@ -199,7 +212,10 @@ export default function CreateTeam(){
                                 <Button variant="outlined" fullWidth>Back</Button>
                             </Grid>
                             <Grid item xs={6} md={6}>
-                                <Button onClick={handleCreate} variant="outlined" fullWidth>Create and Join Contest</Button>
+                                <Button onClick={handleCreate} disabled={submitting} fullWidth 
+                                variant="contained"
+                                color="primary"
+                                startIcon={submitting && <FaSpinner className="spinner" />}>Create and Join Contest</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -213,10 +229,29 @@ export default function CreateTeam(){
             </Dialog>
             <Dialog open={openSuccesDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
-                    Team created and joined contest
+                    Team {teamName} created and joined contest.
                     <Button disabled={submitting} startIcon={submitting && <FaSpinner className="spinner" />} variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>history.push('/player')}>OK</Button>
                 </DialogContent>
             </Dialog>
+            <Dialog open={openSalaryExceededDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    Total players' salary exeeceded salary cap.
+                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenSalaryExceededDialog(false)}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={openPlayerCountDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    Please select exactly 9 players.
+                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenPlayerCountDialog(false)}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={openForbiddenDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                    {forbiddenMessage}
+                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenForbiddenDialog(false)}>OK</Button>
+                </DialogContent>
+            </Dialog>
+            
         </div>
     )
 }

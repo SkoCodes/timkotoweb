@@ -46,7 +46,6 @@ export default function PlayerTeamHistory() {
 
         if (response.ok) {
             const jsonResponse = await response.json();
-            console.log(jsonResponse.data.playerTeams);
             setPlayerTeamHistory(jsonResponse.data.playerTeams);
         }
 

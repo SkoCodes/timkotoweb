@@ -58,7 +58,6 @@ export default function AgentPoints(){
     const handleDateChange = (e) =>{
         setDate(e.target.value)
         const date = e.target.value
-        console.log(date)
         const filter = points2.filter(point => date.toString() !=="" ? 
             point.gameDate.toString().includes(date.toString()) : point)
         setPoints(filter)

@@ -38,7 +38,7 @@ export default function RegistrationLink(){
             setFetching(false)
             setLink(jsonResponse.data.code);
         }
-    }
+    };
 
     const handleChange = (e) =>{
         setEmail(e.target.value)
@@ -69,9 +69,11 @@ export default function RegistrationLink(){
         
         else{
             setSubmittingEmail(true)
+            const user = JSON.parse(sessionStorage.getItem("user"))
             const data = {
                 emailAddress: email,
-                link: link
+                link: link,
+                userId: user.id
             }
             const url = `${settings.apiRoot}/api/v1/RegistrationCode/sendRegistrationLinkEmail`;
             const response = await adapter.Post(url,data)
@@ -91,7 +93,7 @@ export default function RegistrationLink(){
 
     return(
         <div>
-            <Navbar title={"Registration Link"}/>
+            <Navbar userType={JSON.parse(sessionStorage.getItem("user")).role} title={"Registration Link"}/>
             <Container maxWidth="xs">
                 <Grid container className="container-style">
                     <Grid item xs={12} sm={12}>

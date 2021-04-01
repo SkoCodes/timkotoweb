@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import logo from '../logo.png';
 import Footer from './common/Footer';
 import './css/Login.css'
@@ -7,7 +7,6 @@ import { FaSpinner } from 'react-icons/fa'
 import { Container, TextField, Button } from '@material-ui/core';
 import { authenticationService } from '../services/authenticationService';
 import {withRouter} from 'react-router-dom'
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const initialState = {
     email: "",
@@ -24,16 +23,30 @@ class Login extends React.Component {
         super(props);
         this.state = initialState;        
     }
-    //connect to websocket
-    // componentWillMount() {
-    //     client.onopen = () => {
-    //       console.log('WebSocket Client Connected');
-    //     };
-    //     client.onmessage = (message) => {
-    //       console.log(message);
-    //     };
-    //   }
-      
+ 
+    onLoad = async (e) => {
+        e.preventDefault();
+        const user = authenticationService.getUserFromCookie();
+        if (!user || user === null) {
+            return;
+        } else {
+            switch (user.role) {
+                case "Operator":
+                    this.props.history.push("/operator");
+                    break;
+                case "Agent":
+                    this.props.history.push("/agent");
+                    break;
+                case "Player":
+                    this.props.history.push("/player");
+                    break;
+                default:
+                    //do nothing
+                    break;
+            }
+        }
+    }
+         
     onSubmit = async (e) => {
         e.preventDefault();
         const isValid = this.validate();
@@ -98,7 +111,7 @@ class Login extends React.Component {
     render() {
         const { submitting } = this.state;
         return (
-            <div>
+            <div onLoad={this.onLoad}>
                 <Container component="main" maxWidth="xs">
                     <header className="login-header">
                         <img src={logo} className="app-logo" alt="logo" />

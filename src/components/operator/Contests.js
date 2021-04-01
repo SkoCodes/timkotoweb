@@ -71,7 +71,6 @@ export default function Contest(){
     async function handleChangeDate(e){
         setDate(e.target.value)
         const summary1 = summary
-        console.log(summary1)
         const date = e.target.value
         const userType = await authenticationService.getCurrentUser()
         const url = `${settings.apiRoot}/api/v1/Operator/Agents/${userType.id}/${date.toString()}`;

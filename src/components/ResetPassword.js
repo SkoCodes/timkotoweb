@@ -57,7 +57,6 @@ export default function ResetPassword(){
             const response = await adapter.Post(url,data)
             if(response.ok){
                 const jsonResponse = await response.json()
-                console.log(jsonResponse)
                 setSubmittingEmail(false)
                 setErrorEmail(false)
                 setEmailMessage("A code was sent to your email to reset your password")
@@ -99,7 +98,6 @@ export default function ResetPassword(){
             const response = await adapter.Post(url,data)
             if(response.ok){
                 const jsonResponse = await response.json()
-                console.log(jsonResponse)
                 setSubmittingCredentials(false)
                 setOpenDialog(true)
             }

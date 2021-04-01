@@ -161,11 +161,9 @@ export default function CreateTeam(){
             if(response.ok){
                 const jsonResponse = await response.json()
                 setOpenSuccesDialog(true)
-                console.log(jsonResponse)
             }
             else if (response.status == 403){
                 const jsonResponse = await response.json()
-                console.log(jsonResponse)
                 setForbiddenMessage(jsonResponse.result.description)
                 setOpenForbiddenDialog(true)
             }

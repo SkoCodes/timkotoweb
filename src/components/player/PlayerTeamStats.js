@@ -41,7 +41,6 @@ export default function PlayerTeamStats() {
 
     async function fetchTeamStats() {
         setFetchingTeamStats(true);
-        console.log(teamHistory);
         const url = `${settings.apiRoot}/api/v1/player/teamplayerstats/${teamHistory.id}`;
         const response = await adapter.Get(url);
         

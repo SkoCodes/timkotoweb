@@ -23,6 +23,7 @@
     "react-scripts": "4.0.3",
     "react-tabs": "^3.2.1",
     "react-window": "^1.8.6",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^1.1.0",
     "websocket": "^1.0.33"
   },

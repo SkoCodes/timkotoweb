@@ -40,10 +40,8 @@ export default function PlayerHomePage(){
             setContest(jsonResponse.data.contest)
             setBalance(jsonResponse.data.balance)
             setLoading(false)
-            console.log(jsonResponse.data.contest)
             const contest = JSON.stringify(jsonResponse.data.contest)
             sessionStorage.setItem("contest", contest)
-            console.log(jsonResponse)            
         }
     }
 

@@ -62,6 +62,7 @@ export default function CreateTeam(){
     };
 
     const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
@@ -177,10 +178,10 @@ export default function CreateTeam(){
             <BackdropLoading open={loading}/>
             <Navbar userType={"Player"} title={"Create Team"}/>
             <Container maxWidth="md">
-                <Grid container style={{marginTop: '10px'}}>
+                <Grid container style={{marginTop: '2px'}}>
                     <Grid item xs={12} md={12}>
                         <Grid container justify="left">
-                            <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '10px'}}>
+                            <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '2px'}}>
                             <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'green'}} >{" " + formatNumber(salaryCap)}</span></p>
                                  
                             </Grid>
@@ -204,16 +205,18 @@ export default function CreateTeam(){
                                ))
                            }
                     </Grid>
-                    <Grid item xs={12} md={12} style={{marginTop: '20px'}}>
+                    <Grid item xs={12} md={12} style={{marginTop: '2px'}}>
                         <Grid container spacing={3}>
                             <Grid item xs={6} md={6}>
-                                <Button variant="outlined" fullWidth onClick={()=>history.push('/player')}>Back</Button>
+                                <Button 
+                                variant="contained"
+                                color="primary" fullWidth onClick={()=>history.push('/player')}>Back</Button>
                             </Grid>
                             <Grid item xs={6} md={6}>
                                 <Button onClick={handleCreate} disabled={submitting} fullWidth 
                                 variant="contained"
                                 color="primary"
-                                startIcon={submitting && <FaSpinner className="spinner" />}>Create and Join Contest</Button>
+                                startIcon={submitting && <FaSpinner className="spinner" />}>Join Contest</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -233,7 +236,7 @@ export default function CreateTeam(){
             </Dialog>
             <Dialog open={openSalaryExceededDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
-                    Total players' salary exeeceded salary cap.
+                    Total players' salary exceeded salary cap.
                     <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenSalaryExceededDialog(false)}>OK</Button>
                 </DialogContent>
             </Dialog>

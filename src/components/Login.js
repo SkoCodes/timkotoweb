@@ -9,9 +9,6 @@ import { authenticationService } from '../services/authenticationService';
 import {withRouter} from 'react-router-dom'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-//websocket
-// const client = new W3CWebSocket('wss://4a4vv008xj.execute-api.ap-southeast-1.amazonaws.com/Dev');
-
 const initialState = {
     email: "",
     password: "",
@@ -125,6 +122,7 @@ class Login extends React.Component {
                             variant="outlined"
                             className="form-input-style"
                             style={{ margin: '10px 0px' }}
+                            size='small'
                         />
                         <TextField
                             onChange={this.onChange}
@@ -137,6 +135,7 @@ class Login extends React.Component {
                             variant="outlined"
                             className="form-input-style"
                             style={{ margin: '10px 0px' }}
+                            size='small'
                         />
                         <Button
                             fullWidth
@@ -150,7 +149,7 @@ class Login extends React.Component {
                         </Button>
                     </form>
                     <div style={{textAlign: 'center', marginTop: '10px'}}>
-                        <Button fullWidth onClick={()=> this.props.history.push('/reset-password')}>Reset password</Button>
+                        <Button fullWidth onClick={()=> this.props.history.push('/reset-password')} variant="outlined">Forgot Password</Button>
                     </div>
                 </Container>
             </div>

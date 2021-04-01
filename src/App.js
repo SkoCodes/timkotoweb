@@ -12,7 +12,7 @@ import AgentPlayers from './components/agent/AgentPlayers';
 import AgentPlayerPoints from './components/agent/AgentPlayerPoints';
 import Footer from './components/common/Footer'
 import OperatorAgenPoints from './components/operator/AgentPoints'
-import RegistrationLink from './components/operator/RegistrationLink'
+import RegistrationLink from './components/common/RegistrationLink'
 import AgentContestPlayers from './components/agent/AgentContestPlayers';
 import ContestsPage from './components/operator/Contests';
 import CreateTeam from './components/player/CreateTeam';
@@ -21,6 +21,7 @@ import PlayerTeamHistory from './components/player/PlayerTeamHistory';
 import PlayerTeamStats from './components/player/PlayerTeamStats';
 import PlayerContestResult from './components/player/PlayerContestResult';
 import PlayerTransactionHistory from './components/player/PlayerTransactionHistory';
+import AgentPlayerTransactionHistory from './components/agent/AgentPlayerTransactionHistory';
 
 class App extends React.Component {
   render() {
@@ -38,6 +39,7 @@ class App extends React.Component {
           <ProtectedRoute path="/agent/players" exact component={AgentPlayers} roles={["Agent"]} />
           <ProtectedRoute path="/agent/player-points/:id" exact component={AgentPlayerPoints} roles={["Agent"]} />
           <ProtectedRoute path="/agent/contest/players" exact component={AgentContestPlayers} roles={["Agent"]}/>
+          <ProtectedRoute path="/agent/transaction/history" exact component={AgentPlayerTransactionHistory} roles={["Agent"]}/>
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]}/>
           <ProtectedRoute path="/player/create-team" exact component={CreateTeam} roles={["Player"]} />
           <ProtectedRoute path="/player/contest" exact component={PlayerContest} roles={["Player"]}/>
@@ -47,7 +49,7 @@ class App extends React.Component {
           <ProtectedRoute path="/player/transaction/history" exact component={PlayerTransactionHistory} roles={["Player"]}/>
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
           <ProtectedRoute path="/operator/contests" exact component={ContestsPage} roles={["Operator"]} />
-          <ProtectedRoute path="/operator/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />
+          <ProtectedRoute path="/common/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />
           <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgenPoints} roles={["Operator"]} />
         </Switch>
       </Router>

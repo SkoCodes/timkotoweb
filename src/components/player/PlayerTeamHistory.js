@@ -1,5 +1,5 @@
 
-import { Container, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from "@material-ui/core";
+import { Paper, Container, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { authenticationService } from "../../services/authenticationService"
@@ -19,7 +19,12 @@ const useStyles = makeStyles({
         height: 30
     },
     tableCell: {
-        padding: "1px 16px"
+        padding: "1px 1px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
     }
 });
 
@@ -53,26 +58,26 @@ export default function PlayerTeamHistory() {
         history.push('/player/team/stats')
     }
 
+    const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
     return (
-        <div className={classes.container}>
+        <Paper className={classes.root}>
             <Navbar userType={currentUser.role} title="My Teams" />
-            <Container maxWidth="xs">
-                <Grid container>
-                    <Grid item xs={12} md={12}>
-                        <Typography variant="subtitle2">
-                            Click on Team Name to view team statistics
-                        </Typography>
-                    </Grid>
+            <Container maxWidth="xs" style={{marginTop: '-40px'}}>
+                <Grid container className="container-style">
                     <Grid item xs={12} md={12}>
                         {fetchingPlayerTeamHistory ? <LoadingTable /> :
                             <TableContainer className={classes.container}>
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="left" className={classes.tableCell}>Contest</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>Team Name</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>Rank</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>Score</TableCell>
+                                            <TableCell align="left" className={classes.tableHead}>Contest</TableCell>
+                                            <TableCell align="left" className={classes.tableHead}>Team Name</TableCell>
+                                            <TableCell align="center" className={classes.tableHead}>Rank - Score</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>Prize</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -82,8 +87,8 @@ export default function PlayerTeamHistory() {
                                                     <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamHistoryClick(teamHistory)}>
                                                         <TableCell align="left" className={classes.tableCell}>{teamHistory.gameDate}</TableCell>
                                                         <TableCell align="left" className={classes.tableCell}>{teamHistory.teamName}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamHistory.teamRank}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamHistory.score}</TableCell>
+                                                        <TableCell align="center" className={classes.tableCell}>{teamHistory.teamRank} - {formatNumber(teamHistory.score)}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{formatNumber(teamHistory.prize)}</TableCell>
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>
@@ -95,11 +100,11 @@ export default function PlayerTeamHistory() {
                             </TableContainer>
                         }
                     </Grid>
-                    <Grid item xs={12} md={12} style={{ marginTop: '20px' }}>
-                        <Button variant="outlined" onClick={() => history.push('/player')} fullWidth>Home</Button>
+                    <Grid item xs={12} md={12} className="generate-button-container">
+                        <Button variant="contained" onClick={() => history.push('/player')} fullWidth color='primary'>Home</Button>
                     </Grid>
                 </Grid>
             </Container>
-        </div>
+        </Paper>
     )
 }

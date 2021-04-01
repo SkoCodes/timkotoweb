@@ -18,7 +18,12 @@ const useStyles = makeStyles({
         height: 30
     },
     tableCell: {
-        padding: "1px 16px"
+        padding: "1px 2px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
     }
 });
 export default function PlayerContestResult() {
@@ -47,6 +52,7 @@ export default function PlayerContestResult() {
     }
 
     const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
@@ -57,7 +63,7 @@ export default function PlayerContestResult() {
                 <Grid container className="container-style">
                     <Grid item xs={12} md={12}>
                         <form>
-                            Date of Contest :
+                            <span style={{fontWeight: 'bold'}}>Date of Contest :</span>
                         <TextField
                                 id="date"
                                 type="date"
@@ -75,9 +81,9 @@ export default function PlayerContestResult() {
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="left" className={classes.tableCell}>Name</TableCell>
-                                            <TableCell align="center" className={classes.tableCell}>Rank - Score</TableCell>
-                                            <TableCell align="right" className={classes.tableCell}>Prize</TableCell>
+                                            <TableCell align="left" className={classes.tableHead}>Name</TableCell>
+                                            <TableCell align="center" className={classes.tableHead}>Rank - Score</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>Prize</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>

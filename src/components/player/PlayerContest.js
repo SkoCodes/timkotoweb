@@ -14,11 +14,19 @@ const useStyles = makeStyles({
     container: {
         maxHeight: 440,
     },
+    containerTeams: {
+        maxHeight: 120,
+    },
     tableRow: {
         height: 30
     },
     tableCell: {
-        padding: "1px 16px"
+        padding: "1px 2px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
     }
 })
 
@@ -33,7 +41,7 @@ export default function PlayerContest() {
     const contest = JSON.parse(sessionStorage.getItem("contest"));
 
     useInterval(() => {
-        if (contest !== null && contest.contestState == "Ongoing") {
+        if (contest !== null ) {
             fetchPlayerTeamsInContest();
             fetchTeamRanks();
         }
@@ -41,7 +49,7 @@ export default function PlayerContest() {
 
 
     useEffect(() => {
-        if (contest !== null && contest.contestState == "Ongoing") {
+        if (contest !== null ) {
             fetchPlayerTeamsInContest();
             fetchTeamRanks();
         }
@@ -80,39 +88,43 @@ export default function PlayerContest() {
 
     }
 
+    const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+
     return (
         <div className={classes.root} >
             <Navbar userType={currentUser.role} title="Live Scores" />
             <Container maxWidth="xs">
-                <Grid container className="container-style">
-                    <Grid item xs={12} md={12}>
-                        <Typography color="primary" varian="subtitle1">
-                            Your Teams
-                        </Typography>
+                <Grid >
+                    <Grid item xs={12} md={12} className="agent-details-container">
+                        <span style={{fontWeight: 'bold'}}>Your Team(s)</span>
                     </Grid>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={12} style={{marginTop: '-30px'}}> 
                         {fetchingPlayerTeamsInContest ? <LoadingTable /> :
-                            <TableContainer className={classes.container}>
+                            <TableContainer className={classes.containerTeams}>
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="center" className={classes.tableCell}>Rank</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>Team</TableCell>
-                                            <TableCell align="right" className={classes.tableCell}>Score</TableCell>
+                                            <TableCell align="center" className={classes.tableHead}>Rank</TableCell>
+                                            <TableCell align="left" className={classes.tableHead}>Team</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>Score</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {
                                             playerTeamsInContest.length > 0 ?
                                                 playerTeamsInContest.map((team, index) => (
-                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamClick(team)}>
+                                                    <TableRow>
                                                         <TableCell align="center" className={classes.tableCell}>{team.teamRank}</TableCell>
                                                         <TableCell align="left" className={classes.tableCell}>{team.teamName}</TableCell>
-                                                        <TableCell align="right" className={classes.tableCell}>{team.score}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{formatNumber(team.score)}</TableCell>
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>
-                                                    <TableCell colSpan="5" align="center">No live scores available.</TableCell>
+                                                    <TableCell colSpan="5" align="center">Games has not started yet.</TableCell>
                                                 </TableRow>
                                         }
                                     </TableBody>
@@ -120,34 +132,33 @@ export default function PlayerContest() {
                             </TableContainer>
                         }
                     </Grid>
-                    <Grid item xs={12} md={12}>
-                        <Typography color="primary" varian="subtitle1" style={{ marginTop: '30px' }}>
-                            Team Ranks
-                        </Typography>
+                    
+                    <Grid item xs={12} md={12} className="agent-details-container"  style={{marginTop: '10px'}}>
+                        <span style={{fontWeight: 'bold'}}>Team Ranks</span>
                     </Grid>
-                    <Grid item xs={12} md={12}>
+                     <Grid item xs={12} md={12} style={{marginTop: '-30px'}}>
                         {fetchingTeamRanks ? <LoadingTable /> :
                             <TableContainer className={classes.container}>
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
-                                        <TableRow>
-                                            <TableCell align="center" className={classes.tableCell}>Rank</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>Team</TableCell>
-                                            <TableCell align="right" className={classes.tableCell}>Score</TableCell>
+                                    <TableRow>
+                                            <TableCell align="center" className={classes.tableHead}>Rank</TableCell>
+                                            <TableCell align="left" className={classes.tableHead}>Team</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>Score</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {
                                             teamRanks.length > 0 ?
                                                 teamRanks.map((team, index) => (
-                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamRankTeamClick(team)}>
+                                                    <TableRow>
                                                         <TableCell align="center" className={classes.tableCell}>{team.teamRank}</TableCell>
                                                         <TableCell align="left" className={classes.tableCell}>{team.teamName}</TableCell>
-                                                        <TableCell align="right" className={classes.tableCell}>{team.score}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{formatNumber(team.score)}</TableCell>
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>
-                                                    <TableCell colSpan="5" align="center">No Data</TableCell>
+                                                    <TableCell colSpan="5" align="center">Games has not started yet.</TableCell>
                                                 </TableRow>
                                         }
                                     </TableBody>

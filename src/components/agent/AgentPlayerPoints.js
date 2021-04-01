@@ -6,6 +6,8 @@ import { authenticationService } from '../../services/authenticationService';
 import settings from '../../settings';
 import adapter from '../../utils/adapter';
 import Navbar from '../common/Navbar';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const fetchPlayerPoints = async (currentPlayer) => {
     const url = `${settings.apiRoot}/api/v1/transaction/balance/${currentPlayer.id}`;
@@ -16,6 +18,11 @@ const fetchPlayerPoints = async (currentPlayer) => {
     }
     return 0;
 }
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
 
 export default function AgentPlayerPoints() {
     const [userDetail, setUserDetail] = useState('');
@@ -33,6 +40,7 @@ export default function AgentPlayerPoints() {
     const [fetchingPlayerPoints, setFetchingPlayerPoints] = useState(false);
     const [submittingPointsToAdd, setSubmittingPointsToAdd] = useState(false);
     const [submittingPointsToClaim, setSubmittingPointsToClaim] = useState(false);
+    const [pointsProcessed, setPointsProcessed] = useState(false)
 
     useEffect(() => {
         async function fetchData() {
@@ -52,6 +60,12 @@ export default function AgentPlayerPoints() {
         fetchData();
     }, []);
 
+
+    const handlePlayerTransactions = async (e) => {
+        e.preventDefault();
+        sessionStorage.setItem("player", JSON.stringify(currentPlayer));
+        history.push('/agent/transaction/history')
+    }
 
     const handleAddPoints = async (e) => {
         e.preventDefault();
@@ -78,6 +92,7 @@ export default function AgentPlayerPoints() {
                 const newBalance = await fetchPlayerPoints(currentPlayer);
                 setFetchingPlayerPoints(false);
                 setCurrentPlayerPoints(newBalance);
+                setPointsProcessed(true);
             }
 
             setPointsToAdd("");
@@ -149,6 +164,7 @@ export default function AgentPlayerPoints() {
                 const newBalance = await fetchPlayerPoints(currentPlayer);
                 setFetchingPlayerPoints(false);
                 setCurrentPlayerPoints(newBalance);
+                setPointsProcessed(true);
             }
 
             setPointsToClaim("");
@@ -162,6 +178,7 @@ export default function AgentPlayerPoints() {
         let confirmPointsToClaimError = "";
 
 
+
         if (!pointsToClaim || pointsToClaim === 0) {
             pointsToClaimError = "Points to claim is required.";
         }
@@ -172,6 +189,10 @@ export default function AgentPlayerPoints() {
 
         if (pointsToClaim > maxPointsToClaim) {
             pointsToClaimError = `Points to claim cannot be greater than ${maxPointsToClaim}.`;
+        }
+
+        if (maxPointsToClaim <= 0) {
+            pointsToClaimError = `No points to claim.`;
         }
 
         if (!confirmPointsToClaim || confirmPointsToClaim === 0) {
@@ -198,20 +219,21 @@ export default function AgentPlayerPoints() {
     return (
         <div>
             <Navbar userType={userDetail.role} title={"Player Points"} />
-            <Container maxWidth="md">
+            <Container maxWidth="xs">
                 <Grid container>
                     <Grid item xs={12} md={12}>
-                        <Typography variant="subtitle1" style={{ textAlign: 'left', flexGrow: 1 }}>Player Name: {currentPlayer.userName}</Typography>
+                        <br></br>
+                        <Typography variant="subtitle1" style={{ textAlign: 'left', flexGrow: 1 }}><span style={{fontWeight: 'bold'}}>Player Name: </span>{currentPlayer.userName}</Typography>
                     </Grid>
                     <Grid item xs={12} md={12}>
                         <Typography
                             variant="subtitle1"
                             style={{ textAlign: 'left', flexGrow: 1 }}>
-                            Points: {fetchingPlayerPoints ? <FaSpinner className="spinner" /> : currentPlayerPoints}
+                            <span style={{fontWeight: 'bold'}}>Points: </span> {fetchingPlayerPoints ? <FaSpinner className="spinner" /> : currentPlayerPoints}
                         </Typography>
                     </Grid>
                 </Grid>
-                <Divider variant="fullWidth" />
+                <Divider  />
                 <form onSubmit={handleAddPoints}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -222,6 +244,7 @@ export default function AgentPlayerPoints() {
                             onChange={(e) => { setPointsToAdd(e.target.value); setPointsToAddError("") }}
                             value={pointsToAdd}
                             error={pointsToAddError !== ""}
+                            size='small'
                             helperText={pointsToAddError} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -233,11 +256,12 @@ export default function AgentPlayerPoints() {
                             onChange={(e) => { setConfirmPointsToAdd(e.target.value); setConfirmPointsToAddError("") }}
                             value={confirmPointsToAdd}
                             error={confirmPointsToAddError !== ""}
+                            size='small'
                             helperText={confirmPointsToAddError} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Button
-                            style={{ marginTop: '50px' }}
+                            style={{ marginTop: '30px' }}
                             fullWidth
                             variant="contained"
                             color="primary"
@@ -246,7 +270,7 @@ export default function AgentPlayerPoints() {
                             startIcon={submittingPointsToAdd && <FaSpinner className="spinner" />}>Add Points</Button>
                     </Grid>
                 </form>
-                <Divider variant="fullWidth" style={{ marginTop: '20px' }} />
+                <Divider variant="middle" style={{ marginTop: '20px' }} />
                 <form onSubmit={handleClaimPoints}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -257,6 +281,7 @@ export default function AgentPlayerPoints() {
                             onChange={(e) => { setPointsToClaim(e.target.value); setPointsToClaimError("") }}
                             value={pointsToClaim}
                             error={pointsToClaimError !== ""}
+                            size='small'
                             helperText={pointsToClaimError}
                         />
                     </Grid>
@@ -269,21 +294,36 @@ export default function AgentPlayerPoints() {
                             onChange={(e) => { setConfirmPointsToClaim(e.target.value); setConfirmPointsToClaimError("") }}
                             value={confirmPointsToClaim}
                             error={confirmPointsToClaimError !== ""}
+                            size='small'
                             helperText={confirmPointsToClaimError} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Button style={{ marginTop: '50px' }}
+                        <Button style={{ marginTop: '30px' }}
                             fullWidth variant="contained"
                             color="primary"
                             type="submit"
                             disabled={submittingPointsToClaim}
                             startIcon={submittingPointsToClaim && <FaSpinner className="spinner" />}>Claim Points</Button>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Button style={{ marginTop: '50px' }} fullWidth variant="outlined" onClick={() => history.push('/agent')}>Back</Button>
+                    <Divider variant="middle" style={{ marginTop: '20px' }} />
+                    <Grid item xs={12} sm={12}>
+                        <Button style={{ marginTop: '20px' }} fullWidth variant="contained" onClick={handlePlayerTransactions} color="primary">Player Transactions</Button>
                     </Grid>
+
+                    <Grid item xs={12} sm={12}>
+                        <Button style={{ marginTop: '20px' }} fullWidth variant="contained" onClick={() => history.push('/agent')} color="primary">Back</Button>
+                    </Grid>
+             
                 </form>
             </Container>
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={pointsProcessed}
+                onClose={()=> setPointsProcessed(false)}
+                autoHideDuration={3000}
+            >
+                <Alert severity="success">Points processed!</Alert>
+            </Snackbar>
         </div>
     )
 }

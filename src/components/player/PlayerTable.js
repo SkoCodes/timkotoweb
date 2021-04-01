@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         height: 30
       },
       tableCell: {
-        padding: "10px 16px"
+        padding: "5px 2px"
     }
   });
 
@@ -35,6 +35,7 @@ export default function PlayerTable(props){
     }
     
     const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
@@ -46,7 +47,7 @@ export default function PlayerTable(props){
                     <TableRow>
                         <TableCell align="left" className={classes.tableCell}>Team </TableCell>
                         <TableCell align="left" className={classes.tableCell}>Name</TableCell>
-                        <TableCell align="left" className={classes.tableCell}>Salary</TableCell>
+                        <TableCell align="right" className={classes.tableCell}>Salary</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -54,7 +55,7 @@ export default function PlayerTable(props){
                         <TableRow key={index} onClick={()=>props.onSelectPlayer(player.position, player.playerId, player.selected, player.salary)} style={{backgroundColor: `${player.selected ? '#dfe6e9':'white'}`}}>
                             <TableCell align="left" className={classes.tableCell}>{player.team}</TableCell>
                             <TableCell align="left" className={classes.tableCell}>{"#"+player.jersey+" "+player.playerName}</TableCell>
-                            <TableCell align="left" className={classes.tableCell}>{formatNumber(player.salary)}</TableCell>
+                            <TableCell align="right" className={classes.tableCell}>{formatNumber(player.salary)}</TableCell>
                         </TableRow>
                         // <PlayerTableRow onClick={()=> console.log('working')} key={index} data={player}/>
                     ))}

@@ -28,12 +28,13 @@ const useStyles = makeStyles({
     }
 });
 
-export default function PlayerTransactionHistory() {
+export default function AgentPlayerTransactionHistory() {
     const classes = useStyles();
     const history = useHistory();
     const currentUser = authenticationService.getCurrentUser();
     const [transactionHistory, setTransactionHistory] = useState({});
     const [fetchingTransactionHistory, setFetchingTransactionHistory] = useState(false);
+    const [currentPlayer, setCurrentPlayer] = useState(false);
 
     useEffect(() => {
         fetchTransactionHistory();
@@ -41,7 +42,9 @@ export default function PlayerTransactionHistory() {
 
     async function fetchTransactionHistory() {
         setFetchingTransactionHistory(true);
-        const url = `${settings.apiRoot}/api/v1/transaction/history/${currentUser.id}`;
+        const player = JSON.parse(sessionStorage.getItem('player'));
+        setCurrentPlayer(player);
+        const url = `${settings.apiRoot}/api/v1/transaction/history/${player.id}`;
         const response = await adapter.Get(url);
 
         if (response.ok) {
@@ -60,8 +63,11 @@ export default function PlayerTransactionHistory() {
     return (
         <div className={classes.root}>
             <Navbar userType={currentUser.role} title="Transaction History" />
-            <Container maxWidth="sm"  style={{marginTop: '-40px'}}>
+            <Container maxWidth="sm"  style={{marginTop: '-20px'}}>
                 <Grid container className="container-style">
+                    <Grid item xs={12} md={12} className="agent-details-container">
+                        <p> Player:  <span style={{fontWeight: 'bold'}}>{currentPlayer.userName}</span></p>
+                    </Grid>
                     <Grid item xs={12} md={12} >
                         {fetchingTransactionHistory ? <LoadingTable /> :
                             <TableContainer className={classes.container}>
@@ -97,7 +103,7 @@ export default function PlayerTransactionHistory() {
                         }
                     </Grid>
                     <Grid item xs={12} md={12} style={{ marginTop: '20px' }}>
-                        <Button variant="outlined" onClick={() => history.push('/player/team/history') } fullWidth variant="contained"
+                        <Button variant="outlined" onClick={() => history.push('/agent/player-points/' + currentPlayer.id) } fullWidth variant="contained"
                                 color="primary">Back</Button>
                     </Grid>
                 </Grid>

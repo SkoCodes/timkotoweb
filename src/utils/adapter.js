@@ -1,9 +1,10 @@
 const adapter = {
     Post: async function (url, content) {
+        const user = JSON.parse(sessionStorage.getItem("user"))
         var response = await fetch(url, {
             method: "POST",
             headers: new Headers({
-                'X-Api-Key': 'jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ',
+                'x-api-key': 'user.token',
                 'Content-Type': 'application/json'                
             }),
             body: JSON.stringify(content)
@@ -11,10 +12,11 @@ const adapter = {
         return response;
     },
     Get: async function (url) {
+        const user = JSON.parse(sessionStorage.getItem("user"))
         var response = await fetch(url, {
             method: "GET",
             headers: new Headers({
-                'X-Api-Key': 'jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ',
+                'x-api-key': 'user.token',
                 'Content-Type': 'application/json'                
             }),
         });

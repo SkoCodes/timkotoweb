@@ -10,6 +10,7 @@ const useStyles = makeStyles({
     },
     container: {
       maxHeight: 440,
+      minHeight: 440,
     },
     tableRow: {
         height: 30
@@ -20,6 +21,7 @@ const useStyles = makeStyles({
   });
 
 const formatNumber = (num) => {
+  if (num == undefined || num == undefined) return
     return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 

@@ -54,17 +54,17 @@ export default function PlayerHomePage(){
             <Container maxWidth="md">
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={5}>
-                        <List className="player-contest-list" style={{maxHeight: 250}} component="nav" aria-label="main mailbox folders">
+                        <List className="player-contest-list" style={{maxHeight: 250, backgroundColor: '#00001a'}} component="nav" aria-label="main mailbox folders">
                                 {
                                     prizepool.length > 0 ?
                                     prizepool.map((prize, index) => (
-                                        <ListItem button key={index} style={{maxHeight: 30}}>
+                                        <ListItem button key={index} style={{maxHeight: 30,  marginTop: '5px'}}>
                                             <ListItemText style={{width: '50%'}}>
-                                                <p align="right" style={{marginRight: "20px"}} >{"Top "+ prize.displayRank}</p>
+                                                <p align="right" style={{marginRight: "20px", color: 'white', fontWeight: 'bold'}} >{"Top "+ prize.displayRank}</p>
                                             </ListItemText>
                                             
                                             <ListItemText style={{width: '50%'}}>
-                                                <p align="right"  style={{marginLeft: "20px", marginRight: "70px"}}>{prize.displayPrize}</p>
+                                                <p align="right"  style={{marginLeft: "20px", marginRight: "70px", color: 'gold', fontWeight: 'bold'}}>{prize.displayPrize}</p>
                                             </ListItemText>
                                         </ListItem>
                                     ))

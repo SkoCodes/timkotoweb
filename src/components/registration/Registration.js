@@ -48,13 +48,21 @@ class Registration extends React.Component {
             const response = await adapter.Post(url, content);
             this.setState({submitting :false});
 
-            if (!response.ok) {
+            if (response.ok) {
+                this.props.history.push("../login");
+            }
+            if (response.status === 403) {
+                const jsonResponse = await response.json();
                 this.setState({
-                    message: "An error occured while trying to register. Please contact you agent.", //response.status
+                    message: jsonResponse.result.description,
                     messageType: "error"
                 });
-            } else {
-                this.props.history.push("../login");
+            }
+            else{
+                this.setState({
+                    message: "An error occured, please contact your agent.",
+                    messageType: "error"
+                });
             }
         }
     }
@@ -77,7 +85,7 @@ class Registration extends React.Component {
         }
 
         if (this.state.emailAddress && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(this.state.emailAddress)) {
-            emailAddressError = "Invalid email format."
+            emailAddressError = "Invalid email."
         }
 
         if (!this.state.password) {
@@ -138,6 +146,7 @@ class Registration extends React.Component {
                                 helperText={this.state.emailAddressError}
                                 variant="outlined"
                                 className="form-input-style"
+                                size='small'
                                 style={{ margin: '10px 0px' }}
                             />
                         
@@ -153,6 +162,7 @@ class Registration extends React.Component {
                                 helperText={this.state.passwordError}
                                 variant="outlined"
                                 className="form-input-style"
+                                size='small'
                                 style={{ margin: '10px 0px' }}
                             />
                         
@@ -167,6 +177,7 @@ class Registration extends React.Component {
                                 helperText={this.state.confirmPasswordError}
                                 variant="outlined"
                                 className="form-input-style"
+                                size='small'
                                 style={{ margin: '10px 0px' }}
                             />
                         
@@ -181,6 +192,7 @@ class Registration extends React.Component {
                                 helperText={this.state.nameError}
                                 variant="outlined"
                                 className="form-input-style"
+                                size='small'
                                 style={{ margin: '10px 0px' }}
                             />
                         
@@ -191,6 +203,7 @@ class Registration extends React.Component {
                                 maskChar=" "
                                 onChange={this.onChange}>
                                 {() => <TextField 
+                                    size='small'
                                     type="text"
                                     variant="outlined" 
                                     className="form-input-style"

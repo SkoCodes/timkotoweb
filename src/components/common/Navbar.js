@@ -43,25 +43,25 @@ export default function Navbar(props){
         handleClose()
     }
 
-    const notAgentMenu = (uType) => {
+    const agentMenu = (uType) => {
         if(uType != 'Agent')
             return {display:'none'};
         else
-            return {display:'inline'};
+            return {display:'block'};
     }
 
-    const notPlayerMenu = (uType) => {
+    const playerMenu = (uType) => {
         if(uType != 'Player')
             return {display:'none'};
         else
             return {display:'block'};
     }
 
-    const notOperatorMenu = (uType) => {
+    const operatorMenu = (uType) => {
         if(uType != 'Operator')
             return {display:'none'};
         else
-            return {display:'inline'};
+            return {display:'block'};
     }
 
     const handleLogout = () =>{
@@ -86,16 +86,18 @@ export default function Navbar(props){
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={() => history.push('/operator/contests')} style ={notOperatorMenu(userType)}>Contests</MenuItem>
-                            <MenuItem onClick={() => history.push('/agent/contest/players')} style ={notAgentMenu(userType)} >Contest Players</MenuItem>
-                            <MenuItem onClick={() => history.push('/player')} style ={notPlayerMenu(userType)} >Home</MenuItem>
-                            <MenuItem onClick={() => history.push('/player/contest')} style ={notPlayerMenu(userType)} >Live Scores</MenuItem>
-                            <MenuItem onClick={() => history.push('/player/team/history')} style ={notPlayerMenu(userType)} >My Teams</MenuItem>
-                            <MenuItem onClick={() => history.push('/player/contest/result')} style ={notPlayerMenu(userType)} >Contest Results</MenuItem>
-                            <MenuItem onClick={() => history.push('/player/transaction/history')} style ={notPlayerMenu(userType)} >Transaction History</MenuItem>
+                            <MenuItem onClick={() => history.push('/operator')} style ={operatorMenu(userType)} >Home</MenuItem>
+                            <MenuItem onClick={() => history.push('/operator/contests')} style ={operatorMenu(userType)}>Contests</MenuItem>
+                            <MenuItem onClick={() => history.push('/agent')} style ={agentMenu(userType)} >Home</MenuItem>
+                            <MenuItem onClick={() => history.push('/agent/contest/players')} style ={agentMenu(userType)} >Contest Players</MenuItem>
+                            <MenuItem onClick={() => history.push('/player')} style ={playerMenu(userType)} >Home</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/contest')} style ={playerMenu(userType)} >Live Scores</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/team/history')} style ={playerMenu(userType)} >My Teams</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/contest/result')} style ={playerMenu(userType)} >Contest Results</MenuItem>
+                            <MenuItem onClick={() => history.push('/player/transaction/history')} style ={playerMenu(userType)} >Transaction History</MenuItem>
                             <MenuItem onClick={handleLogout}><ExitToAppIcon style={{marginRight: '10px'}}/> Logout</MenuItem>
                         </Menu>
-                        <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1}}>{props.title}</Typography>
+                        <Typography variant="h6" style={{textAlign: 'center', flexGrow: 1, fontWeight: 'bold'}}>{props.title}</Typography>
                 </Toolbar>
                 </AppBar>
             </ElevationScroll>

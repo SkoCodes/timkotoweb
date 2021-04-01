@@ -4,9 +4,31 @@ import settings from '../../settings';
 import adapter from '../../utils/adapter'
 import { authenticationService } from '../../services/authenticationService';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper, TextField, Table, TableBody, TableHead, TableCell, TableRow } from '@material-ui/core';
+import { TableContainer, Container, Grid, Paper, TextField, Table, TableBody, TableHead, TableCell, TableRow } from '@material-ui/core';
+
+const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+    container: {
+      maxHeight: 440,
+      minHeight: 440,
+    },
+    tableRow: {
+        height: 30
+      },
+    tableCell: {
+        padding: "1px 2px",
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
+    }
+  });
 
 export default function Contest(){
+    const classes = useStyles();
     const [userType, setUserType] = useState('');
     const [contests, setContests] = useState([]);
     const [contests2, setContests2] = useState([]);
@@ -15,6 +37,11 @@ export default function Contest(){
     const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
     const [loading, setLoading] = useState(false)
     const [summary, setSummary] = useState({})
+
+    const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
 
     useEffect(()=>{
         setLoading(true)
@@ -72,15 +99,15 @@ export default function Contest(){
     return(
         <div>
             <Navbar userType={userType} title={"Contests Points"}/>
-            <Container maxWidth="md">
+            <Container maxWidth="xs">
                 <Grid container style={{marginTop: '20px'}}>
                     <Grid item xs={12} md={12} className="summary-container" style={{marginBottom: '30px'}}>
-                        <p>Summary</p>
-                        <p>Points Collected: {!noData ? summary.totalCollectible : 'No data'}</p>
-                        <p>Commission Points: {!noData ? summary.totalAgentCommission: 'No data'}</p>
-                        <p>Prize: {!noData ? summary.totalPrize : 'No data'}</p>
+                        <p style={{fontWeight: 'bold'}}>Summary</p>
+                        <p>Points Collected: <span style={{fontWeight: 'bold'}}>{!noData ? formatNumber(summary.totalCollectible) : 'No data'}</span></p>
+                        <p>Commission Points: <span style={{fontWeight: 'bold'}}>{!noData ? formatNumber(summary.totalAgentCommission): 'No data'}</span></p>
+                        <p>Prize: <span style={{fontWeight: 'bold'}}>{!noData ? formatNumber(summary.totalPrize) : 'No data'}</span></p>
                     </Grid>
-                    <Grid item xs={6} md={6}>
+                    <Grid item xs={12} md={12}>
                         <TextField
                                 id="date"
                                 type="date"
@@ -92,17 +119,18 @@ export default function Contest(){
                                 }}
                             />
                     </Grid>
-                    <Grid item xs={6} md={6}>
-                        <TextField value={search} onChange={handleSearch} fullWidth id="outlined-basic" label="Search Agent" variant="outlined" />
+                    <Grid item xs={12} md={12} style={{marginTop: '10px'}}>
+                        <TextField value={search} onChange={handleSearch} fullWidth id="outlined-basic" label="Search Agent" variant="outlined" size='small'/>
                     </Grid>
                     <Grid item xs={12} md={12}>
-                        <Table stickyHeader  className="table-style">
+                    <TableContainer className={classes.container}>
+                        <Table stickyHeader  className="table-style" >
                             <TableHead>
                             <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell align="left">Collection</TableCell>
-                                <TableCell align="left">Commision</TableCell>
-                                <TableCell align="left">Prize</TableCell>
+                                <TableCell align="left" className={classes.tableHead} >Name</TableCell>
+                                <TableCell align="right" className={classes.tableHead} >Collection</TableCell>
+                                <TableCell align="right" className={classes.tableHead} >Commision</TableCell>
+                                <TableCell align="right" className={classes.tableHead} >Prize</TableCell>
                             </TableRow>
                             </TableHead>
                             <TableBody>
@@ -118,10 +146,10 @@ export default function Contest(){
                                         contests.length > 0 ?
                                         contests.map((agent,index)=>(
                                         <TableRow hover key={index}>
-                                                <TableCell>{agent.userName}</TableCell>
-                                                <TableCell>{agent.collectible}</TableCell>
-                                                <TableCell>{agent.commission}</TableCell>
-                                                <TableCell>{agent.prize}</TableCell>
+                                                <TableCell align="left" className={classes.tableCell}>{agent.userName}</TableCell>
+                                                <TableCell align="right" className={classes.tableCell}>{formatNumber(agent.collectible)}</TableCell>
+                                                <TableCell align="right" className={classes.tableCell}>{formatNumber(agent.commission)}</TableCell>
+                                                <TableCell align="right" className={classes.tableCell}>{formatNumber(agent.prize)}</TableCell>
                                         </TableRow>
                                         ))
                                         :
@@ -136,6 +164,7 @@ export default function Contest(){
                                 }
                             </TableBody>
                         </Table>
+                        </TableContainer>
                     </Grid>
                 </Grid>
             </Container>

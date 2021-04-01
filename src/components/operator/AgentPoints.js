@@ -4,14 +4,31 @@ import settings from '../../settings';
 import adapter from '../../utils/adapter'
 import { useHistory } from 'react-router-dom'
 import { authenticationService } from '../../services/authenticationService';
-import { Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
-//import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { TableContainer, Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+    container: {
+      maxHeight: 440,
+    },
+    tableRow: {
+        height: 30
+      },
+      tableCell: {
+        padding: "1px 2px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
+    }
+  });
 
 export default function AgentPoints(){
+    const classes = useStyles();
     const history = useHistory()
     const [userType, setUserType] = useState('');
     const [agentDetails, setAgentDetails] = useState({})
@@ -47,16 +64,22 @@ export default function AgentPoints(){
         setPoints(filter)
     }
 
+    const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+    
     return(
         <div>
             <Navbar userType={userType} title={"Agent Points"}/>
-            <Container maxWidth="md">
+            <Container maxWidth="xs">
                 <div className="agent-details-container">
-                    <p>{agentDetails.userName}</p>
-                    <p>{agentDetails.email}</p>
+                    <p><span style={{fontWeight: 'bold'}}>Name: </span> {agentDetails.userName}</p>
+                    <p><span style={{fontWeight: 'bold'}}>Email: </span> {agentDetails.email}</p>
+                    <p><span style={{fontWeight: 'bold'}}>Phone: </span> {agentDetails.phoneNumber}</p>
                 </div>
                 <Grid container className="container-style">
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={12}>
                         <TextField
                                 id="date"
                                 type="date"
@@ -70,13 +93,14 @@ export default function AgentPoints(){
                     </Grid>
                 </Grid>
                 <Grid item xs={12} md={12}>
+                <TableContainer className={classes.container}>
                     <Table stickyHeader  className="table-style">
                         <TableHead>
                         <TableRow>
-                            <TableCell>Contest</TableCell>
-                            <TableCell align="left">Collection</TableCell>
-                            <TableCell align="left">Commision</TableCell>
-                            <TableCell align="left">Prize</TableCell>
+                            <TableCell align="left" className={classes.tableHead}>Contest</TableCell>
+                            <TableCell align="right" className={classes.tableHead}>Collection</TableCell>
+                            <TableCell align="right" className={classes.tableHead}>Commision</TableCell>
+                            <TableCell align="right" className={classes.tableHead}>Prize</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
@@ -84,10 +108,10 @@ export default function AgentPoints(){
                                 points.length > 0 ?
                                 points.map((point,index)=>(
                                 <TableRow hover key={index}>
-                                        <TableCell>{point.gameDate}</TableCell>
-                                        <TableCell>{point.collectible}</TableCell>
-                                        <TableCell>{point.commission}</TableCell>
-                                        <TableCell>{point.prize}</TableCell>
+                                        <TableCell align="left" className={classes.tableCell}>{point.gameDate}</TableCell>
+                                        <TableCell align="right" className={classes.tableCell}>{formatNumber(point.collectible)}</TableCell>
+                                        <TableCell align="right" className={classes.tableCell}>{formatNumber(point.commission)}</TableCell>
+                                        <TableCell align="right" className={classes.tableCell}>{formatNumber(point.prize)}</TableCell>
                                 </TableRow>
                                 ))
                                 :
@@ -100,9 +124,10 @@ export default function AgentPoints(){
                             }
                         </TableBody>
                     </Table>
+                    </TableContainer>
                 </Grid>
                 <Grid item xs={12} md={12} className="generate-button-container">
-                    <Button variant="outlined" onClick={()=> history.push('/operator')}>Back</Button>
+                    <Button variant="contained" onClick={()=> history.push('/operator')} color='primary' >Back</Button>
                 </Grid>
             </Container>
         </div>

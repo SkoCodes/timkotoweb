@@ -43,6 +43,11 @@ export default function ResetPassword(){
             setEmailMessage("Email is required.")
             setMessageType("error")
         }
+        if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+            setErrorEmail(true)
+            setEmailMessage("Invalid email.")
+            setMessageType("error")
+        }
         else{
             setSubmittingEmail(true)
             const data = {
@@ -137,6 +142,7 @@ export default function ResetPassword(){
                         className="form-input-style"
                         error={errorEmail}
                         helperText={errorEmail ? "Email is required.": ""}
+                        size='small'
                         style={{ margin: '10px 0px' }}
                     />
                     <div style={{textAlign: 'center', marginTop: '10px'}}>
@@ -173,6 +179,7 @@ export default function ResetPassword(){
                         error={errorCode}
                         helperText={errorCode ? "Code is required.":""}
                         style={{ margin: '10px 0px' }}
+                        size='small'
                     />
                     <TextField 
                         value={values.password}
@@ -186,6 +193,7 @@ export default function ResetPassword(){
                         error={errorPassword}
                         helperText={errorPassword ? "Password is required.":""}
                         style={{ margin: '10px 0px' }}
+                        size='small'
                     />
                     <TextField 
                         value={values.password2}
@@ -199,6 +207,7 @@ export default function ResetPassword(){
                         error={errorPassword2}
                         helperText={errorPassword2 ? "Confirm Password is required.":""}
                         style={{ margin: '10px 0px' }}
+                        size='small'
                     />
                     <div style={{textAlign: 'center', marginTop: '10px'}}>
                         <Button

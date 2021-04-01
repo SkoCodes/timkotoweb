@@ -5,20 +5,43 @@ import adapter from '../../utils/adapter'
 import Navbar from '../common/Navbar';
 import LoadingTable from '../common/LoadingTable';
 import { useHistory } from 'react-router-dom';
-import { Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
+import {  TableContainer, Paper, Container, Grid, TextField, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@material-ui/core';
 import { authenticationService } from '../../services/authenticationService';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+    container: {
+      maxHeight: 440,
+    },
+    tableRow: {
+        height: 30
+      },
+      tableCell: {
+        padding: "1px 2px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
+    }
+  });
 
 export default function OperatorAgents(){
+    const classes = useStyles();
     const history = useHistory();
     const [agents, setAgents] = useState([]);
     const [agents2, setAgents2] = useState([]);
     const [userDetail, setUserDetail] = useState('')
     const [search, setSearch] = useState('')
     const [fetching, setFetching] = useState(false)
+    const currentUser = authenticationService.getCurrentUser();
 
     useEffect( async ()=>{
         setFetching(true)
-        const url = `${settings.apiRoot}/api/v1/Operator/Agents/10010`;
+        const url = `${settings.apiRoot}/api/v1/Operator/Agents/${currentUser.id}`;
         const response = await adapter.Get(url);
         if (response.ok)
         {   
@@ -27,6 +50,9 @@ export default function OperatorAgents(){
             setAgents2(jsonResponse.data.agents)
             setFetching(false)
         }
+        if (response.status === 401){
+            history.push('/login')
+        }
         const user = await authenticationService.getCurrentUser()
         setUserDetail(user)
 
@@ -34,9 +60,7 @@ export default function OperatorAgents(){
 
     const handleChangeSearch = (e) =>{
         setSearch(e.target.value)
-        const filter = agents2.filter(agent => e.target.value !=="" ?
-            agent.userName.toLowerCase().includes(e.target.value.toLowerCase()) || agent.email.toLowerCase().includes(e.target.value.toLowerCase())
-            : agent )
+        const filter = agents2.filter(agent => e.target.value !=="" ? agent.userName.toLowerCase().includes(e.target.value.toLowerCase()) : agent )
         setAgents(filter)
     }
 
@@ -45,25 +69,24 @@ export default function OperatorAgents(){
         history.push('/operator/agent-points/'+agent.id)
     }
 
-
     return(
         <div>
             <Navbar userType={userDetail.role} title={"Agents List"}/>
-            <Container maxWidth="md">
+            <Container maxWidth="xs">
                 <Grid container className="container-style">
                     <Grid item xs={12} md={6}>
-                        <TextField onChange={handleChangeSearch} value={search} fullWidth id="outlined-basic" label="Search Agent" variant="outlined" />
+                        <TextField onChange={handleChangeSearch} value={search} fullWidth id="outlined-basic" label="Search Agent" variant="outlined" size="small"/>
                     </Grid>
                     <Grid item xs={12} md={12}>
                         {fetching ? 
                         <LoadingTable />
                         :
+                        <TableContainer className={classes.container}>
                         <Table stickyHeader className="table-style">
                             <TableHead>
                             <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell align="left">Email</TableCell>
-                                <TableCell align="left">Phone Number</TableCell>
+                                <TableCell className={classes.tableHead}>Name</TableCell>
+                                <TableCell className={classes.tableHead} align="right">Phone Number</TableCell>
                             </TableRow>
                             </TableHead>
                             <TableBody>
@@ -71,22 +94,24 @@ export default function OperatorAgents(){
                                     agents.length > 0 ?
                                     agents.map((agent,index)=>(
                                         <TableRow style={{cursor: 'pointer'}} hover key={index} onClick={()=>handleRedirect(agent)}>
-                                            <TableCell align="left">{agent.userName}</TableCell>
-                                            <TableCell align="left">{agent.email}</TableCell>
-                                            <TableCell align="left">{agent.phoneNumber}</TableCell>
+                                            <TableCell align="left" className={classes.tableCell} >{agent.userName}</TableCell>
+                                            <TableCell align="right" className={classes.tableCell} >{agent.phoneNumber}</TableCell>
                                         </TableRow>
                                         ))
                                     :
                                     <TableRow hover>
-                                            <TableCell>No Data</TableCell>
+                                            <TableCell>You have no agents yet.</TableCell>
                                     </TableRow>
                                 }
                             </TableBody>
                         </Table>
+                        </TableContainer>       
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
-                        <Button variant="outlined" onClick={()=> history.push('/operator/registration-link')}>Generate Registration Link</Button>
+                        <Button onClick={()=> history.push('/common/registration-link')}
+                        variant="contained"
+                        color="primary">Generate Registration Link</Button>
                     </Grid>
                 </Grid>
             </Container>

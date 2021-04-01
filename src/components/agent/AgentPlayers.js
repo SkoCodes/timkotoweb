@@ -14,13 +14,18 @@ const useStyles = makeStyles({
       width: '100%',
     },
     container: {
-      maxHeight: 440,
+      maxHeight: 440
     },
     tableRow: {
         height: 30
       },
       tableCell: {
-        padding: "1px 16px"
+        padding: "1px 2px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
     }
   });
 
@@ -66,16 +71,20 @@ export default function AgentPlayers() {
         history.push('/agent/player-points/' + player.id)
     }
 
+    const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
 
     return (
         <Paper className={classes.root}>
             <Navbar userType={userDetail.role} title={"Players List"} />
-            <Container maxWidth="md">
+            <Container maxWidth="xs">
                 <Grid container className="container-style">
                     <Grid item xs={12} md={6}>
-                        <TextField onChange={handleChangeSearch} value={search} fullWidth id="outlined-basic" label="Search Player" variant="outlined" />
+                        <TextField onChange={handleChangeSearch} value={search} fullWidth id="outlined-basic" label="Search Player" variant="outlined" size="small" />
                     </Grid>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={12} style={{marginTop: "5px"}}>
                         {fetching ?
                             <LoadingTable />
                             :
@@ -84,8 +93,8 @@ export default function AgentPlayers() {
                             <Table stickyHeader className="table-style">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell className={classes.tableCell}>Name</TableCell>
-                                        <TableCell align="right" className={classes.tableCell}>Points</TableCell>
+                                        <TableCell align="left" className={classes.tableHead}>Name</TableCell>
+                                        <TableCell align="right" className={classes.tableHead}>Points</TableCell>
                                         
                                     </TableRow>
                                 </TableHead>
@@ -95,12 +104,12 @@ export default function AgentPlayers() {
                                             players.map((player, index) => (
                                                 <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)} >
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
-                                                    <TableCell align="right" className={classes.tableCell}>{player.points}</TableCell>
+                                                    <TableCell align="right" className={classes.tableCell}>{formatNumber(player.points)}</TableCell>
                                                 </TableRow>
                                             ))
                                             :
                                             <TableRow hover>
-                                                <TableCell>No Data</TableCell>
+                                                <TableCell>You have no players yet.</TableCell>
                                             </TableRow>
                                     }
                                 </TableBody>
@@ -109,7 +118,9 @@ export default function AgentPlayers() {
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
-                        <Button variant="outlined" onClick={() => history.push('/player/registration-link')}>Generate Registration Link</Button>
+                        <Button onClick={()=> history.push('/common/registration-link')}
+                        variant="contained"
+                        color="primary">Generate Registration Link</Button>
                     </Grid>
                 </Grid>
             </Container>

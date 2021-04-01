@@ -18,7 +18,12 @@ const useStyles = makeStyles({
         height: 30
     },
     tableCell: {
-        padding: "1px 16px"
+        padding: "1px 3px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
     }
 });
 
@@ -47,16 +52,19 @@ export default function PlayerTeamStats() {
         setFetchingTeamStats(false);
     };
 
+    const formatNumber = (num) => {
+        if (num == undefined || num == undefined) return
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
     return (
         <div className={classes.container}>
             <Navbar userType={currentUser.role} title="Team Stats" />
-            <Container maxWidth="md">
-                <Grid container>
-                    <Grid item xs={12} md={12}>
-                        Score : {teamHistory.score}
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                        Rank : {teamHistory.teamRank}
+            <Container maxWidth="xs">
+                <Grid container  className="container-style">
+                    <Grid item xs={12} md={12} className="summary-container" style={{marginBottom: '10px'}}>
+                        <p>Score : <span style={{fontWeight: 'bold'}}>{teamHistory.score}</span></p>
+                        <p>Rank : <span style={{fontWeight: 'bold'}}>{teamHistory.teamRank}</span></p>
                     </Grid>
                     <Grid item xs={12} md={12} style={{ align: 'center' }}>
                         <Typography variant="h6" style={{ textAlign: 'center', flexGrow: 1 }}>{teamHistory.teamName}</Typography>
@@ -67,14 +75,14 @@ export default function PlayerTeamStats() {
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="left" className={classes.tableCell}>Name</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>P</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>R</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>A</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>S</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>B</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>T</TableCell>
-                                            <TableCell align="left" className={classes.tableCell}>TS</TableCell>
+                                            <TableCell align="left" className={classes.tableHead}>Name</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>P</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>R</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>A</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>S</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>B</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>T</TableCell>
+                                            <TableCell align="right" className={classes.tableHead}>TS</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -83,13 +91,13 @@ export default function PlayerTeamStats() {
                                                 teamStats.map((teamStats, index) => (
                                                     <TableRow style={{ cursor: 'pointer' }} hover key={index} >
                                                         <TableCell align="left" className={classes.tableCell}>{teamStats.playerName}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamStats.points}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamStats.rebounds}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamStats.assists}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamStats.steals}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamStats.blocks}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamStats.turnOvers}</TableCell>
-                                                        <TableCell align="left" className={classes.tableCell}>{teamStats.points  + teamStats.rebounds + teamStats.assists + teamStats.steals + teamStats.blocks + teamStats.turnOvers}
+                                                        <TableCell align="right" className={classes.tableCell}>{teamStats.points}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{teamStats.rebounds}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{teamStats.assists}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{teamStats.steals}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{teamStats.blocks}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{teamStats.turnOvers}</TableCell>
+                                                        <TableCell align="right" className={classes.tableCell}>{formatNumber(teamStats.totalPoints)}
                                                         </TableCell>
                                                     </TableRow>
                                                 )) :
@@ -102,8 +110,9 @@ export default function PlayerTeamStats() {
                             </TableContainer>
                         }
                     </Grid>
-                    <Grid item xs={12} md={12} style={{ marginTop: '20px' }}>
-                        <Button variant="outlined" onClick={() => history.push('/player/team/history')} fullWidth>Back</Button>
+                    <Grid item xs={12} md={12} style={{ marginTop: '10px' }}>
+                        <Button variant="outlined" onClick={() => history.push('/player/team/history')} fullWidth variant="contained"
+                                color="primary">Back</Button>
                     </Grid>
                 </Grid>
             </Container>

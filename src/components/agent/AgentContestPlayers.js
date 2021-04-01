@@ -13,13 +13,18 @@ const useStyles = makeStyles({
       width: '100%',
     },
     container: {
-      maxHeight: 440,
+      maxHeight: 440
     },
     tableRow: {
         height: 30
       },
       tableCell: {
-        padding: "1px 16px"
+        padding: "1px 2px"
+    },
+    tableHead: {
+        padding: "1px 2px",
+        backgroundColor: "#5353c6",
+        color: "white"
     }
   });
 
@@ -60,16 +65,6 @@ export default function AgentContestPlayers() {
         fetchData();
     }, [currentDate])
 
-    const handleRedirect = (player) => {
-        const playerData = {
-            id: player.playerId,
-            operatorId: player.operatorId,
-            userName: player.teamName
-        }
-        sessionStorage.setItem('agent-player-points', JSON.stringify(playerData));
-        history.push('/agent/player-points/' + playerData.id);
-    }
-
     const handleShowWinnersClick = (e) => {
         setShowWinners(e.target.checked);
         if (currentContestPlayers2.length > 0) {
@@ -79,6 +74,7 @@ export default function AgentContestPlayers() {
     }
 
     const formatNumber = (num) => {
+        if (num == undefined || isNaN(num)) return
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
@@ -89,7 +85,7 @@ export default function AgentContestPlayers() {
                 <Grid container className="container-style">
                     <Grid item xs={12} md={12}>
                         <form>
-                            Your Players in Contest :
+                            <span style={{fontWeight:'bold'}}>Your Players in Contest: </span>
                         <TextField
                                 id="date"
                                 type="date"
@@ -102,18 +98,15 @@ export default function AgentContestPlayers() {
                         </form>
                     </Grid>
                     <Grid item xs={12} md={12}>
-                        Summary:
+                        <span style={{fontWeight:'bold'}}>Summary</span>
                     </Grid>
-                    <Grid item xs={12} md={12}>
-                        Collections: {!isNaN(summary.totalAmount) ? formatNumber(summary.totalAmount) : ""}
+                    <Grid item xs={12} md={12} className="summary-container" style={{marginBottom: '10px'}}>
+                        <p>Collections: <span style={{fontWeight:'bold'}}>{formatNumber(summary.totalAmount)}</span></p>
+                        <p>Commission: <span style={{fontWeight:'bold'}}>{formatNumber(summary.totalAgentCommission)}</span></p>
+                        <p>Remit: <span style={{fontWeight:'bold'}}>{formatNumber(summary.totalAmount - summary.totalAgentCommission)}</span></p>
+                        <p>Prize: <span style={{fontWeight:'bold'}}>{formatNumber(summary.totalPrize)}</span></p>
                     </Grid>
-                    <Grid item xs={12} md={12}>
-                        Commission: {!isNaN(summary.totalAgentCommission) ? formatNumber(summary.totalAgentCommission) : ""}
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                        Prize: {!isNaN(summary.totalPrize) ? formatNumber(summary.totalPrize) : ""}
-                    </Grid>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={12} className="summary-container" >
                         <FormControlLabel control={<Checkbox onClick={handleShowWinnersClick} checked={showWinners} />} label="Show Winners Only" />
                     </Grid>
                     <Grid item xs={12} md={12}>
@@ -124,24 +117,25 @@ export default function AgentContestPlayers() {
                             <Table stickyHeader className="table-style">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="left" className={classes.tableCell}>Name</TableCell>
-                                        <TableCell align="left" className={classes.tableCell}>Rank -  Score</TableCell>
-                                        <TableCell align="left" className={classes.tableCell}>Prize</TableCell>
+                                        <TableCell align="left" className={classes.tableHead}>Name</TableCell>
+                                        <TableCell align="center" className={classes.tableHead}>Rank -  Score</TableCell>
+                                        <TableCell align="right" className={classes.tableHead}>Prize</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {
                                         currentContestPlayers.length > 0 ?
                                             currentContestPlayers.map((player, index) => (
-                                                <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)}>
+                                                <TableRow style={{ cursor: 'pointer' }}>
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
-                                                    <TableCell align="left" className={classes.tableCell}>{player.teamRank} - {player.score}</TableCell>
-                                                    <TableCell align="left" className={classes.tableCell}>{player.prize}</TableCell>
+                                                    <TableCell align="center" className={classes.tableCell}>{player.teamRank} - {player.score}</TableCell>
+                                                    <TableCell align="right" className={classes.tableCell}>{formatNumber(player.prize)}</TableCell>
                                                 </TableRow>
                                             ))
                                             :
-                                            <TableRow hover>
+                                            <TableRow>
                                                 <TableCell colSpan="5" align="center">No Data</TableCell>
+
                                             </TableRow>
                                     }
                                 </TableBody>
@@ -150,7 +144,7 @@ export default function AgentContestPlayers() {
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
-                        <Button variant="outlined" onClick={() => history.push('/agent')}>Home Page</Button>
+                        <Button variant="contained" onClick={() => history.push('/agent')} color="primary">Back</Button>
                     </Grid>
                 </Grid>
             </Container>

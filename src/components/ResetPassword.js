@@ -7,6 +7,7 @@ import settings from '../settings';
 import adapter from '../utils/adapter'
 import { set } from 'date-fns';
 import { useHistory } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export default function ResetPassword(){
     const history = useHistory()
@@ -37,6 +38,10 @@ export default function ResetPassword(){
     }
 
     const handleSubmitEmail = async (e) =>{
+        sessionStorage.removeItem('user');
+        const cookies = new Cookies();
+        cookies.remove('user');
+    
         e.preventDefault();
         if(values.email === ""){
             setErrorEmail(true)
@@ -88,6 +93,10 @@ export default function ResetPassword(){
             setErrorPassword2(true)
         }
         else{
+            sessionStorage.removeItem('user');
+            const cookies = new Cookies();
+            cookies.remove('user');
+    
             setSubmittingCredentials(true)
             const data = {
                 email: values.email,

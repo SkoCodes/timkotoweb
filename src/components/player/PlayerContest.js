@@ -45,7 +45,7 @@ export default function PlayerContest() {
             fetchPlayerTeamsInContest();
             fetchTeamRanks();
         }
-    }, oneMinuteInterval);
+    }, oneMinuteInterval * 5);
 
 
     useEffect(() => {

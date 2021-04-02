@@ -56,7 +56,7 @@ export default function PlayerHomePage(){
                                 {
                                     prizepool.length > 0 ?
                                     prizepool.map((prize, index) => (
-                                        <ListItem button key={index} style={{maxHeight: 30,  marginTop: '5px'}}>
+                                        <ListItem button key={index} style={{maxHeight: 25,  marginTop: '5px'}}>
                                             <ListItemText style={{width: '50%'}}>
                                                 <p align="right" style={{marginRight: "20px", color: 'white', fontWeight: 'bold'}} >{"Top "+ prize.displayRank}</p>
                                             </ListItemText>

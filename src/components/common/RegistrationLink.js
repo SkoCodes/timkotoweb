@@ -97,7 +97,7 @@ export default function RegistrationLink(){
             <Container maxWidth="xs">
                 <Grid container className="container-style">
                     <Grid item xs={12} sm={12}>
-                        <Button onClick={handleGenerateLink} startIcon={fetching ? <FaSpinner className="spinner"/> : <LinkIcon />} variant="contained" color="primary">Generate Link</Button>
+                        <Button onClick={handleGenerateLink} startIcon={fetching ? <FaSpinner className="spinner"/> : <LinkIcon />} variant="contained" color="primary" size='small'>Generate Link</Button>
                     </Grid>
                     <Grid item xs={12} sm={12}>
                         <TextareaAutosize value={link} disabled className="text-area-style" aria-label="minimum height" rowsMin={3} placeholder="No link available" />
@@ -121,16 +121,16 @@ export default function RegistrationLink(){
                                     onClick={handleSubmitEmail} 
                                     disabled={submittingEmail}
                                     startIcon={submittingEmail && <FaSpinner className="spinner" />}
-                                    disabled={link == "" ? true:false}>Email Link</Button>
+                                    disabled={link == "" ? true:false} size='small' >Email Link</Button>
                         </Grid>
                         <Grid item xs={6} sm={6}>
                             <CopyToClipboard text={link} onCopy={() => setCopied(true)}>
-                                <Button disabled={link == "" ? true:false} endIcon={<FileCopyIcon />} fullWidth variant="outlined" color="primary">Copy Link</Button>
+                                <Button disabled={link == "" ? true:false} endIcon={<FileCopyIcon />} fullWidth variant="outlined" color="primary" size='small'>Copy Link</Button>
                             </CopyToClipboard>
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={12} className="generate-button-container">
-                        <Button style={{marginTop: '50px'}} onClick={handleOnBack} variant="contained" color="primary" >Back</Button>
+                        <Button style={{marginTop: '50px'}} onClick={handleOnBack} variant="contained" color="primary" fullWidth size='small'>Back</Button>
                     </Grid>
                 </Grid>
             </Container>

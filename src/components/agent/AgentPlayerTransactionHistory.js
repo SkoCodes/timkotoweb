@@ -13,16 +13,15 @@ const useStyles = makeStyles({
     },
     container: {
         maxHeight: 440,
-        minHeight: 440,        
     },
     tableRow: {
         height: 30
     },
     tableCell: {
-        padding: "1px 2px"
+        padding: "1px 6px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
@@ -70,8 +69,8 @@ export default function AgentPlayerTransactionHistory() {
                     </Grid>
                     <Grid item xs={12} md={12} >
                         {fetchingTransactionHistory ? <LoadingTable /> :
-                            <TableContainer className={classes.container}>
-                                <Table stickyHeader className="table-style">
+                            <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                                <Table stickyHeader className="table-style" className={classes.container}>
                                     <TableHead>
                                         <TableRow>
                                             <TableCell align="left" className={classes.tableHead}>Date</TableCell>

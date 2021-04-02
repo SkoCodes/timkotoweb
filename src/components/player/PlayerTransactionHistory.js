@@ -13,16 +13,15 @@ const useStyles = makeStyles({
     },
     container: {
         maxHeight: 440,
-        minHeight: 440,        
     },
     tableRow: {
         height: 30
     },
     tableCell: {
-        padding: "1px 2px"
+        padding: "1px 6px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
@@ -60,12 +59,12 @@ export default function PlayerTransactionHistory() {
     return (
         <div className={classes.root}>
             <Navbar userType={currentUser.role} title="Transaction History" />
-            <Container maxWidth="sm"  style={{marginTop: '-40px'}}>
+            <Container maxWidth="sm"  style={{marginTop: '-5px'}}>
                 <Grid container className="container-style">
                     <Grid item xs={12} md={12} >
                         {fetchingTransactionHistory ? <LoadingTable /> :
-                            <TableContainer className={classes.container}>
-                                <Table stickyHeader className="table-style">
+                            <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                                <Table stickyHeader className="table-style" className={classes.container}>
                                     <TableHead>
                                         <TableRow>
                                             <TableCell align="left" className={classes.tableHead}>Date</TableCell>
@@ -97,8 +96,8 @@ export default function PlayerTransactionHistory() {
                         }
                     </Grid>
                     <Grid item xs={12} md={12} style={{ marginTop: '20px' }}>
-                        <Button variant="outlined" onClick={() => history.push('/player/team/history') } fullWidth variant="contained"
-                                color="primary">Back</Button>
+                        <Button variant="outlined" onClick={() => history.push('/player') } fullWidth variant="contained"
+                                color="primary"  size='small'>Home</Button>
                     </Grid>
                 </Grid>
             </Container>

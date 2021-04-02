@@ -19,10 +19,10 @@ const useStyles = makeStyles({
         height: 30
     },
     tableCell: {
-        padding: "1px 1px"
+        padding: "1px 6px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
@@ -65,12 +65,12 @@ export default function PlayerTeamHistory() {
     return (
         <Paper className={classes.root}>
             <Navbar userType={currentUser.role} title="My Teams" />
-            <Container maxWidth="xs" style={{marginTop: '-40px'}}>
+            <Container maxWidth="xs" style={{marginTop: '20px'}}>
                 <Grid container className="container-style">
                     <Grid item xs={12} md={12}>
                         {fetchingPlayerTeamHistory ? <LoadingTable /> :
-                            <TableContainer className={classes.container}>
-                                <Table stickyHeader className="table-style">
+                            <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                                <Table stickyHeader className="table-style" className={classes.container}>
                                     <TableHead>
                                         <TableRow>
                                             <TableCell align="left" className={classes.tableHead}>Contest</TableCell>
@@ -100,7 +100,7 @@ export default function PlayerTeamHistory() {
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
-                        <Button variant="contained" onClick={() => history.push('/player')} fullWidth color='primary'>Home</Button>
+                        <Button variant="contained" onClick={() => history.push('/player')} fullWidth color='primary' size='small'>Home</Button>
                     </Grid>
                 </Grid>
             </Container>

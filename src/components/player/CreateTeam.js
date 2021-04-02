@@ -208,12 +208,14 @@ export default function CreateTeam(){
                             <Grid item xs={6} md={6}>
                                 <Button 
                                 variant="contained"
+                                size='small'
                                 color="primary" fullWidth onClick={()=>history.push('/player')}>Back</Button>
                             </Grid>
                             <Grid item xs={6} md={6}>
                                 <Button onClick={handleCreate} disabled={submitting} fullWidth 
                                 variant="contained"
                                 color="primary"
+                                size='small'
                                 startIcon={submitting && <FaSpinner className="spinner" />}>Join Contest</Button>
                             </Grid>
                         </Grid>
@@ -223,31 +225,31 @@ export default function CreateTeam(){
             <Dialog open={openDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
                     You can only select up to {maximum} players in {position} position.
-                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenDialog(false)}>OK</Button>
+                    <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenDialog(false)} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
             <Dialog open={openSuccesDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
                     Team {teamName} created and joined contest.
-                    <Button disabled={submitting} startIcon={submitting && <FaSpinner className="spinner" />} variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>history.push('/player')}>OK</Button>
+                    <Button disabled={submitting} startIcon={submitting && <FaSpinner className="spinner" />} variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>history.push('/player')} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
             <Dialog open={openSalaryExceededDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
                     Total players' salary exceeded salary cap.
-                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenSalaryExceededDialog(false)}>OK</Button>
+                    <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenSalaryExceededDialog(false)} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
             <Dialog open={openPlayerCountDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
                     Please select exactly 9 players.
-                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenPlayerCountDialog(false)}>OK</Button>
+                    <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenPlayerCountDialog(false)} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
             <Dialog open={openForbiddenDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
                     {forbiddenMessage}
-                    <Button variant="outlined" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenForbiddenDialog(false)}>OK</Button>
+                    <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenForbiddenDialog(false)} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
             

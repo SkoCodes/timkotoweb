@@ -4,7 +4,8 @@ import settings from '../../settings';
 import adapter from '../../utils/adapter'
 import { authenticationService } from '../../services/authenticationService';
 import { makeStyles } from '@material-ui/core/styles';
-import { TableContainer, Container, Grid, Paper, TextField, Table, TableBody, TableHead, TableCell, TableRow } from '@material-ui/core';
+import { Button, TableContainer, Container, Grid, Paper, TextField, Table, TableBody, TableHead, TableCell, TableRow } from '@material-ui/core';
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
     root: {
@@ -12,22 +13,22 @@ const useStyles = makeStyles({
     },
     container: {
       maxHeight: 440,
-      minHeight: 440,
     },
     tableRow: {
         height: 30
       },
     tableCell: {
-        padding: "1px 2px",
+        padding: "1px 6px",
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
   });
 
 export default function Contest(){
+    const history = useHistory()
     const classes = useStyles();
     const [userType, setUserType] = useState('');
     const [contests, setContests] = useState([]);
@@ -122,8 +123,8 @@ export default function Contest(){
                         <TextField value={search} onChange={handleSearch} fullWidth id="outlined-basic" label="Search Agent" variant="outlined" size='small'/>
                     </Grid>
                     <Grid item xs={12} md={12}>
-                    <TableContainer className={classes.container}>
-                        <Table stickyHeader  className="table-style" >
+                    <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                        <Table stickyHeader  className="table-style" className={classes.container}>
                             <TableHead>
                             <TableRow>
                                 <TableCell align="left" className={classes.tableHead} >Name</TableCell>
@@ -165,6 +166,9 @@ export default function Contest(){
                         </Table>
                         </TableContainer>
                     </Grid>
+                </Grid>
+                <Grid item xs={12} md={12} className="generate-button-container">
+                    <Button variant="contained" onClick={()=> history.push('/operator')} color='primary' fullWidth size='small'>Back</Button>
                 </Grid>
             </Container>
         </div>

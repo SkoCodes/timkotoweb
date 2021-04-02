@@ -1,11 +1,11 @@
-import { Container, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
+import { Button, Container, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { authenticationService } from "../../services/authenticationService"
 import settings from "../../settings";
 import adapter from "../../utils/adapter";
 import LoadingTable from "../common/LoadingTable";
 import Navbar from "../common/Navbar";
-
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
     root: {
@@ -18,16 +18,17 @@ const useStyles = makeStyles({
         height: 30
     },
     tableCell: {
-        padding: "1px 2px"
+        padding: "1px 6px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
 });
 export default function PlayerContestResult() {
     const classes = useStyles();
+    const history = useHistory();
     const currentUser = authenticationService.getCurrentUser();
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().slice(0, 10));
     const [contestResult, setContestResult] = useState({});
@@ -77,8 +78,8 @@ export default function PlayerContestResult() {
                     </Grid>
                     <Grid item xs={12} md={12}>
                         {fetchingContestResult ? <LoadingTable /> :
-                            <TableContainer className={classes.container}>
-                                <Table stickyHeader className="table-style">
+                            <TableContainer className={classes.container} style={{marginTop: '20px'}}>
+                                <Table stickyHeader className="table-style" className={classes.container}>
                                     <TableHead>
                                         <TableRow>
                                             <TableCell align="left" className={classes.tableHead}>Name</TableCell>
@@ -104,6 +105,9 @@ export default function PlayerContestResult() {
                                 </Table>
                             </TableContainer>
                         }
+                    </Grid>
+                    <Grid item xs={12} md={12} className="generate-button-container">
+                        <Button variant="contained" onClick={() => history.push('/player')} fullWidth color='primary'  size='small'>Home</Button>
                     </Grid>
                 </Grid>
             </Container>

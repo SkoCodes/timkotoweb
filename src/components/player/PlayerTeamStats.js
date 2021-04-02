@@ -1,4 +1,4 @@
-import { Container, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from "@material-ui/core";
+import { Paper, Container, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { authenticationService } from "../../services/authenticationService"
@@ -18,10 +18,10 @@ const useStyles = makeStyles({
         height: 30
     },
     tableCell: {
-        padding: "1px 3px"
+        padding: "1px 5px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 5px",
         backgroundColor: "#5353c6",
         color: "white"
     }
@@ -57,6 +57,7 @@ export default function PlayerTeamStats() {
     }
 
     return (
+        
         <div className={classes.container}>
             <Navbar userType={currentUser.role} title="Team Stats" />
             <Container maxWidth="xs">
@@ -65,13 +66,13 @@ export default function PlayerTeamStats() {
                         <p>Score : <span style={{fontWeight: 'bold'}}>{teamHistory.score}</span></p>
                         <p>Rank : <span style={{fontWeight: 'bold'}}>{teamHistory.teamRank}</span></p>
                     </Grid>
-                    <Grid item xs={12} md={12} style={{ align: 'center' }}>
+                    <Grid item xs={12} md={12} style={{ align: 'center' }} style={{ marginTop: '-20px' }}>
                         <Typography variant="h6" style={{ textAlign: 'center', flexGrow: 1 }}>{teamHistory.teamName}</Typography>
                     </Grid>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={12} style={{ marginTop: '-5px' }} >
                         {fetchingTeamStats ? <LoadingTable /> :
-                            <TableContainer className={classes.container}>
-                                <Table stickyHeader className="table-style">
+                            <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                                <Table stickyHeader className="table-style" className={classes.container}>
                                     <TableHead>
                                         <TableRow>
                                             <TableCell align="left" className={classes.tableHead}>Name</TableCell>
@@ -109,12 +110,13 @@ export default function PlayerTeamStats() {
                             </TableContainer>
                         }
                     </Grid>
-                    <Grid item xs={12} md={12} style={{ marginTop: '10px' }}>
+                    <Grid item xs={12} md={12} style={{ marginTop: '10px' }} >
                         <Button variant="outlined" onClick={() => history.push('/player/team/history')} fullWidth variant="contained"
-                                color="primary">Back</Button>
+                                color="primary" size='small' >Back</Button>
                     </Grid>
                 </Grid>
             </Container>
         </div>
+ 
     )
 }

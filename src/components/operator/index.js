@@ -20,10 +20,10 @@ const useStyles = makeStyles({
         height: 30
       },
       tableCell: {
-        padding: "1px 2px"
+        padding: "1px 6px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
@@ -81,8 +81,8 @@ export default function OperatorAgents(){
                         {fetching ? 
                         <LoadingTable />
                         :
-                        <TableContainer className={classes.container}>
-                        <Table stickyHeader className="table-style">
+                        <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                        <Table stickyHeader className="table-style" className={classes.container}>
                             <TableHead>
                             <TableRow>
                                 <TableCell className={classes.tableHead}>Name</TableCell>

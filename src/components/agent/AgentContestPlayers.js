@@ -19,10 +19,10 @@ const useStyles = makeStyles({
         height: 30
       },
       tableCell: {
-        padding: "1px 2px"
+        padding: "1px 6px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
@@ -113,8 +113,8 @@ export default function AgentContestPlayers() {
                         {fetching ?
                             <LoadingTable />
                             :
-                            <TableContainer className={classes.container}>
-                            <Table stickyHeader className="table-style">
+                            <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                            <Table stickyHeader className="table-style" className={classes.container}>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="left" className={classes.tableHead}>Name</TableCell>
@@ -144,7 +144,7 @@ export default function AgentContestPlayers() {
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
-                        <Button variant="contained" onClick={() => history.push('/agent')} color="primary">Back</Button>
+                        <Button variant="contained" onClick={() => history.push('/agent')} color="primary" fullWidth>Back</Button>
                     </Grid>
                 </Grid>
             </Container>

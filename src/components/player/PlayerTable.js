@@ -41,8 +41,8 @@ export default function PlayerTable(props){
 
     return(
         <div>
-            <TableContainer className={classes.container}>
-                <Table stickyHeader>
+            <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                <Table stickyHeader className={classes.container}>
                     <TableHead>
                     <TableRow>
                         <TableCell align="left" className={classes.tableCell}>Team </TableCell>

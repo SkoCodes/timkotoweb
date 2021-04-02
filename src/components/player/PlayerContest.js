@@ -21,10 +21,10 @@ const useStyles = makeStyles({
         height: 30
     },
     tableCell: {
-        padding: "1px 2px"
+        padding: "1px 6px"
     },
     tableHead: {
-        padding: "1px 2px",
+        padding: "1px 6px",
         backgroundColor: "#5353c6",
         color: "white"
     }
@@ -99,12 +99,12 @@ export default function PlayerContest() {
             <Navbar userType={currentUser.role} title="Live Scores" />
             <Container maxWidth="xs">
                 <Grid >
-                    <Grid item xs={12} md={12} className="agent-details-container">
+                    <Grid item xs={12} md={12} className="agent-details-container"  style={{marginTop: '15px'}}>
                         <span style={{fontWeight: 'bold'}}>Your Team(s)</span>
                     </Grid>
-                    <Grid item xs={12} md={12} style={{marginTop: '-30px'}}> 
+                    <Grid item xs={12} md={12} style={{marginTop: '-20px'}}> 
                         {fetchingPlayerTeamsInContest ? <LoadingTable /> :
-                            <TableContainer className={classes.containerTeams}>
+                            <TableContainer className={classes.containerTeams} style={{marginTop: '0px'}}>
                                 <Table stickyHeader className="table-style">
                                     <TableHead>
                                         <TableRow>
@@ -136,10 +136,10 @@ export default function PlayerContest() {
                     <Grid item xs={12} md={12} className="agent-details-container"  style={{marginTop: '10px'}}>
                         <span style={{fontWeight: 'bold'}}>Team Ranks</span>
                     </Grid>
-                     <Grid item xs={12} md={12} style={{marginTop: '-30px'}}>
+                     <Grid item xs={12} md={12} >
                         {fetchingTeamRanks ? <LoadingTable /> :
-                            <TableContainer className={classes.container}>
-                                <Table stickyHeader className="table-style">
+                            <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                                <Table stickyHeader className="table-style" className={classes.container}>
                                     <TableHead>
                                     <TableRow>
                                             <TableCell align="center" className={classes.tableHead}>Rank</TableCell>

@@ -10,7 +10,6 @@ const useStyles = makeStyles({
     },
     container: {
       maxHeight: 440,
-      minHeight: 440,
     },
     tableRow: {
         height: 30

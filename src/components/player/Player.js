@@ -20,8 +20,9 @@ export default function PlayerHomePage(){
     const [games, setGames] = useState([]);
     const [contest, setContest] = useState({});
     const [userType, setUserType] = useState('');
-    const [balance, setBalance] = useState('');
+    const [balance, setBalance] = useState(0);
     const [loading, setLoading] = useState(false)
+    const [playerName, setPlayerName] = useState(false)
 
     useEffect(()=>{
         setLoading(true)
@@ -30,6 +31,7 @@ export default function PlayerHomePage(){
 
     async function fetchHomePageData(){
         const user = await authenticationService.getCurrentUser()
+        setPlayerName(user.userName);
         const url = `${settings.apiRoot}/api/v1/Player/GetHomePageData/${user.operatorId}/${user.id}`;
         const response = await adapter.Get(url)
         if (response.ok)
@@ -45,10 +47,14 @@ export default function PlayerHomePage(){
         }
     }
 
+    const formatNumber = (num) => {
+        if (num == undefined || num =='' || isNaN(num)) return '0.00'
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
     return(
         <div>
             <BackdropLoading open={loading} />
-            <Navbar userType={"Player"} title={"Points: " + balance} />
+            <Navbar userType={"Player"} title={playerName + " - " + formatNumber(balance) + " pts."}/>
             <Container maxWidth="md">
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item xs={12} md={5}>

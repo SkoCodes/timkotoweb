@@ -40,7 +40,7 @@ export default function Contest(){
     const [summary, setSummary] = useState({})
 
     const formatNumber = (num) => {
-        if (num == undefined || num == undefined) return
+        if ((num == undefined  || num == '' || isNaN(num))) return '0.00'
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 

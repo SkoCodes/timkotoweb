@@ -13,8 +13,13 @@ const useStyles = makeStyles({
     tableRow: {
         height: 30
       },
-      tableCell: {
-        padding: "5px 2px"
+    tableCell: {
+        padding: "1px 2px"
+    },
+    tableHead: {
+        padding: "1px 6px",
+        backgroundColor: "#5353c6",
+        color: "white"
     }
   });
 
@@ -35,7 +40,7 @@ export default function PlayerTable(props){
     }
     
     const formatNumber = (num) => {
-        if (num == undefined || num == undefined) return
+        if (num == undefined  || num == '' || isNaN(num)) return '0.00'
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
@@ -45,9 +50,9 @@ export default function PlayerTable(props){
                 <Table stickyHeader className={classes.container}>
                     <TableHead>
                     <TableRow>
-                        <TableCell align="left" className={classes.tableCell}>Team </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>Name</TableCell>
-                        <TableCell align="right" className={classes.tableCell}>Salary</TableCell>
+                        <TableCell align="left" className={classes.tableHead}>Team </TableCell>
+                        <TableCell align="left" className={classes.tableHead}>Name</TableCell>
+                        <TableCell align="right" className={classes.tableHead}>Salary</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>

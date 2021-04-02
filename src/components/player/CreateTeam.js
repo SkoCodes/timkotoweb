@@ -62,7 +62,7 @@ export default function CreateTeam(){
     };
 
     const formatNumber = (num) => {
-        if (num == undefined || num == undefined) return
+        if ((num == undefined  || num == '' || isNaN(num))) return '0.00'
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
@@ -176,7 +176,7 @@ export default function CreateTeam(){
             <BackdropLoading open={loading}/>
             <Navbar userType={"Player"} title={"Create Team"}/>
             <Container maxWidth="md">
-                <Grid container style={{marginTop: '2px'}}>
+                <Grid container style={{marginTop: '8px'}}>
                     <Grid item xs={12} md={12}>
                         <Grid container justify="left">
                             <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '2px'}}>
@@ -185,7 +185,7 @@ export default function CreateTeam(){
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} md={12} style={{marginTop: '1px'}}>
+                    <Grid item xs={12} md={12} style={{marginTop: '0px'}}>
                            <Paper>
                                 <Tabs centered value={value} onChange={handleChange} aria-label="simple tabs example">
                                     {

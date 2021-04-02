@@ -60,6 +60,7 @@ export default function CreateTeam(){
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
+    const [displaySelected, setDisplaySelected] = useState(0)
 
     const formatNumber = (num) => {
         if ((num == undefined  || num == '' || isNaN(num))) return '0.00'
@@ -115,6 +116,12 @@ export default function CreateTeam(){
             setPlayers(newArray)
             }
         }
+
+        var selectedCount = 0; 
+        players.map(function(item){
+            selectedCount += item.players.filter(_ => _.selected).length;
+        });
+        setDisplaySelected(selectedCount)
     }
 
     const handleCreate = async () =>{
@@ -180,8 +187,8 @@ export default function CreateTeam(){
                     <Grid item xs={12} md={12}>
                         <Grid container justify="left">
                             <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '2px'}}>
-                            <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'green'}} >{" " + formatNumber(salaryCap)}</span></p>
-                                 
+                                <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'green'}} >{" " + formatNumber(salaryCap)}</span>
+                                <span style={{ marginLeft: '30px'}}>Selected:</span> <span style={{ color: 'green'}} >{displaySelected}</span></p>
                             </Grid>
                         </Grid>
                     </Grid>

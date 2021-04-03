@@ -228,6 +228,18 @@ export default function ResetPassword(){
                             Reset
                         </Button>
                     </div>
+                    <div style={{textAlign: 'center', marginTop: '10px'}}>
+                        <Button
+                            type="submit" 
+                            fullWidth 
+                            variant="contained" 
+                            color="primary"
+                            disabled={submittingCredentials}
+                            startIcon={submittingCredentials && <FaSpinner className="spinner" />}
+                            onClick={() => history.push('/login')}>
+                            Cancel
+                        </Button>
+                    </div>
                 </form>
             </Container>
             <Dialog open={openDialog}>

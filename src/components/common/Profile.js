@@ -115,8 +115,8 @@ export default function Profile() {
                                 className="form-input-style"
                                 size='small'
                                 style={{ margin: '10px 0px' }}
-                                disabled
                                 value={values.email}
+                                disabled
                             />
                             <TextField
                                 onChange={handleChange}

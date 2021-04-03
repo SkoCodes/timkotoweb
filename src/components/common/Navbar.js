@@ -1,3 +1,4 @@
+import settings from '../../settings';
 import React, { useState } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -79,6 +80,7 @@ export default function Navbar(props){
                         <IconButton onClick={handleClick} edge="start" color="inherit" aria-label="menu">
                             <MenuIcon />
                         </IconButton>
+                        <p>{settings.appEnv=='***DEV***' ? settings.appEnv : ''}</p>
                         <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}

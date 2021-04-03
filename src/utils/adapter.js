@@ -1,8 +1,10 @@
+import settings from '../settings';
+
 const adapter = {
     Post: async function (url, content) {
         try{
             const user = JSON.parse(sessionStorage.getItem("user"))
-            const apiKey = user ? user.token : "jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ"
+            const apiKey = user ? user.token : settings.apiKey
         
             var response = await fetch(url, {
                     method: "POST",
@@ -15,18 +17,18 @@ const adapter = {
                 }
             );
             if (response.status === 401){
-                window.location = 'https://timkoto.com'
+                window.location = settings.appLogin
             }
             return response;
         }
         catch (err){
-            window.location = 'https://timkoto.com'
+            window.location = settings.appLogin
         }
     },
     Get: async function (url) {
         try{
             const user = JSON.parse(sessionStorage.getItem("user"))
-            const apiKey = user ? user.token : "jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ"
+            const apiKey = user ? user.token : settings.apiKey
             var response = await fetch(url, {
                     method: "GET",
                     headers: new Headers({
@@ -36,12 +38,12 @@ const adapter = {
                 }
             );
             if (response.status === 401){
-                window.location = 'https://timkoto.com'
+                window.location = settings.appLogin
             }
             return response;
         }
         catch (err){
-            window.location = 'https://timkoto.com'
+            window.location = settings.appLogin
         }
     }
 }

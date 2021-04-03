@@ -54,8 +54,8 @@ export default function PlayerTransactionHistory() {
                 <p className={classes.rline}><span style={{fontWeight: 'bold'}}>9.</span> Final scores and ranks will be processed and winners will be declared after the last game of the day is finished.</p>
                 <p style={{textAlign:'center'}}><span style={{fontWeight: 'bold', textAlign:'center'}}>Goodluck and Enjoy!!!</span></p>
                 <Grid item xs={12} md={12} style={{ marginTop: '10px' }} >
-                        <Button variant="outlined" onClick={() => history.push('/player/team/history')} fullWidth variant="contained"
-                                color="primary" size='small' >Back</Button>
+                        <Button variant="outlined" onClick={() => history.push('/player')} fullWidth variant="contained"
+                                color="primary" size='small' >Home</Button>
                     </Grid>
             </Container>
             

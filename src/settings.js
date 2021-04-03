@@ -1,6 +1,6 @@
 let settings ={
-    apiKey : "jVq8KNLxQ52I7cWrmnDDT5bCTx3BDmza1l3MeTFJ",
-    apiRoot : "https://api.timkoto.com/dev"
+    apiKey : process.env.REACT_APP_API_KEY,
+    apiRoot : process.env.REACT_APP_API_ROOT
 }
 
 export default settings;

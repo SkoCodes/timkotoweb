@@ -22,6 +22,7 @@ import PlayerTeamStats from './components/player/PlayerTeamStats';
 import PlayerContestResult from './components/player/PlayerContestResult';
 import PlayerTransactionHistory from './components/player/PlayerTransactionHistory';
 import AgentPlayerTransactionHistory from './components/agent/AgentPlayerTransactionHistory';
+import PlayerRules from './components/player/PlayerRules';
 
 class App extends React.Component {
   render() {
@@ -41,6 +42,7 @@ class App extends React.Component {
           <ProtectedRoute path="/agent/contest/players" exact component={AgentContestPlayers} roles={["Agent"]}/>
           <ProtectedRoute path="/agent/transaction/history" exact component={AgentPlayerTransactionHistory} roles={["Agent"]}/>
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]}/>
+          <ProtectedRoute path="/player/rules" exact component={PlayerRules} roles={["Player"]}/>
           <ProtectedRoute path="/player/create-team" exact component={CreateTeam} roles={["Player"]} />
           <ProtectedRoute path="/player/contest" exact component={PlayerContest} roles={["Player"]}/>
           <ProtectedRoute path="/player/team/history" exact component={PlayerTeamHistory} roles={["Player"]}/>

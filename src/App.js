@@ -23,6 +23,7 @@ import PlayerContestResult from './components/player/PlayerContestResult';
 import PlayerTransactionHistory from './components/player/PlayerTransactionHistory';
 import AgentPlayerTransactionHistory from './components/agent/AgentPlayerTransactionHistory';
 import PlayerRules from './components/player/PlayerRules';
+import Profile from './components/common/Profile';
 
 class App extends React.Component {
   render() {
@@ -53,6 +54,7 @@ class App extends React.Component {
           <ProtectedRoute path="/operator/contests" exact component={ContestsPage} roles={["Operator"]} />
           <ProtectedRoute path="/common/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />
           <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgenPoints} roles={["Operator"]} />
+          <ProtectedRoute path="/common/profile" exact component={Profile} roles={["Agent","Player","Operator"]}/>
         </Switch>
       </Router>
       <Footer />

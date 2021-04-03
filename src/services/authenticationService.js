@@ -7,7 +7,16 @@ export const authenticationService = {
     logoutUser,
     getCurrentUser,
     refreshLogin,
-    getUserFromCookie
+    getUserFromCookie,
+    updateSessionProfile
+}
+
+function updateSessionProfile(profile){
+    const currentUser =  getCurrentUser();    
+    const updatedUser = {...currentUser,userName: profile.userName, phoneNumber: profile.phoneNumber};
+    const cookies = new Cookies();    
+    cookies.set('user', updatedUser, { maxAge: 86400 });
+    sessionStorage.setItem('user', JSON.stringify(updatedUser));
 }
 
 async function loginUser(email, password) {
@@ -31,7 +40,9 @@ async function loginUser(email, password) {
             id: result.data.user.id,
             operatorId: result.data.user.operatorId,
             token: result.data.idToken, 
-            agentId: result.data.user.agentId           
+            agentId: result.data.user.agentId,
+            email: result.data.user.email,
+            phoneNumber: result.data.user.phoneNumber          
         };
 
         const cookies = new Cookies();
@@ -62,7 +73,9 @@ async function refreshLogin() {
             id: result.data.user.id,
             operatorId: result.data.user.operatorId,
             token: result.data.idToken, 
-            agentId: result.data.user.agentId           
+            agentId: result.data.user.agentId,
+            email: result.data.user.email,
+            phoneNumber: result.data.user.phoneNumber                 
         };
 
         sessionStorage.setItem("user", JSON.stringify(user));

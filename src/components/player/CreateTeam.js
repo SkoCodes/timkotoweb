@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../common/Navbar';
-import { Container, Grid, Button, Paper } from '@material-ui/core';
+import { TableContainer, Table, TableRow, TableCell, TableBody, TableHead, Container, Grid, Button, Paper } from '@material-ui/core';
 import { authenticationService } from '../../services/authenticationService';
 import settings from '../../settings';
 import adapter from '../../utils/adapter'
@@ -12,6 +12,27 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { FaSpinner } from 'react-icons/fa'
 import { useHistory } from 'react-router';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+    container: {
+      maxHeight: 440,
+    },
+    tableRow: {
+        height: 30
+      },
+    tableCell: {
+        padding: "5px 5px"
+    },
+    tableHead: {
+        padding: "5px 5px",
+        backgroundColor: "#5353c6",
+        color: "white"
+    }
+});
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -40,9 +61,11 @@ function TabPanel(props) {
   }
 
 export default function CreateTeam(){
+    const classes = useStyles()
     const history = useHistory()
     const [value, setValue] = useState(0);
     const [players, setPlayers] = useState([])
+    const [selectedPlayers, setSelectedPlayers] = useState([])
     const [salaryCap, setSalaryCap] = useState(0)
     const [loading, setLoading] = useState(false)
     const [maximum, setMaximum] = useState(0);
@@ -55,6 +78,7 @@ export default function CreateTeam(){
     const [openSalaryExceededDialog, setOpenSalaryExceededDialog] = useState(false);
     const [openPlayerCountDialog, setOpenPlayerCountDialog] = useState(false);
     const [openForbiddenDialog, setOpenForbiddenDialog] = useState(false);
+    const [openConfirmLineupDialog, setOpenConfirmLineupDialog] = useState(false);
     const [submitting, setSubmitting] = useState(false)
     const [forbiddenMessage, setForbiddenMessage] = useState('')
     const handleChange = (event, newValue) => {
@@ -124,13 +148,7 @@ export default function CreateTeam(){
         setDisplaySelected(selectedCount)
     }
 
-    const handleCreate = async () =>{
-        setSubmitting(true)
-        const contest = JSON.parse(sessionStorage.getItem("contest"))
-        const id = contest.id
-        const user = await authenticationService.getCurrentUser()
-        //var teamName = user.userName
-
+    const handleConfirm = async () =>{
         //get total selected players
         var selectedCount = 0; 
         players.map(function(item){
@@ -138,13 +156,11 @@ export default function CreateTeam(){
         });
 
         if (salaryCap < 0){
-            setSubmitting(false)
             window.scroll(0,0)
             setError(true)
             setOpenSalaryExceededDialog(true)
         }
         else if (selectedCount != 9){
-            setSubmitting(false)
             window.scroll(0,0)
             setError(true)
             setOpenPlayerCountDialog(true)
@@ -152,30 +168,51 @@ export default function CreateTeam(){
         else{
             setError(false)
             setErrorMessage("")
-            const content = {
-                lineUpTeam:{
-                    playerTeamId: 0,
-                    operatorId: user.operatorId,
-                    agentId: user.agentId,
-                    userId: user.id,
-                    contestId: id,
-                    teamName: user.userName
-                },
-                lineUp: players
+            let tempArray = []
+        
+            for (const [i, player] of players.entries()) {
+                const filteredPlayers = player.players.filter(_ => _.selected)
+                if (filteredPlayers.length > 0){
+                    for (const [j, filteredPlayer] of filteredPlayers.entries()) {
+                        tempArray.push(filteredPlayer)
+                    }
+                }
             }
-            const url = `${settings.apiRoot}/api/v1/Contest/Lineup`;
-            const response = await adapter.Post(url,content)
-            if(response.ok){
-                const jsonResponse = await response.json()
-                setOpenSuccesDialog(true)
-            }
-            else if (response.status == 403){
-                const jsonResponse = await response.json()
-                setForbiddenMessage(jsonResponse.result.description)
-                setOpenForbiddenDialog(true)
-            }
-            setSubmitting(false)
+            setSelectedPlayers(tempArray)
+            setOpenConfirmLineupDialog(true)
         }
+    }
+
+    const handleCreate = async () =>{
+        setSubmitting(true)
+        const contest = JSON.parse(sessionStorage.getItem("contest"))
+        const id = contest.id
+        const user = await authenticationService.getCurrentUser()
+        const content = {
+            lineUpTeam:{
+                playerTeamId: 0,
+                operatorId: user.operatorId,
+                agentId: user.agentId,
+                userId: user.id,
+                contestId: id,
+                teamName: user.userName
+            },
+            lineUp: players
+        }
+        const url = `${settings.apiRoot}/api/v1/Contest/Lineup`;
+        const response = await adapter.Post(url,content)
+        if(response.ok){
+            const jsonResponse = await response.json()
+            setSubmitting(false)
+            setOpenSuccesDialog(true)
+        }
+        else if (response.status == 403){
+            const jsonResponse = await response.json()
+            setForbiddenMessage(jsonResponse.result.description)
+            setOpenForbiddenDialog(true)
+        }
+        setOpenConfirmLineupDialog(false)
+        setSubmitting(false)
     }
 
     return(
@@ -219,11 +256,11 @@ export default function CreateTeam(){
                                 color="primary" fullWidth onClick={()=>history.push('/player')}>Back</Button>
                             </Grid>
                             <Grid item xs={6} md={6}>
-                                <Button onClick={handleCreate} disabled={submitting} fullWidth 
+                                <Button onClick={handleConfirm} 
+                                fullWidth 
                                 variant="contained"
                                 color="primary"
-                                size='small'
-                                startIcon={submitting && <FaSpinner className="spinner" />}>Join Contest</Button>
+                                size='small'>Join Contest</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -259,7 +296,39 @@ export default function CreateTeam(){
                     <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenForbiddenDialog(false)} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
+            <Dialog open={openConfirmLineupDialog}>
+                <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
+                <TableContainer className={classes.container} style={{marginTop: '10px'}}>
+                <Table stickyHeader className={classes.container}>
+                    <TableHead>
+                    <TableRow>
+                        <TableCell align="left" className={classes.tableHead}>Team </TableCell>
+                        <TableCell align="left" className={classes.tableHead}>Name</TableCell>
+                        <TableCell align="right" className={classes.tableHead}>Salary</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {selectedPlayers.map((player,index) => (
+                        <TableRow style={{backgroundColor: `${player.selected ? '#dfe6e9':'white'}`}}>
+                            <TableCell align="left" className={classes.tableCell}>{player.team}</TableCell>
+                            <TableCell align="left" className={classes.tableCell}>{"#"+player.jersey+" "+player.playerName}</TableCell>
+                            <TableCell align="right" className={classes.tableCell}>{formatNumber(player.salary)}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+                    <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={handleCreate} 
+                    disabled={submitting} fullWidth 
+                    variant="contained"
+                    color="primary"
+                    size='small'
+                    startIcon={submitting && <FaSpinner className="spinner" />}
+                    size='small' color='primary'>Confirm</Button>
             
+                    <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenConfirmLineupDialog(false)} size='small' color='primary'>Cancel</Button>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

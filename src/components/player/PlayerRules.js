@@ -25,7 +25,7 @@ export default function PlayerTransactionHistory() {
                     <li className={classes.rline}>SF - 2</li>
                     <li className={classes.rline}>PG - 2</li>
                     <li className={classes.rline}>PF - 2</li>
-                    <li className={classes.rline}>C - 2</li>
+                    <li className={classes.rline}>C - 1</li>
                 </ul>
                 <p className={classes.rline}><span style={{fontWeight: 'bold'}}>4.</span> No team entry will be accepted once the games has started.</p>
                 <p className={classes.rline}><span style={{fontWeight: 'bold'}}>5.</span> Team lineup is final and cannot be changed after joining a contest.</p>

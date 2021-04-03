@@ -61,7 +61,7 @@ export default function AgentPlayers() {
     const handleChangeSearch = (e) => {
         setSearch(e.target.value)
         const filter = players2.filter(player => e.target.value !== "" ?
-            player.userName.toLowerCase().includes(e.target.value) || player.email.toLowerCase().includes(e.target.value.toLowerCase())
+            player.userName.toLowerCase().includes(e.target.value.toLowerCase())
             : player)
         setPlayers(filter)
     }

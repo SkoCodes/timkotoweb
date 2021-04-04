@@ -124,7 +124,7 @@ export default function PlayerContest() {
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>
-                                                    <TableCell colSpan="5" align="center">Games has not started yet.</TableCell>
+                                                    <TableCell colSpan="5" align="center"></TableCell>
                                                 </TableRow>
                                         }
                                     </TableBody>
@@ -158,7 +158,7 @@ export default function PlayerContest() {
                                                     </TableRow>
                                                 )) :
                                                 <TableRow hover>
-                                                    <TableCell colSpan="5" align="center">Games has not started yet.</TableCell>
+                                                    <TableCell colSpan="5" align="center"></TableCell>
                                                 </TableRow>
                                         }
                                     </TableBody>

@@ -17,7 +17,8 @@ export default function Profile() {
         email: currentUser.email,
         phoneNumber: currentUser.phoneNumber,
         userName: currentUser.userName,
-        userNameError: ""
+        userNameError: "",
+        role: currentUser.role,
     });
     const [message, setMessage] = useState({
         message: "",
@@ -90,6 +91,18 @@ export default function Profile() {
 
     const handleChange = (e) => {
         setValues({ ...values, [e.target.id]: e.target.value, userNameError: "" })
+    }
+
+    const handleHome = () => {
+        if (values.role == 'Operator'){
+            history.push("/operator")
+        }
+        if (values.role == 'Agent'){
+            history.push("/agent")
+        }
+        if (values.role == 'Player'){
+            history.push("/player")
+        }
     }
 
     return (
@@ -174,7 +187,7 @@ export default function Profile() {
                                 color="primary"
                                 type="button"
                                 disabled={submitting}
-                                onClick={() => history.push("/")}>Home
+                                onClick={handleHome}>Home
                              </Button>
                         </Grid>
                     </Grid>

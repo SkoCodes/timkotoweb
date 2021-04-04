@@ -40,15 +40,16 @@ export default function ResetPassword(){
     const handleSubmitEmail = async (e) =>{
         sessionStorage.removeItem('user');
         const cookies = new Cookies();
-        cookies.remove('user');
-    
+        cookies.remove("user", {domain: ".timkoto.com", path: "/"})  
+        document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
         e.preventDefault();
         if(values.email === ""){
             setErrorEmail(true)
             setEmailMessage("Email is required.")
             setMessageType("error")
         }
-        if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+        if (values.email && !/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i.test(values.email)) {
             setErrorEmail(true)
             setEmailMessage("Invalid email.")
             setMessageType("error")
@@ -95,8 +96,9 @@ export default function ResetPassword(){
         else{
             sessionStorage.removeItem('user');
             const cookies = new Cookies();
-            cookies.remove('user');
-    
+            cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
+            document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
             setSubmittingCredentials(true)
             const data = {
                 email: values.email,

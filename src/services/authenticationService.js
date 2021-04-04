@@ -15,7 +15,7 @@ function updateSessionProfile(profile){
     const currentUser =  getCurrentUser();    
     const updatedUser = {...currentUser,userName: profile.userName, phoneNumber: profile.phoneNumber};
     const cookies = new Cookies();    
-    cookies.set('user', updatedUser, { maxAge: 86400 });
+    cookies.set('user', updatedUser, { maxAge: 86000, domain: '.timkoto.com', path: '/' });
     sessionStorage.setItem('user', JSON.stringify(updatedUser));
 }
 
@@ -46,7 +46,7 @@ async function loginUser(email, password) {
         };
 
         const cookies = new Cookies();
-        cookies.set('user', user, { maxAge: 86400 });
+        cookies.set('user', user, { maxAge: 86000, domain: '.timkoto.com', path: '/' });
         sessionStorage.setItem("user", JSON.stringify(user));
 
         return user;
@@ -86,15 +86,19 @@ async function refreshLogin() {
 
 function getUserFromCookie() {
     const cookies = new Cookies();
-    const user = cookies.get('user');
-    sessionStorage.setItem("user", JSON.stringify(user));
+    const user = cookies.get('user', {domain: '.timkoto.com', path: '/'});
+    if (user != 'undefined' && user != null)
+    {
+        sessionStorage.setItem("user", JSON.stringify(user));
+    }
     return user;
 }
 
 function logoutUser() {
     sessionStorage.removeItem('user');
     const cookies = new Cookies();
-    cookies.remove('user');
+    cookies.remove("user", {domain: '.timkoto.com', path: '/' })  
+    document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
 function getCurrentUser() {

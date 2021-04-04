@@ -108,8 +108,8 @@ export default function CreateTeam(){
         if(response.ok){
             const jsonResponse = await response.json()
             setPlayers(jsonResponse.data)
-            setLoading(false)
         }
+        setLoading(false)
     }
 
      const onSelectPlayer = (positionName, playerId, selectedPlayer, playerSalary) =>{

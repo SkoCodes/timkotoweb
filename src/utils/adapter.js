@@ -1,9 +1,15 @@
 import settings from '../settings';
+import Cookies from 'universal-cookie';
 
 const adapter = {
     Post: async function (url, content) {
         try{
-            const user = JSON.parse(sessionStorage.getItem("user"))
+            var userSession = sessionStorage.getItem("user")
+            var user = null
+            if (userSession != 'undefined')
+            {
+                user = JSON.parse(sessionStorage.getItem("user"))
+            }
             const apiKey = user ? user.token : settings.apiKey
         
             var response = await fetch(url, {
@@ -17,17 +23,28 @@ const adapter = {
                 }
             );
             if (response.status === 401){
+                const cookies = new Cookies();
+                cookies.remove('user', {domain: '.timkoto.com', path: '/' }) 
+                document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
                 window.location = settings.appLogin
             }
             return response;
         }
         catch (err){
-            window.location = settings.appLogin
+            const cookies = new Cookies();
+            cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
+            document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            //window.location = settings.appLogin
         }
     },
     Get: async function (url) {
         try{
-            const user = JSON.parse(sessionStorage.getItem("user"))
+            var userSession = sessionStorage.getItem("user")
+            var user = null
+            if (userSession != 'undefined')
+            {
+                user = JSON.parse(sessionStorage.getItem("user"))
+            }
             const apiKey = user ? user.token : settings.apiKey
             var response = await fetch(url, {
                     method: "GET",
@@ -38,12 +55,18 @@ const adapter = {
                 }
             );
             if (response.status === 401){
+                const cookies = new Cookies();
+                cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
+                document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 window.location = settings.appLogin
             }
             return response;
         }
         catch (err){
-            window.location = settings.appLogin
+            const cookies = new Cookies();
+            cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
+            document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            //window.location = settings.appLogin
         }
     }
 }

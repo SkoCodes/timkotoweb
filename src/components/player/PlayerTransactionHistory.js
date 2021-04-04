@@ -78,7 +78,7 @@ export default function PlayerTransactionHistory() {
                                         {
                                             transactionHistory.length > 0 ?
                                                 transactionHistory.map((transaction, index) => (
-                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index}>
+                                                    <TableRow style={{ cursor: 'default' }} hover key={index}>
                                                         <TableCell align="left" className={classes.tableCell}>{ new Date(transaction.createDateTime).toLocaleDateString()}</TableCell>
                                                         <TableCell align="left" className={classes.tableCell}>{transaction.transactionType}</TableCell>
                                                         <TableCell align="right" className={classes.tableCell}>{formatNumber(transaction.amount)}</TableCell>

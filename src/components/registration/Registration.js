@@ -84,7 +84,7 @@ class Registration extends React.Component {
             emailAddressError = "Email address cannot be blank.";
         }
 
-        if (this.state.emailAddress && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(this.state.emailAddress)) {
+        if (this.state.emailAddress && !/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i.test(this.state.emailAddress)) {
             emailAddressError = "Invalid email."
         }
 
@@ -149,8 +149,6 @@ class Registration extends React.Component {
                                 size='small'
                                 style={{ margin: '10px 0px' }}
                             />
-                        
-                        
                             <TextField
                                 onChange={this.onChange}
                                 error={this.state.passwordError !== "" ? true : false}

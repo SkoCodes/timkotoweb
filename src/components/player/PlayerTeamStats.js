@@ -89,7 +89,7 @@ export default function PlayerTeamStats() {
                                         {
                                             teamStats.length > 0 ?
                                                 teamStats.map((teamStats, index) => (
-                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index} >
+                                                    <TableRow style={{ cursor: 'default' }} hover key={index} >
                                                         <TableCell align="left" className={classes.tableCell}>{teamStats.playerName}</TableCell>
                                                         <TableCell align="right" className={classes.tableCell}>{teamStats.points}</TableCell>
                                                         <TableCell align="right" className={classes.tableCell}>{teamStats.rebounds}</TableCell>

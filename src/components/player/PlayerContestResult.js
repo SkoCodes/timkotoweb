@@ -91,7 +91,7 @@ export default function PlayerContestResult() {
                                         {
                                             contestResult.length > 0 ?
                                                 contestResult.map((result, index) => (
-                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index}>
+                                                    <TableRow style={{ cursor: 'default' }} hover key={index}>
                                                         <TableCell align="left" className={classes.tableCell}>{result.teamName}</TableCell>
                                                         <TableCell align="center" className={classes.tableCell}>{result.teamRank} - {result.score}</TableCell>                                                        
                                                         <TableCell align="right" className={classes.tableCell}>{formatNumber(result.prize)}</TableCell>

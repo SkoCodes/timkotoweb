@@ -41,10 +41,10 @@ export default function PlayerHomePage(){
             setGames(jsonResponse.data.teams)
             setContest(jsonResponse.data.contest)
             setBalance(jsonResponse.data.balance)
-            setLoading(false)
             const contest = JSON.stringify(jsonResponse.data.contest)
             sessionStorage.setItem("contest", contest)
         }
+        setLoading(false)
     }
 
     const formatNumber = (num) => {

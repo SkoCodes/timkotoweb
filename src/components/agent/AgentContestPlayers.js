@@ -126,7 +126,7 @@ export default function AgentContestPlayers() {
                                     {
                                         currentContestPlayers.length > 0 ?
                                             currentContestPlayers.map((player, index) => (
-                                                <TableRow style={{ cursor: 'pointer' }}>
+                                                <TableRow style={{ cursor: 'default' }}>
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
                                                     <TableCell align="center" className={classes.tableCell}>{player.teamRank} - {player.score}</TableCell>
                                                     <TableCell align="right" className={classes.tableCell}>{formatNumber(player.prize)}</TableCell>

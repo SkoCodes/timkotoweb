@@ -67,6 +67,11 @@ class Registration extends React.Component {
         }
     }
 
+    onLoginClick = (e) =>{
+        e.preventDefault()
+        this.props.history.push("../login")
+    }
+
     onChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value,
@@ -220,8 +225,15 @@ class Registration extends React.Component {
                                     disabled={submitting}
                                     startIcon={submitting && <FaSpinner className="spinner" />}>
                                     Submit{submitting && 'ing'}
-                            </Button>                       
-                                
+                            </Button>        
+                            <hr></hr>               
+                            <Button
+                                    onClick={this.onLoginClick}
+                                    fullWidth
+                                    variant="outlined"
+                                    color="primary">
+                                    Login
+                            </Button>     
                     </form>
                 </Container>
                 

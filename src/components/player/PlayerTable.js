@@ -57,12 +57,13 @@ export default function PlayerTable(props){
                     </TableHead>
                     <TableBody>
                     {props.data.players.map((player,index) => (
-                        <TableRow key={index} onClick={()=>props.onSelectPlayer(player.position, player.playerId, player.selected, player.salary)} style={{backgroundColor: `${player.selected ? '#dfe6e9':'white'}`}}>
-                            <TableCell align="left" className={classes.tableCell}>{player.team}</TableCell>
-                            <TableCell align="left" className={classes.tableCell}>{"#"+player.jersey+" "+player.playerName}</TableCell>
-                            <TableCell align="right" className={classes.tableCell}>{formatNumber(player.salary)}</TableCell>
+                        <TableRow 
+                        key={index} onClick={()=>props.onSelectPlayer(player.position, player.playerId, player.selected, player.salary)} 
+                        style={{cursor: 'pointer', backgroundColor: `${player.selected ? '#900C3F':'white'}`}}>
+                            <TableCell align="left" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{player.team}</TableCell>
+                            <TableCell align="left" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{"#"+player.jersey+" "+player.playerName}</TableCell>
+                            <TableCell align="right" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{formatNumber(player.salary)}</TableCell>
                         </TableRow>
-                        // <PlayerTableRow onClick={()=> console.log('working')} key={index} data={player}/>
                     ))}
                     </TableBody>
                 </Table>

@@ -31,7 +31,11 @@ const useStyles = makeStyles({
         padding: "5px 5px",
         backgroundColor: "#5353c6",
         color: "white"
-    }
+    },
+    instructions: {
+        padding: "1px 1px",
+        marginTop: '-20px'
+    },
 });
 
 function TabPanel(props) {
@@ -188,6 +192,17 @@ export default function CreateTeam(){
         const contest = JSON.parse(sessionStorage.getItem("contest"))
         const id = contest.id
         const user = await authenticationService.getCurrentUser()
+        
+        let playersToSubmit = []
+        
+        for (const [i, player] of players.entries()) {
+            const filteredPlayers = {
+                position: player.position, 
+                players: player.players.filter(_ => _.selected)
+            }
+            playersToSubmit.push(filteredPlayers)
+        }
+        
         const content = {
             lineUpTeam:{
                 playerTeamId: 0,
@@ -197,7 +212,7 @@ export default function CreateTeam(){
                 contestId: id,
                 teamName: user.userName
             },
-            lineUp: players
+            lineUp: playersToSubmit
         }
         const url = `${settings.apiRoot}/api/v1/Contest/Lineup`;
         const response = await adapter.Post(url,content)
@@ -223,13 +238,20 @@ export default function CreateTeam(){
                 <Grid container style={{marginTop: '8px'}}>
                     <Grid item xs={12} md={12}>
                         <Grid container justify="left">
+                            <Grid item xs={12} md={8} style={{padding: '2px'}}>
+                            <p>Click on position tab to view players in that position.</p>
+                                <p className={classes.instructions}>Click on player to add or remove the player in your team.</p>
+                                
+                            </Grid>
+                            
                             <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '2px'}}>
                                 <p>Salary Cap: <span style={{ color: salaryCap < 0 ? 'red' : 'green'}} >{" " + formatNumber(salaryCap)}</span>
                                 <span style={{ marginLeft: '30px'}}>Selected:</span> <span style={{ color: 'green'}} >{displaySelected}</span></p>
+                                
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} md={12} style={{marginTop: '0px'}}>
+                    <Grid item xs={12} md={12} style={{marginTop: '-15px'}}>
                            <Paper>
                                 <Tabs centered value={value} onChange={handleChange} aria-label="simple tabs example">
                                     {

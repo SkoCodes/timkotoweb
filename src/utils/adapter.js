@@ -19,7 +19,8 @@ const adapter = {
                         'Content-Type': 'application/json'                
                     }),
                     body: JSON.stringify(content),
-                
+                    credentials: 'same-origin',
+                    mode:'cors',
                 }
             );
             if (response.status === 401){
@@ -52,6 +53,8 @@ const adapter = {
                         'x-api-key': apiKey,
                         'Content-Type': 'application/json'                
                         }),
+                    credentials: 'same-origin',
+                    mode:'cors',
                 }
             );
             if (response.status === 401){

@@ -24,6 +24,7 @@ const adapter = {
                 }
             );
             if (response.status === 401){
+                sessionStorage.removeItem('user');
                 const cookies = new Cookies();
                 cookies.remove('user', {domain: '.timkoto.com', path: '/' }) 
                 document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
@@ -32,10 +33,11 @@ const adapter = {
             return response;
         }
         catch (err){
+            sessionStorage.removeItem('user');
             const cookies = new Cookies();
             cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
             document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            //window.location = settings.appLogin
+            window.location = settings.appLogin
         }
     },
     Get: async function (url) {
@@ -58,6 +60,7 @@ const adapter = {
                 }
             );
             if (response.status === 401){
+                sessionStorage.removeItem('user');
                 const cookies = new Cookies();
                 cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
                 document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -66,10 +69,11 @@ const adapter = {
             return response;
         }
         catch (err){
+            sessionStorage.removeItem('user');
             const cookies = new Cookies();
             cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
             document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            //window.location = settings.appLogin
+            window.location = settings.appLogin
         }
     }
 }

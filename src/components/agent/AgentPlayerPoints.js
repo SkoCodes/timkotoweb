@@ -80,7 +80,8 @@ export default function AgentPlayerPoints() {
                 userType: "Player",
                 transactionType: "WalletDebit",
                 amount: confirmPointsToAdd,
-                agentId: currentPlayer.agentId
+                agentId: currentPlayer.agentId,
+                email: userDetail.email
             }
 
             setSubmittingPointsToAdd(true);

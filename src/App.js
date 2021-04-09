@@ -11,10 +11,10 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import AgentPlayers from './components/agent/AgentPlayers';
 import AgentPlayerPoints from './components/agent/AgentPlayerPoints';
 import Footer from './components/common/Footer'
-import OperatorAgenPoints from './components/operator/AgentPoints'
+import OperatorAgentPoints from './components/operator/AgentPoints'
 import RegistrationLink from './components/common/RegistrationLink'
 import AgentContestPlayers from './components/agent/AgentContestPlayers';
-import ContestsPage from './components/operator/Contests';
+import ContestsPage from './components/operator/OperatorContest';
 import CreateTeam from './components/player/CreateTeam';
 import PlayerContest from './components/player/PlayerContest';
 import PlayerTeamHistory from './components/player/PlayerTeamHistory';
@@ -24,6 +24,10 @@ import PlayerTransactionHistory from './components/player/PlayerTransactionHisto
 import AgentPlayerTransactionHistory from './components/agent/AgentPlayerTransactionHistory';
 import PlayerRules from './components/player/PlayerRules';
 import Profile from './components/common/Profile';
+import OperatorLiveScore  from './components/operator/OperatorLiveScore';
+import OperatorAgentPlayers from './components/operator/OperatorAgentPlayers';
+import AgentPlayersView from './components/operator/AgentPlayersView';
+import AgentLiveScore from './components/agent/AgentLiveScore';
 
 class App extends React.Component {
   render() {
@@ -42,6 +46,7 @@ class App extends React.Component {
           <ProtectedRoute path="/agent/player-points/:id" exact component={AgentPlayerPoints} roles={["Agent"]} />
           <ProtectedRoute path="/agent/contest/players" exact component={AgentContestPlayers} roles={["Agent"]}/>
           <ProtectedRoute path="/agent/transaction/history" exact component={AgentPlayerTransactionHistory} roles={["Agent"]}/>
+          <ProtectedRoute path="/agent/agent-live-score" exact component={AgentLiveScore} roles={["Agent"]}/>
           <ProtectedRoute path="/player" exact component={Player} roles={["Player"]}/>
           <ProtectedRoute path="/player/rules" exact component={PlayerRules} roles={["Player"]}/>
           <ProtectedRoute path="/player/create-team" exact component={CreateTeam} roles={["Player"]} />
@@ -52,8 +57,11 @@ class App extends React.Component {
           <ProtectedRoute path="/player/transaction/history" exact component={PlayerTransactionHistory} roles={["Player"]}/>
           <ProtectedRoute path="/operator" exact component={OperatorAgents} roles={["Operator"]} />
           <ProtectedRoute path="/operator/contests" exact component={ContestsPage} roles={["Operator"]} />
+          <ProtectedRoute path="/operator/operator-live-score" exact component={OperatorLiveScore} roles={["Operator"]}/>
+          <ProtectedRoute path="/operator/operator-agent-players" exact component={OperatorAgentPlayers} roles={["Operator"]}/>
+          <ProtectedRoute path="/operator/agent-players-view" exact component={AgentPlayersView} roles={["Operator"]}/>
           <ProtectedRoute path="/common/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />
-          <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgenPoints} roles={["Operator"]} />
+          <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgentPoints} roles={["Operator"]} />
           <ProtectedRoute path="/common/profile" exact component={Profile} roles={["Agent","Player","Operator"]}/>
         </Switch>
       </Router>

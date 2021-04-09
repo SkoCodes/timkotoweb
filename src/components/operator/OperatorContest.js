@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     }
   });
 
-export default function Contest(){
+export default function OperatorContest(){
     const history = useHistory()
     const classes = useStyles();
     const [userType, setUserType] = useState('');

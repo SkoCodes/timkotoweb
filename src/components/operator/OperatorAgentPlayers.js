@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     }
   });
 
-export default function OperatorAgents(){
+export default function OperatorAgentPlayers(){
     const classes = useStyles();
     const history = useHistory();
     const [agents, setAgents] = useState([]);
@@ -61,13 +61,13 @@ export default function OperatorAgents(){
     }
 
     const handleRedirect = (agent) =>{
-        sessionStorage.setItem('operator-agent-points', JSON.stringify(agent));
-        history.push('/operator/agent-points/'+agent.id)
+        sessionStorage.setItem('operator-selected-agent', JSON.stringify(agent));
+        history.push('/operator/agent-players-view/')
     }
 
     return(
         <div>
-            <Navbar userType={userDetail.role} title={"Agents List"}/>
+            <Navbar userType={userDetail.role} title={"Agent-Players List"}/>
             <Container maxWidth="xs">
                 <Grid container className="container-style">
                     <Grid item xs={12} md={6}>
@@ -96,7 +96,7 @@ export default function OperatorAgents(){
                                         ))
                                     :
                                     <TableRow hover>
-                                            <TableCell>You have no agents yet.</TableCell>
+                                            <TableCell>No players yet.</TableCell>
                                     </TableRow>
                                 }
                             </TableBody>
@@ -105,9 +105,9 @@ export default function OperatorAgents(){
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
-                        <Button onClick={()=> history.push('/common/registration-link')}
+                        <Button onClick={()=> history.push('/operator')}
                         variant="contained"
-                        color="primary" fullWidth  size='small'>Generate Registration Link</Button>
+                        color="primary" fullWidth size='small'>Home</Button>
                     </Grid>
                 </Grid>
             </Container>

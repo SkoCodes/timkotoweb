@@ -38,14 +38,18 @@ export default function AgentPlayersView() {
     const [userDetail, setUserDetail] = useState('');
     const [search, setSearch] = useState('');
     const [fetching, setFetching] = useState(false);
+    const [currentAgent, setCurrentAgent] = useState({});
 
     useEffect(() => {
         async function fetchData() {
+            
+            const agent = JSON.parse(sessionStorage.getItem('operator-selected-agent'))
+            setCurrentAgent(agent);
             const currentUser = authenticationService.getCurrentUser();
             setUserDetail(currentUser)
 
             setFetching(true)
-            const url = `${settings.apiRoot}/api/v1/player/${currentUser.operatorId}/${currentUser.id}`;
+            const url = `${settings.apiRoot}/api/v1/player/${currentUser.id}/${agent.id}`;
             const response = await adapter.Get(url);
             if (response.ok) {
                 const jsonResponse = await response.json();            
@@ -66,11 +70,6 @@ export default function AgentPlayersView() {
         setPlayers(filter)
     }
 
-    const handleRedirect = (player) => {
-        sessionStorage.setItem('agent-player-points', JSON.stringify(player));
-        history.push('/agent/player-points/' + player.id)
-    }
-
     const formatNumber = (num) => {
         if ((num == undefined  || num == '' || isNaN(num))) return '0.00'
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -81,7 +80,11 @@ export default function AgentPlayersView() {
             <Navbar userType={userDetail.role} title={"Players List"} />
             <Container maxWidth="xs">
                 <Grid container className="container-style">
+                    <Grid item xs={12} md={12}>
+                        
+                    </Grid>
                     <Grid item xs={12} md={6}>
+                        <p>Agent: <span style={{fontWeight:'bold'}}>{currentAgent.userName}</span></p>
                         <TextField onChange={handleChangeSearch} value={search} fullWidth id="outlined-basic" label="Search Player" variant="outlined" size="small" />
                     </Grid>
                     <Grid item xs={12} md={12} style={{marginTop: "5px"}}>
@@ -102,14 +105,14 @@ export default function AgentPlayersView() {
                                     {
                                         players.length > 0 ?
                                             players.map((player, index) => (
-                                                <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)} >
+                                                <TableRow >
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
                                                     <TableCell align="right" className={classes.tableCell}>{formatNumber(player.points)}</TableCell>
                                                 </TableRow>
                                             ))
                                             :
                                             <TableRow hover>
-                                                <TableCell>You have no players yet.</TableCell>
+                                                <TableCell>No players yet.</TableCell>
                                             </TableRow>
                                     }
                                 </TableBody>
@@ -118,9 +121,9 @@ export default function AgentPlayersView() {
                         }
                     </Grid>
                     <Grid item xs={12} md={12} className="generate-button-container">
-                        <Button onClick={()=> history.push('/common/registration-link')}
+                        <Button onClick={()=> history.push('/operator/operator-agent-players')}
                         variant="contained"
-                        color="primary" fullWidth>Generate Registration Link</Button>
+                        color="primary" fullWidth size='small'>Back</Button>
                     </Grid>
                 </Grid>
             </Container>

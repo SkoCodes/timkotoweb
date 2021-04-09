@@ -6,7 +6,7 @@ const adapter = {
         try{
             var userSession = sessionStorage.getItem("user")
             var user = null
-            if (userSession != 'undefined')
+            if (userSession != 'undefined' || userSession != null)
             {
                 user = JSON.parse(sessionStorage.getItem("user"))
             }
@@ -19,8 +19,8 @@ const adapter = {
                         'Content-Type': 'application/json'                
                     }),
                     body: JSON.stringify(content),
-                    credentials: 'same-origin',
-                    mode:'cors',
+                    // credentials: 'same-origin',
+                    // mode:'cors',
                 }
             );
             if (response.status === 401){
@@ -44,7 +44,7 @@ const adapter = {
         try{
             var userSession = sessionStorage.getItem("user")
             var user = null
-            if (userSession != 'undefined')
+            if (userSession != 'undefined' || userSession != null)
             {
                 user = JSON.parse(sessionStorage.getItem("user"))
             }
@@ -55,8 +55,8 @@ const adapter = {
                         'x-api-key': apiKey,
                         'Content-Type': 'application/json'                
                         }),
-                    credentials: 'same-origin',
-                    mode:'cors',
+                    // credentials: 'same-origin',
+                    // mode:'cors',
                 }
             );
             if (response.status === 401){

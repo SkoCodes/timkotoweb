@@ -87,7 +87,7 @@ async function refreshLogin() {
 function getUserFromCookie() {
     const cookies = new Cookies();
     const user = cookies.get('user', {domain: '.timkoto.com', path: '/'});
-    if (user != 'undefined' && user != null)
+    if (user != undefined && user != null)
     {
         sessionStorage.setItem("user", JSON.stringify(user));
     }

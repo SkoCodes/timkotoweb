@@ -153,7 +153,8 @@ export default function AgentPlayerPoints() {
                 userType: "Player",
                 transactionType: "WalletCredit",
                 amount: confirmPointsToClaim,
-                agentId: currentPlayer.agentId
+                agentId: currentPlayer.agentId,
+                email: userDetail.email
             }
 
             setSubmittingPointsToClaim(true);

@@ -6,9 +6,12 @@ const adapter = {
         try{
             var userSession = sessionStorage.getItem("user")
             var user = null
-            if (userSession != 'undefined' || userSession != null)
+            if (userSession != undefined || userSession != null)
             {
                 user = JSON.parse(sessionStorage.getItem("user"))
+            }
+            if (user != undefined && user != null && user.operatorId === '20060406'){
+                window.location = settings.appLogin
             }
             const apiKey = user ? user.token : settings.apiKey
         
@@ -44,9 +47,12 @@ const adapter = {
         try{
             var userSession = sessionStorage.getItem("user")
             var user = null
-            if (userSession != 'undefined' || userSession != null)
+            if (userSession != undefined || userSession != null)
             {
                 user = JSON.parse(sessionStorage.getItem("user"))
+            }
+            if (user != undefined && user != null && user.operatorId === '20060406'){
+                window.location = settings.appLogin
             }
             const apiKey = user ? user.token : settings.apiKey
             var response = await fetch(url, {

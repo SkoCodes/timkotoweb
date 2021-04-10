@@ -27,7 +27,7 @@ class Login extends React.Component {
     onLoad = async (e) => {
         e.preventDefault();
         const user = authenticationService.getUserFromCookie();
-        if (!user || user === null || user == 'undefined') {
+        if (!user || user === null || user == undefined) {
             return;
         } else {
             switch (user.role) {

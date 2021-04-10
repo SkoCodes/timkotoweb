@@ -11,6 +11,10 @@ const adapter = {
                 user = JSON.parse(sessionStorage.getItem("user"))
             }
             if (user != undefined && user != null && user.operatorId === '20060406'){
+                sessionStorage.removeItem('user');
+                const cookies = new Cookies();
+                cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
+                document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 window.location = settings.appLogin
             }
             const apiKey = user ? user.token : settings.apiKey
@@ -52,6 +56,10 @@ const adapter = {
                 user = JSON.parse(sessionStorage.getItem("user"))
             }
             if (user != undefined && user != null && user.operatorId === '20060406'){
+                sessionStorage.removeItem('user');
+                const cookies = new Cookies();
+                cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
+                document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 window.location = settings.appLogin
             }
             const apiKey = user ? user.token : settings.apiKey

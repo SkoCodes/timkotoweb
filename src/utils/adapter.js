@@ -10,7 +10,7 @@ const adapter = {
             {
                 user = JSON.parse(sessionStorage.getItem("user"))
             }
-            if (user != undefined && user != null && user.operatorId === '20060406'){
+            if (user != undefined && user != null && user.operatorId === 20060406){
                 sessionStorage.removeItem('user');
                 const cookies = new Cookies();
                 cookies.remove('user', {domain: '.timkoto.com', path: '/' })  
@@ -55,7 +55,7 @@ const adapter = {
             {
                 user = JSON.parse(sessionStorage.getItem("user"))
             }
-            if (user != undefined && user != null && user.operatorId === '20060406'){
+            if (user != undefined && user != null && user.operatorId === 20060406){
                 sessionStorage.removeItem('user');
                 const cookies = new Cookies();
                 cookies.remove('user', {domain: '.timkoto.com', path: '/' })  

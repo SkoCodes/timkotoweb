@@ -28,6 +28,7 @@ import OperatorLiveScore  from './components/operator/OperatorLiveScore';
 import OperatorAgentPlayers from './components/operator/OperatorAgentPlayers';
 import AgentPlayersView from './components/operator/AgentPlayersView';
 import AgentLiveScore from './components/agent/AgentLiveScore';
+import OperatorPlayerEntries from './components/operator/OperatorPlayerEntries';
 
 class App extends React.Component {
   render() {
@@ -60,9 +61,11 @@ class App extends React.Component {
           <ProtectedRoute path="/operator/operator-live-score" exact component={OperatorLiveScore} roles={["Operator"]}/>
           <ProtectedRoute path="/operator/operator-agent-players" exact component={OperatorAgentPlayers} roles={["Operator"]}/>
           <ProtectedRoute path="/operator/agent-players-view" exact component={AgentPlayersView} roles={["Operator"]}/>
+          <ProtectedRoute path="/operator/player-entries" exact component={OperatorPlayerEntries} roles={["Operator"]}/>
           <ProtectedRoute path="/common/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />
           <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgentPoints} roles={["Operator"]} />
           <ProtectedRoute path="/common/profile" exact component={Profile} roles={["Agent","Player","Operator"]}/>
+          
         </Switch>
       </Router>
       <Footer />

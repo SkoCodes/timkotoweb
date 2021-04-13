@@ -226,6 +226,7 @@ export default function AgentPlayerPoints() {
                     <Grid item xs={12} md={12}>
                         <br></br>
                         <Typography variant="subtitle1" style={{ textAlign: 'left', flexGrow: 1 }}><span style={{fontWeight: 'bold'}}>Player Name: </span>{currentPlayer.userName}</Typography>
+                        <Typography variant="subtitle1" style={{ textAlign: 'left', flexGrow: 1 }}><span style={{fontWeight: 'bold'}}>Email: </span>{currentPlayer.email}</Typography>
                     </Grid>
                     <Grid item xs={12} md={12}>
                         <Typography

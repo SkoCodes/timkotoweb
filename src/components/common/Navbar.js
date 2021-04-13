@@ -92,6 +92,7 @@ export default function Navbar(props){
                             <MenuItem onClick={() => history.push('/operator/contests')} style ={operatorMenu(userType)}>Contests</MenuItem>
                             <MenuItem onClick={() => history.push('/operator/operator-live-score')} style ={operatorMenu(userType)}>Live Scores</MenuItem>
                             <MenuItem onClick={() => history.push('/operator/operator-agent-players')} style ={operatorMenu(userType)}>Agent-Players</MenuItem>
+                            <MenuItem onClick={() => history.push('/operator/player-entries')} style ={operatorMenu(userType)}>Player Entries</MenuItem>
                             <MenuItem onClick={() => history.push('/agent')} style ={agentMenu(userType)} >Home</MenuItem>
                             <MenuItem onClick={() => history.push('/agent/contest/players')} style ={agentMenu(userType)} >Contest Players</MenuItem>
                             <MenuItem onClick={() => history.push('/agent/agent-live-score')} style ={agentMenu(userType)} >Live Scores</MenuItem>

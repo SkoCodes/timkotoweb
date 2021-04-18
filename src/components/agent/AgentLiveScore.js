@@ -39,7 +39,7 @@ export default function AgentLiveScore() {
 
     useInterval(() => {
         fetchTeamRanks();
-    }, oneMinuteInterval * 5);
+    }, oneMinuteInterval * 3);
 
     useEffect(() => {
         fetchTeamRanks();

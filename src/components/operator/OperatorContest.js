@@ -96,6 +96,22 @@ export default function OperatorContest(){
         setContests(filter)
     }
 
+    const handleDownload = async () =>{
+        if (contests.length > 0){
+            const userType = await authenticationService.getCurrentUser()
+            const url = `${settings.apiRoot}/api/v1/Operator/ContestPoints/${userType.id}/${date.toString()}`;
+            const response = await adapter.Get(url);
+            const blob = await response.blob()
+            const dlurl = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement('a');
+            link.href = dlurl;
+            link.setAttribute('download', `${date.toString()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);    
+        }
+    }
+
     return(
         <div>
             <Navbar userType={userType} title={"Contests Points"}/>
@@ -167,6 +183,11 @@ export default function OperatorContest(){
                         </TableContainer>
                     </Grid>
                 </Grid>
+
+                <Grid item xs={12} md={12} className="generate-button-container">
+                    <Button variant="contained" onClick={handleDownload} color='primary' fullWidth size='small'>Download</Button>
+                </Grid>
+
                 <Grid item xs={12} md={12} className="generate-button-container">
                     <Button variant="contained" onClick={()=> history.push('/operator')} color='primary' fullWidth size='small'>Back</Button>
                 </Grid>

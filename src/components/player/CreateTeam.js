@@ -239,7 +239,7 @@ export default function CreateTeam(){
                     <Grid item xs={12} md={12}>
                         <Grid container justify="left">
                             <Grid item xs={12} md={8} style={{padding: '2px'}}>
-                            <p>Click on position tab to view players in that position.</p>
+                                <p>100 points per team entry. Click on position tab to view players in that position.</p>
                                 <p className={classes.instructions}>Click on player to add or remove the player in your team.</p>
                                 
                             </Grid>
@@ -296,7 +296,7 @@ export default function CreateTeam(){
             </Dialog>
             <Dialog open={openSuccesDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '25px'}}>
-                    Team {teamName} created and joined contest.
+                    Team {teamName} created and joined contest. 100 was points deducted from your account.
                     <Button disabled={submitting} startIcon={submitting && <FaSpinner className="spinner" />} variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>history.push('/player')} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>

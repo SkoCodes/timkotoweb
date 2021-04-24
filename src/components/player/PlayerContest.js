@@ -49,7 +49,7 @@ export default function PlayerContest() {
             fetchPlayerTeamsInContest();
             fetchTeamRanks();
         }
-    }, oneMinuteInterval * 5);
+    }, oneMinuteInterval * 3);
 
 
     useEffect(() => {

@@ -29,7 +29,7 @@ import OperatorAgentPlayers from './components/operator/OperatorAgentPlayers';
 import AgentPlayersView from './components/operator/AgentPlayersView';
 import AgentLiveScore from './components/agent/AgentLiveScore';
 import OperatorPlayerEntries from './components/operator/OperatorPlayerEntries';
-
+import OperatorPlayerTransactionView from './components/operator/OperatorPlayerTransactionView';
 class App extends React.Component {
   render() {
     return (
@@ -64,6 +64,8 @@ class App extends React.Component {
           <ProtectedRoute path="/operator/player-entries" exact component={OperatorPlayerEntries} roles={["Operator"]}/>
           <ProtectedRoute path="/common/registration-link" exact component={RegistrationLink} roles={["Operator", "Agent"]} />
           <ProtectedRoute path="/operator/agent-points/:id" exact component={OperatorAgentPoints} roles={["Operator"]} />
+          <ProtectedRoute path="/operator/player-transaction-view" exact component={OperatorPlayerTransactionView} roles={["Operator"]} />
+          
           <ProtectedRoute path="/common/profile" exact component={Profile} roles={["Agent","Player","Operator"]}/>
           
         </Switch>

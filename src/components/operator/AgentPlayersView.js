@@ -75,6 +75,11 @@ export default function AgentPlayersView() {
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
+    const handleRedirect = (player) =>{
+        sessionStorage.setItem('player', JSON.stringify(player));
+        history.push('/operator/player-transaction-view')
+    }
+
     return (
         <Paper className={classes.root}>
             <Navbar userType={userDetail.role} title={"Players List"} />
@@ -105,7 +110,7 @@ export default function AgentPlayersView() {
                                     {
                                         players.length > 0 ?
                                             players.map((player, index) => (
-                                                <TableRow >
+                                                <TableRow style={{cursor: 'pointer'}} hover key={index} onClick={()=>handleRedirect(player)} >
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
                                                     <TableCell align="right" className={classes.tableCell}>{formatNumber(player.points)}</TableCell>
                                                 </TableRow>

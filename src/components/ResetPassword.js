@@ -87,7 +87,7 @@ export default function ResetPassword(){
         else if(values.code === ""){
             setErrorCode(true)
         }
-        else if(values.password === ""){
+        else if(values.password === "" && !/^(?=.*[A-Za-z@$!%*#?&])(?=.*\d)[A-Za-z@$!%*#?&\d]{8,}$/i.test(values.password)){
             setErrorPassword(true)
         }
         else if(values.password2 === ""){
@@ -190,6 +190,7 @@ export default function ResetPassword(){
                         style={{ margin: '10px 0px' }}
                         size='small'
                     />
+                    <div>Password must be at least 8 characters with atleast 1 number. Allowed special characters: @ $ ! % * # ? &amp;</div>
                     <TextField 
                         value={values.password}
                         onChange={handleChange}

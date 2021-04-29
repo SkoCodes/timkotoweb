@@ -61,7 +61,8 @@ export default function AgentPlayersView() {
     const handleChangeSearch = (e) => {
         setSearch(e.target.value)
         const filter = players2.filter(player => e.target.value !== "" ?
-            player.userName.toLowerCase().includes(e.target.value.toLowerCase())
+            player.userName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+            player.email.toLowerCase().includes(e.target.value.toLowerCase())
             : player)
         setPlayers(filter)
     }
@@ -95,7 +96,7 @@ export default function AgentPlayersView() {
                                     <TableRow>
                                         <TableCell align="left" className={classes.tableHead}>Name</TableCell>
                                         <TableCell align="right" className={classes.tableHead}>Points</TableCell>
-                                        
+                                        <TableCell align="left" className={classes.tableHead}>Email</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -105,6 +106,7 @@ export default function AgentPlayersView() {
                                                 <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleRedirect(player)} >
                                                     <TableCell align="left" className={classes.tableCell}>{player.userName}</TableCell>
                                                     <TableCell align="right" className={classes.tableCell}>{formatNumber(player.points)}</TableCell>
+                                                    <TableCell align="left" className={classes.tableCell}>{player.email}</TableCell>
                                                 </TableRow>
                                             ))
                                             :

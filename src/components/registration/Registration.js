@@ -49,7 +49,13 @@ class Registration extends React.Component {
             this.setState({submitting :false});
 
             if (response.ok) {
-                this.props.history.push("../login");
+                const jsonResponse = await response.json();
+                if (jsonResponse.result.code === 'NewUserCreatedActivationRequired'){
+                    this.props.history.push("/registersuccess");
+                }
+                else{
+                    this.props.history.push("../login");
+                }
             }
             if (response.status === 403) {
                 const jsonResponse = await response.json();
@@ -97,8 +103,8 @@ class Registration extends React.Component {
             passwordError = "Password is required.";
         }
 
-        if (this.state.password && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i.test(this.state.password)) {
-            passwordError = "Password must be at least 8 characters with atleast 1 number.";
+        if (this.state.password && !/^(?=.*[A-Za-z@$!%*#?&])(?=.*\d)[A-Za-z@$!%*#?&\d]{8,}$/i.test(this.state.password)) {
+            passwordError = "Password must be at least 8 characters with atleast 1 number. Allowed special characters: @ $ ! % * # ? &";
         }
 
         if (!this.state.confirmPassword) {

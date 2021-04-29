@@ -54,16 +54,23 @@ class Login extends React.Component {
         if (isValid) {
             this.setState({ message: "" })
             this.setState({ submitting: true });
-            const user = await authenticationService.loginUser(this.state.email, this.state.password);
+            const result = await authenticationService.loginUser(this.state.email, this.state.password);
             this.setState({ submitting: false });
 
-            if (user === null) {
+            if (result === null) {
                 this.setState({
                     message: "Invalid credentials.",
                     messageType: "error"
                 });
-            } else {
-                switch (user.role) {
+            }
+            else if (result.user === null && result.message != '' && result.message != null){
+                this.setState({
+                    message: result.message,
+                    messageType: "error"
+                });
+            }
+            else {
+                switch (result.user.role) {
                     case "Operator":
                         this.props.history.push("/operator");
                         break;

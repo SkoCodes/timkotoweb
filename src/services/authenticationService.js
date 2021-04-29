@@ -30,6 +30,15 @@ async function loginUser(email, password) {
     const response = await adapter.Post(url, content);
 
     if (!response.ok) {
+        if (response.status === 403){
+            const result = await response.json();
+            const retVal = {
+                user: null,
+                message: result.result.description
+            }
+    
+            return retVal;
+        }
         return null;
     } else {
         const result = await response.json();
@@ -49,7 +58,12 @@ async function loginUser(email, password) {
         cookies.set('user', user, { maxAge: 86000, domain: '.timkoto.com', path: '/' });
         sessionStorage.setItem("user", JSON.stringify(user));
 
-        return user;
+        const retVal = {
+            user: user,
+            message: result.result.description
+        }
+
+        return retVal;
     }
 }
 

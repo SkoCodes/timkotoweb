@@ -34,7 +34,7 @@ export default function PlayerTeamStats() {
     const teamHistory = JSON.parse(sessionStorage.getItem("teamHistory"));
     const [teamStats, setTeamStats] = useState({});
     const [fetchingTeamStats, setFetchingTeamStats] = useState(false);
-
+    
     useEffect(() => {
         fetchTeamStats();
     }, []);
@@ -47,6 +47,9 @@ export default function PlayerTeamStats() {
         if (response.ok) {
             const jsonResponse = await response.json();
             setTeamStats(jsonResponse.data.playerStats);
+        }
+        else{
+            history.push('/player/team/history');
         }
         setFetchingTeamStats(false);
     };
@@ -109,6 +112,10 @@ export default function PlayerTeamStats() {
                                 </Table>
                             </TableContainer>
                         }
+                    </Grid>
+                    <Grid item xs={12} md={12} style={{ marginTop: '10px' }} >
+                        <Button variant="outlined" onClick={() => history.push('/player/update-team')} fullWidth variant="contained" disabled={teamHistory.contestState != 'Upcoming'}
+                                color="primary" size='small' >Edit</Button>
                     </Grid>
                     <Grid item xs={12} md={12} style={{ marginTop: '10px' }} >
                         <Button variant="outlined" onClick={() => history.push('/player/team/history')} fullWidth variant="contained"

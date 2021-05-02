@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer } from '@material-ui/core';
-import PlayerTableRow from './PlayerTableRow';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -39,9 +38,9 @@ export default function PlayerTable(props){
         }
     }
     
-    const formatNumber = (num) => {
-        if (num == undefined  || num == '' || isNaN(num)) return '0.00'
-        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    const formatNumber = (num, dp) => {
+        if (num == undefined  || num == '' || isNaN(num)) return '0'
+        return num.toFixed(dp).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
     return(
@@ -53,6 +52,7 @@ export default function PlayerTable(props){
                         <TableCell align="left" className={classes.tableHead}>Team </TableCell>
                         <TableCell align="left" className={classes.tableHead}>Name</TableCell>
                         <TableCell align="right" className={classes.tableHead}>Salary</TableCell>
+                        <TableCell align="right" className={classes.tableHead}>FPPG</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -62,7 +62,8 @@ export default function PlayerTable(props){
                         style={{cursor: 'pointer', backgroundColor: `${player.selected ? '#900C3F':'white'}`}}>
                             <TableCell align="left" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{player.team}</TableCell>
                             <TableCell align="left" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{"#"+player.jersey+" "+player.playerName}</TableCell>
-                            <TableCell align="right" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{formatNumber(player.salary)}</TableCell>
+                            <TableCell align="right" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{formatNumber(player.salary, 0)}</TableCell>
+                            <TableCell align="right" className={classes.tableCell} style={{color: `${player.selected ? 'white':'black'}`, fontWeight: `${player.selected ? 'bold':'normal'}`}}>{player.fppg === 0 ? 'N/A' : formatNumber(player.fppg, 2)}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>

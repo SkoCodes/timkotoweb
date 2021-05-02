@@ -64,7 +64,7 @@ function TabPanel(props) {
     };
   }
 
-export default function CreateTeam(){
+export default function UpdateTeam(){
     const classes = useStyles()
     const history = useHistory()
     const [value, setValue] = useState(0);
@@ -82,10 +82,12 @@ export default function CreateTeam(){
     const [openSalaryExceededDialog, setOpenSalaryExceededDialog] = useState(false);
     const [openPlayerCountDialog, setOpenPlayerCountDialog] = useState(false);
     const [openForbiddenDialog, setOpenForbiddenDialog] = useState(false);
-    const [openNotEnoughPointsDialog, setOpenNotEnoughPointsDialog] = useState(false);
     const [openConfirmLineupDialog, setOpenConfirmLineupDialog] = useState(false);
     const [submitting, setSubmitting] = useState(false)
     const [forbiddenMessage, setForbiddenMessage] = useState('')
+    const teamHistory = JSON.parse(sessionStorage.getItem("teamHistory"));
+    const contest = JSON.parse(sessionStorage.getItem("contest"))
+
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
@@ -103,16 +105,26 @@ export default function CreateTeam(){
     },[])
 
     async function fetchPlayer(){
-        const contest = JSON.parse(sessionStorage.getItem("contest"))
-        const id = contest.id
-        const salarycap = contest.salaryCap
-        setSalaryCap(salarycap);
+        setSalaryCap(contest.salaryCap);
         const user = await authenticationService.getCurrentUser()
-        const url = `${settings.apiRoot}/api/v1/Contest/Players/${id}`;
+        const url = `${settings.apiRoot}/api/v1/Contest/PlayersForUpdate/${contest.id}/${teamHistory.id}`;
         const response = await adapter.Get(url)
         if(response.ok){
             const jsonResponse = await response.json()
             setPlayers(jsonResponse.data)
+
+            var selectedCount = 0; 
+            jsonResponse.data.map(function(item){
+                selectedCount += item.players.filter(_ => _.selected).length;
+            });
+            setDisplaySelected(selectedCount)
+            var tmpSalaryCap = contest.salaryCap;
+            jsonResponse.data.map(function(item){
+                item.players.filter(_ => _.selected).map(function(player){
+                    tmpSalaryCap -= player.salary
+                })
+            });
+            setSalaryCap(tmpSalaryCap)
         }
         setLoading(false)
     }
@@ -151,6 +163,10 @@ export default function CreateTeam(){
             selectedCount += item.players.filter(_ => _.selected).length;
         });
         setDisplaySelected(selectedCount)
+        if (selectedCount <= 0){
+            setDisplaySelected(0)
+            setSalaryCap(contest.salaryCap);
+        }
     }
 
     const handleConfirm = async () =>{
@@ -206,7 +222,7 @@ export default function CreateTeam(){
         
         const content = {
             lineUpTeam:{
-                playerTeamId: 0,
+                playerTeamId: teamHistory.id,
                 operatorId: user.operatorId,
                 agentId: user.agentId,
                 userId: user.id,
@@ -219,19 +235,14 @@ export default function CreateTeam(){
         const response = await adapter.Post(url,content)
         if(response.ok){
             const jsonResponse = await response.json()
+            sessionStorage.setItem("teamHistory", JSON.stringify(jsonResponse.data.playerTeamHistory));
             setSubmitting(false)
             setOpenSuccesDialog(true)
         }
         else if (response.status == 403){
             const jsonResponse = await response.json()
-            
-            if (jsonResponse.result.code === 'NotEnoughPoints'){
-                setOpenNotEnoughPointsDialog(true);
-            }
-            else{
-                setForbiddenMessage(jsonResponse.result.description)
-                setOpenForbiddenDialog(true)
-            }
+            setForbiddenMessage(jsonResponse.result.description)
+            setOpenForbiddenDialog(true)
         }
         setOpenConfirmLineupDialog(false)
         setSubmitting(false)
@@ -240,17 +251,12 @@ export default function CreateTeam(){
     return(
         <div>
             <BackdropLoading open={loading}/>
-            <Navbar userType={"Player"} title={"Create Team"}/>
+            <Navbar userType={"Player"} title={"Update Team"}/>
             <Container maxWidth="md">
                 <Grid container style={{marginTop: '8px'}}>
                     <Grid item xs={12} md={12}>
                         <Grid container justify="left">
-                            <Grid item xs={12} md={8} style={{padding: '2px', fontSize:'14px', color:'gray'}}>
-                                <p>100 points per team entry. Click on position tab to view and select players in that position.</p>
-                                <p className={classes.instructions}>Click on player to add or remove the player.</p>
-                            </Grid>
-                            
-                            <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '2px', marginTop: '-15px'}}>
+                            <Grid item xs={12} md={8} style={{fontWeight: 'bold', padding: '2px', marginTop: '-10px'}}>
                                 <p><span style={{ color: salaryCap < 0 ? 'red' : 'green'}} >{" " + formatNumber(salaryCap)}</span> salary remaining
                                 <span style={{ marginLeft: '30px'}}>Selected</span> <span style={{ color: 'green'}} >{displaySelected}</span></p>
                                 <div style={{marginTop: '-15px', fontWeight: 'normal', fontSize:'14px', color:'gray'}}>Estimate: {9 - displaySelected === 0 ? '-' : formatNumber(salaryCap/(9-displaySelected))} per open position ({(9-displaySelected)})</div>
@@ -281,14 +287,14 @@ export default function CreateTeam(){
                                 <Button 
                                 variant="contained"
                                 size='small'
-                                color="primary" fullWidth onClick={()=>history.push('/player')}>Back</Button>
+                                color="primary" fullWidth onClick={()=>history.push('/player/team/stats')}>Back</Button>
                             </Grid>
                             <Grid item xs={6} md={6}>
                                 <Button onClick={handleConfirm} 
                                 fullWidth 
                                 variant="contained"
                                 color="primary"
-                                size='small'>Join Contest</Button>
+                                size='small'>Update Lineup</Button>
                             </Grid>
                             <Grid item xs={12} md={12} style={{marginLeft:'15px', padding: '2px', fontSize:'14px', color:'gray'}}>
                                 FPPG - Average Fantasy Points Per Game
@@ -305,8 +311,8 @@ export default function CreateTeam(){
             </Dialog>
             <Dialog open={openSuccesDialog}>
                 <DialogContent style={{textAlign: 'center', fontSize: '15px'}}>
-                    Team {teamName} created and joined contest. 100 points was deducted from your account.
-                    <Button disabled={submitting} startIcon={submitting && <FaSpinner className="spinner" />} variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>history.push('/player')} size='small' color='primary'>OK</Button>
+                    Team {teamName} updated.
+                    <Button disabled={submitting} startIcon={submitting && <FaSpinner className="spinner" />} variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>history.push('/player/team/stats')} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
             <Dialog open={openSalaryExceededDialog}>
@@ -325,12 +331,6 @@ export default function CreateTeam(){
                 <DialogContent style={{textAlign: 'center', fontSize: '15px'}}>
                     {forbiddenMessage}
                     <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenForbiddenDialog(false)} size='small' color='primary'>OK</Button>
-                </DialogContent>
-            </Dialog>
-            <Dialog open={openNotEnoughPointsDialog}>
-                <DialogContent style={{textAlign: 'center', fontSize: '15px'}}>
-                    You do not have enough points to play. Please contact your agent or contact us at <a href = "mailto: admin@timkoto.com">admin@timkoto.com</a> or send us a message at our TimKoTo Facebook page <a href='https://www.facebook.com/Timkoto-104935881710225'>TimKoTo Page</a>
-                    <Button variant="contained" style={{margin: '20px 0px'}} fullWidth onClick={()=>setOpenNotEnoughPointsDialog(false)} size='small' color='primary'>OK</Button>
                 </DialogContent>
             </Dialog>
             <Dialog open={openConfirmLineupDialog}>

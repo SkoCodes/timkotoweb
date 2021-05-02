@@ -51,6 +51,7 @@ class Registration extends React.Component {
             if (response.ok) {
                 const jsonResponse = await response.json();
                 if (jsonResponse.result.code === 'NewUserCreatedActivationRequired'){
+                    sessionStorage.setItem("timkoto_email", content.email);
                     this.props.history.push("/registersuccess");
                 }
                 else{

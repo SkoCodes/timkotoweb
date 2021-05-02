@@ -2,6 +2,7 @@ import logo from '../../logo.png';
 import { Button, Container, Grid, makeStyles } from "@material-ui/core";
 
 function RegistrationSuccess() {
+    
     return (
         
         <div style={{width:'100%'}}>
@@ -13,9 +14,8 @@ function RegistrationSuccess() {
                 </Grid>
                 <Grid container className="container-style">
                     <div className="center-content">
-                    Registration succeeded. An activation email from Timkoto has been sent to your email, please follow the instruction in the email to activate your account.
+                    Registration succeeded. An activation email from Timkoto has been sent to {sessionStorage.getItem('timkoto_email')}, please follow the instruction in the email to activate your account.
                     </div>
-                    
                 </Grid>
             </Container>
         </div>

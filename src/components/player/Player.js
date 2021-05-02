@@ -92,8 +92,11 @@ export default function PlayerHomePage(){
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} md={12} style={{textAlign: 'center', padding: '20px', fontWeight: 'bold'}}>
-                                Upcoming NBA Games on {contest.gameDate}
+                    <Grid item xs={12} md={12} style={{textAlign: 'center', padding: '10px', fontWeight: 'bold'}}>
+                        Upcoming NBA Games on {contest.gameDate} (US Date)
+                    </Grid>
+                    <Grid item xs={12} md={12} style={{color: 'gray', fontSize:'11px', textAlign: 'center', padding: '0px'}}>
+                        Start game time below are time in Ph.
                     </Grid>
                     <Grid item xs={12} md={8}>
                         <List> 
@@ -102,21 +105,21 @@ export default function PlayerHomePage(){
                                 games.map((game, index)=>(
                                     <>
                                     <ListItem key={index}>
-                                        <Grid container style={{padding: '0 10px'}}>
+                                        <Grid container style={{padding: '0 0px'}}>
                                             <Grid item xs={5} md={5} style={{textAlign: 'left', display: 'flex', justifyContent: 'space-between'}}>
                                                 <div>
                                                     {game.homeTeamNickName}
                                                 </div>
                                                 <div>
-                                                    <img src={"../assets/" + game.homeTeamLogo} alt="" style={{height: 50, width: 'auto'}}/>
+                                                    <img src="../assets/teamLogo.png" alt="" style={{height: 50, width: 'auto'}}/>
                                                 </div>
                                             </Grid>
-                                            <Grid item xs={2} md={2} style={{textAlign: 'center', fontWeight: 'bold', display: 'flex', justifyContent: 'center'}}>
-                                                <p style={{margin: 'auto 0'}}>VS</p>
+                                            <Grid item xs={2} md={2} style={{color: 'gray', fontSize:'11px', textAlign: 'center', display: 'flex', justifyContent: 'center'}}>
+                                                <p style={{margin: 'auto 0'}}>{game.startTime}</p>
                                             </Grid>
                                             <Grid item xs={5} md={5} style={{textAlign: 'right',display: 'flex', justifyContent: 'space-between'}}>
                                                 <div>
-                                                    <img src={"../assets/" + game.visitorTeamLogo} alt="" style={{height: 50, width: 'auto'}}/>
+                                                    <img src="../assets/teamLogo.png" alt="" style={{height: 50, width: 'auto'}}/>
                                                 </div>
                                                 <div>
                                                     {game.visitorTeamNickName}

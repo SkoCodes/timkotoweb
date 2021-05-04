@@ -1,4 +1,4 @@
-import { Button, Container, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
+import { TextField, Button, Container, Dialog, DialogContent, Grid, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { authenticationService } from "../../services/authenticationService"
 import settings from "../../settings";
@@ -33,6 +33,11 @@ export default function AgentContestResult() {
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().slice(0, 10));
     const [contestResult, setContestResult] = useState({});
     const [fetchingContestResult, setFetchingContestResult] = useState(false);
+    const [showTeamStats, setShowTeamStats] = useState(false);
+    const [teamStats, setTeamStats] = useState({});
+    const [loadingTeamStats, setLoadingTeamStats] = useState(false);
+    const [selectedTeam, setSelectedTeam] = useState({});
+
     useEffect(() => {        
         setContestResult({});
         FetchContentResult();
@@ -50,6 +55,34 @@ export default function AgentContestResult() {
             }
             setFetchingContestResult(false);
         }
+    }
+
+    const handleTeamRankTeamClick = (team) => {
+        const selectedTeam = {
+            id: team.playerTeamId,
+            score: team.score,
+            teamRank: team.teamRank,
+            teamName: team.teamName
+        };
+        showStats(selectedTeam);
+    }
+
+    const showStats = async (team) => {
+        if (team.id === undefined) {
+            return;
+        }
+        setSelectedTeam(team);
+        setShowTeamStats(true);
+
+        setLoadingTeamStats(true);
+        const url = `${settings.apiRoot}/api/v1/player/teamplayerstats/${team.id}`;
+        const response = await adapter.Get(url);
+
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            setTeamStats(jsonResponse.data.playerStats);
+        }
+        setLoadingTeamStats(false);
     }
 
     const formatNumber = (num) => {
@@ -91,9 +124,9 @@ export default function AgentContestResult() {
                                         {
                                             contestResult.length > 0 ?
                                                 contestResult.map((result, index) => (
-                                                    <TableRow style={{ cursor: 'default' }} hover key={index}>
+                                                    <TableRow style={{ cursor: 'pointer' }} hover key={index} onClick={() => handleTeamRankTeamClick(result)}>
                                                         <TableCell align="left" className={classes.tableCell}>{result.teamName}</TableCell>
-                                                        <TableCell align="center" className={classes.tableCell}>{result.teamRank} - {result.score}</TableCell>                                                        
+                                                        <TableCell align="center" className={classes.tableCell}>{result.teamRank} - {formatNumber(result.score)}</TableCell>                                                        
                                                         <TableCell align="right" className={classes.tableCell}>{formatNumber(result.prize)}</TableCell>
                                                     </TableRow>
                                                 )) :
@@ -111,6 +144,63 @@ export default function AgentContestResult() {
                     </Grid>
                 </Grid>
             </Container>
+            <Dialog open={showTeamStats} fullWidth>
+                <DialogContent style={{ textAlign: 'center', fontSize: '25px' }}>
+                    <Grid container className='container-style'>
+                        <Grid item xs={12} md={12} className="summary-container" style={{ marginBottom: '10px' }}>
+                            <p>Score : <span style={{ fontWeight: 'bold' }}>{selectedTeam.score}</span></p>
+                            <p>Rank : <span style={{ fontWeight: 'bold' }}>{selectedTeam.teamRank}</span></p>
+                        </Grid>
+                        <Grid item xs={12} md={12} style={{ align: 'center' }} style={{ marginTop: '10px' }}>
+                            <Typography variant="h6" style={{ textAlign: 'center', flexGrow: 1 }}>{selectedTeam.teamName}</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={12}>
+                            {loadingTeamStats ? <LoadingTable /> :
+                                <TableContainer className={classes.container} style={{ marginTop: '10px' }}>
+                                    <Table stickyHeader className="table-style" className={classes.container}>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell align="left" className={classes.tableHead}>Name</TableCell>
+                                                <TableCell align="right" className={classes.tableHead}>P</TableCell>
+                                                <TableCell align="right" className={classes.tableHead}>R</TableCell>
+                                                <TableCell align="right" className={classes.tableHead}>A</TableCell>
+                                                <TableCell align="right" className={classes.tableHead}>S</TableCell>
+                                                <TableCell align="right" className={classes.tableHead}>B</TableCell>
+                                                <TableCell align="right" className={classes.tableHead}>T</TableCell>
+                                                <TableCell align="right" className={classes.tableHead}>TS</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {
+                                                teamStats.length > 0 ?
+                                                    teamStats.map((teamStats, index) => (
+                                                        <TableRow style={{ cursor: 'default' }} key={index} >
+                                                            <TableCell align="left" className={classes.tableCell}>{teamStats.playerName}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{teamStats.points}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{formatNumber(teamStats.rebounds)}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{formatNumber(teamStats.assists)}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{teamStats.steals}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{teamStats.blocks}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{teamStats.turnOvers}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{formatNumber(teamStats.totalPoints)}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )) :
+                                                    <TableRow hover>
+                                                        <TableCell colSpan="5" align="center">No Data</TableCell>
+                                                    </TableRow>
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            }
+                        </Grid>
+                        <Grid item xs={12} md={12}>
+                            <Button variant="contained" style={{ margin: '20px 0px' }} fullWidth onClick={() => setShowTeamStats(false)} size='small' color='primary'>Close</Button>
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

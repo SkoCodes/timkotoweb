@@ -235,8 +235,8 @@ export default function PlayerContest() {
                                                         <TableRow style={{ cursor: 'default' }} key={index} >
                                                             <TableCell align="left" className={classes.tableCell}>{teamStats.playerName}</TableCell>
                                                             <TableCell align="right" className={classes.tableCell}>{teamStats.points}</TableCell>
-                                                            <TableCell align="right" className={classes.tableCell}>{teamStats.rebounds}</TableCell>
-                                                            <TableCell align="right" className={classes.tableCell}>{teamStats.assists}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{formatNumber(teamStats.rebounds)}</TableCell>
+                                                            <TableCell align="right" className={classes.tableCell}>{formatNumber(teamStats.assists)}</TableCell>
                                                             <TableCell align="right" className={classes.tableCell}>{teamStats.steals}</TableCell>
                                                             <TableCell align="right" className={classes.tableCell}>{teamStats.blocks}</TableCell>
                                                             <TableCell align="right" className={classes.tableCell}>{teamStats.turnOvers}</TableCell>

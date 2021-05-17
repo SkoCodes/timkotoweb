@@ -44,6 +44,13 @@ export default function PlayerHomePage(){
             const contest = JSON.stringify(jsonResponse.data.contest)
             sessionStorage.setItem("contest", contest)
         }
+        if (response.status === 403){
+            const jsonResponse = await response.json()
+            if (jsonResponse != null && jsonResponse.data != null)
+                {
+                    setBalance(jsonResponse.data.balance)
+                }
+        }
         setLoading(false)
     }
 

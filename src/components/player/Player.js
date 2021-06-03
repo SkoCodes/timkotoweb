@@ -90,6 +90,7 @@ export default function PlayerHomePage(){
                         <Grid container justify="center">
                             <Grid item xs={12} md={5}>
                                 <Button 
+                                 disabled={games.length === 0}
                                  fullWidth
                                  variant="contained"
                                  color="primary"
@@ -109,6 +110,7 @@ export default function PlayerHomePage(){
                         <List> 
                             <Divider />
                             {
+                                games.length > 0 ?
                                 games.map((game, index)=>(
                                     <>
                                     <ListItem key={index}>
@@ -137,6 +139,10 @@ export default function PlayerHomePage(){
                                     <Divider />
                                     </>
                                 ))
+                                :
+                                <ListItem button>
+                                    <ListItemText primary="No contest today."/>
+                                </ListItem>
                             }
                         </List>
                     </Grid>
